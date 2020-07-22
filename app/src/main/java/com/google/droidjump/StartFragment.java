@@ -32,22 +32,22 @@ public class StartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_start, container, false);
-        Button play_button = rootView.findViewById(R.id.play_button);
-        Button level_button = rootView.findViewById(R.id.level_button);
-        Button new_game_button = rootView.findViewById(R.id.new_game_button);
-        play_button.setOnClickListener(new View.OnClickListener() {
+        Button playButton = rootView.findViewById(R.id.play_button);
+        Button levelButton = rootView.findViewById(R.id.level_button);
+        Button newGameButton = rootView.findViewById(R.id.new_game_button);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 play(view);
             }
         });
-        level_button.setOnClickListener(new View.OnClickListener() {
+        levelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 choose_level(view);
             }
         });
-        new_game_button.setOnClickListener(new View.OnClickListener() {
+        newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 start_new_game(view);
@@ -56,13 +56,15 @@ public class StartFragment extends Fragment {
         return rootView;
     }
 
-    public void play(View view){
+    public void play(View view) {
         Navigation.findNavController(view).navigate(R.id.action_startFragment_to_gameFragment);
     }
-    public void choose_level(View view){
+
+    public void choose_level(View view) {
         Navigation.findNavController(view).navigate(R.id.action_startFragment_to_levelsFragment);
     }
-    public void start_new_game(View view){
+
+    public void start_new_game(View view) {
         Navigation.findNavController(view).navigate(R.id.action_startFragment_to_gameFragment);
     }
 

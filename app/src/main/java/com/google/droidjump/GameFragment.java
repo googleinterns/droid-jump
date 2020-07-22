@@ -32,26 +32,23 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView =  inflater.inflate(R.layout.fragment_game, container, false);
-        Button win_button = rootView.findViewById(R.id.win_button);
-        Button lose_button = rootView.findViewById(R.id.lose_button);
-        win_button.setOnClickListener(new View.OnClickListener() {
+        View rootView = inflater.inflate(R.layout.fragment_game, container, false);
+        Button winButton = rootView.findViewById(R.id.win_button);
+        Button loseButton = rootView.findViewById(R.id.lose_button);
+        winButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_gameFragment_to_gameSuccessFragment);
             }
         });
-        lose_button.setOnClickListener(new View.OnClickListener() {
+        loseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_gameFragment_to_gameFailureFragment);
             }
         });
-        
-        // Showing Game view
-//        FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.gameplay_frame);
-//        GameView gameView = new GameView(this.getContext());
-//        frameLayout.addView(gameView);
+
+
         return rootView;
     }
 }

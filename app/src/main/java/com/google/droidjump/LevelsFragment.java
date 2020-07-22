@@ -29,10 +29,9 @@ public class LevelsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_levels, container, false);
-        Button level_play_button = rootView.findViewById(R.id.level_play);
-        level_play_button.setOnClickListener(new View.OnClickListener() {
+        View rootView = inflater.inflate(R.layout.fragment_levels, container, false);
+        Button levelPlayButton = rootView.findViewById(R.id.level_play);
+        levelPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_levelsFragment_to_gameFragment);
