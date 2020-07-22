@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DroidJump.iml" filepath="$PROJECT_DIR$/DroidJump.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/droidgame.iml" filepath="$PROJECT_DIR$/.idea/modules/droidgame.iml" group="droidgame" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/droidgame-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/droidgame-app.iml" group="droidgame/app" />
     </modules>
   </component>
 </project>
