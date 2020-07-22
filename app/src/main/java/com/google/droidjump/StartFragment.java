@@ -44,13 +44,13 @@ public class StartFragment extends Fragment {
         levelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                choose_level(view);
+                chooseLevel(view);
             }
         });
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                start_new_game(view);
+                startNewGame(view);
             }
         });
         return rootView;
@@ -60,11 +60,11 @@ public class StartFragment extends Fragment {
         Navigation.findNavController(view).navigate(R.id.action_startFragment_to_gameFragment);
     }
 
-    public void choose_level(View view) {
+    public void chooseLevel(View view) {
         Navigation.findNavController(view).navigate(R.id.action_startFragment_to_levelsFragment);
     }
 
-    public void start_new_game(View view) {
+    public void startNewGame(View view) {
         Navigation.findNavController(view).navigate(R.id.action_startFragment_to_gameFragment);
     }
 
