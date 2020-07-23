@@ -16,30 +16,14 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gameplay_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameFragment">
+    tools:context=".GameFailureFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/lose_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LoseButton"
-            app:layout_constraintTop_toBottomOf="@+id/win_button"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <Button
-            android:id="@+id/win_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Win" />
-    </android.support.constraint.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:text="@string/fail_text" />
 
 </FrameLayout>

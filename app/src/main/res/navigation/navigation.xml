@@ -24,36 +24,36 @@
         android:id="@+id/startFragment"
         android:name="com.google.droidjump.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" >
+        tools:layout="@layout/start_screen" >
         <action
-            android:id="@+id/action_startFragment_to_gameFragment"
+            android:id="@+id/action_start_screen_to_game_screen"
             app:destination="@id/gameFragment" />
         <action
-            android:id="@+id/action_startFragment_to_levelsFragment"
+            android:id="@+id/action_start_screen_to_levels_screen"
             app:destination="@id/levelsFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameFailureFragment"
         android:name="com.google.droidjump.GameFailureFragment"
         android:label="fragment_game_failure"
-        tools:layout="@layout/fragment_game_failure" />
+        tools:layout="@layout/game_failure_screen" />
     <fragment
         android:id="@+id/gameSuccessFragment"
         android:name="com.google.droidjump.GameSuccessFragment"
         android:label="fragment_game_success"
-        tools:layout="@layout/fragment_game_success" />
+        tools:layout="@layout/game_success_screen" />
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.google.droidjump.GameFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" >
+        tools:layout="@layout/game_screen" >
         <action
-            android:id="@+id/action_gameFragment_to_gameSuccessFragment"
+            android:id="@+id/action_game_screen_to_game_success_screen"
             app:destination="@id/gameSuccessFragment"
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_gameFragment_to_gameFailureFragment"
+            android:id="@+id/action_game_screen_to_game_failure_screen"
             app:destination="@id/gameFailureFragment"
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="false" />
@@ -62,9 +62,9 @@
         android:id="@+id/levelsFragment"
         android:name="com.google.droidjump.LevelsFragment"
         android:label="fragment_levels"
-        tools:layout="@layout/fragment_levels" >
+        tools:layout="@layout/levels_screen" >
         <action
-            android:id="@+id/action_levelsFragment_to_gameFragment"
+            android:id="@+id/action_levels_screen_to_game_screen"
             app:destination="@id/gameFragment"
             app:popUpTo="@id/startFragment" />
     </fragment>

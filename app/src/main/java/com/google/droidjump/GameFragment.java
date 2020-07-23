@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
 import androidx.navigation.Navigation;
 
@@ -32,23 +31,15 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_game, container, false);
+        View rootView = inflater.inflate(R.layout.game_screen, container, false);
         Button winButton = rootView.findViewById(R.id.win_button);
         Button loseButton = rootView.findViewById(R.id.lose_button);
-        winButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_gameFragment_to_gameSuccessFragment);
-            }
+        winButton.setOnClickListener((View view) -> {
+            Navigation.findNavController(view).navigate(R.id.action_game_screen_to_game_success_screen);
         });
-        loseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_gameFragment_to_gameFailureFragment);
-            }
+        loseButton.setOnClickListener((View view) -> {
+            Navigation.findNavController(view).navigate(R.id.action_game_screen_to_game_failure_screen);
         });
-
-
         return rootView;
     }
 }

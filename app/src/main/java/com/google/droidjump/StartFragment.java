@@ -31,41 +31,26 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_start, container, false);
+        View rootView = inflater.inflate(R.layout.start_screen, container, false);
         Button playButton = rootView.findViewById(R.id.play_button);
         Button levelButton = rootView.findViewById(R.id.level_button);
         Button newGameButton = rootView.findViewById(R.id.new_game_button);
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                play(view);
-            }
-        });
-        levelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chooseLevel(view);
-            }
-        });
-        newGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startNewGame(view);
-            }
-        });
+        playButton.setOnClickListener(this::play);
+        levelButton.setOnClickListener(this::chooseLevel);
+        newGameButton.setOnClickListener(this::startNewGame);
         return rootView;
     }
 
     public void play(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_startFragment_to_gameFragment);
+        Navigation.findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
     public void chooseLevel(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_startFragment_to_levelsFragment);
+        Navigation.findNavController(view).navigate(R.id.action_start_screen_to_levels_screen);
     }
 
     public void startNewGame(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_startFragment_to_gameFragment);
+        Navigation.findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
 }

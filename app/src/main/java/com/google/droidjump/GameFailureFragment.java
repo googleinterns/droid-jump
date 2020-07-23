@@ -28,6 +28,6 @@ public class GameFailureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_game_failure, container, false);
+        return inflater.inflate(R.layout.game_failure_screen, container, false);
     }
 }
