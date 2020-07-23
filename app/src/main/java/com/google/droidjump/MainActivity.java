@@ -16,14 +16,43 @@
 
 package com.google.droidjump;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
+    private int currentLevel;
+    private int LEVEL_COUNT = 10;
+    private SharedPreferences gameData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        currentLevel = gameData.getInt("level", 1);
         setContentView(R.layout.activity_main);
+    }
+
+    public void increaseLevel() {
+        if (currentLevel < LEVEL_COUNT) {
+            currentLevel += 1;
+            SharedPreferences.Editor editor = gameData.edit();
+            editor.putInt("level", currentLevel);
+            editor.apply();
+        }
+    }
+
+    public void resetGameData() {
+        currentLevel = 1;
+        SharedPreferences.Editor editor = gameData.edit();
+        editor.putInt("level", 1);
+        editor.apply();
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 }
