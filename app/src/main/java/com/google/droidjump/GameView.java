@@ -16,6 +16,7 @@
 
 package com.google.droidjump;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -27,6 +28,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+
 public class GameView extends SurfaceView implements Runnable {
     private boolean isPlaying;
     private int screenX;
@@ -34,9 +38,7 @@ public class GameView extends SurfaceView implements Runnable {
     private SurfaceHolder surfaceHolder;
     private MainActivity activity;
     private Droid droid;
-    private int currentLevel;
     private int timePoint;
-    private int levelSpeed = 10;
     Thread thread = null;
 
     public GameView(Context context) {
@@ -49,8 +51,6 @@ public class GameView extends SurfaceView implements Runnable {
         timePoint = 0;
         surfaceHolder = getHolder();
         activity = (MainActivity) context;
-        this.currentLevel = activity.getCurrentLevel();
-
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
@@ -59,7 +59,6 @@ public class GameView extends SurfaceView implements Runnable {
         droid = new Droid(screenX / 20, screenY - screenY / 50, getResources());
         droid.setY(droid.getY() - droid.getBitmap().getHeight());
     }
-
 
     @Override
     public void run() {
@@ -74,37 +73,41 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put in some container
+        // TODO: Serialize current level data and put it in some container
     }
 
     public void update() {
         // TODO: Check if time point is in level data and add data to some container, than move it to left
-        // Droid moving
         if (droid.isJumping()) {
-            if (droid.getY() < screenY - droid.getBitmap().getHeight() - 350) {
+            if (droid.getY() < screenY - droid.getBitmap().getHeight() - 400) {
                 droid.setJumping(false);
             } else {
                 droid.setBitmap(droid.getDroidTypes()[4]);
-                droid.setY((int) (droid.getY() - 50));
+                droid.setY(droid.getY() - 100);
             }
         } else {
-            if (droid.getY() < screenY - droid.getBitmap().getHeight() - (screenY / 50)) {
-                droid.setY((int) (droid.getY() + 50));
-            }
+            // Droid Animating
             if (timePoint % 5 < 2) {
                 droid.setBitmap(droid.getDroidTypes()[5]);
 
             } else {
                 droid.setBitmap(droid.getDroidTypes()[6]);
-
             }
-
+        }
+        // Droid Gravity
+        if (droid.getY() != screenY - droid.getBitmap().getHeight() - (int) (screenY / 50)) {
+            droid.setY(droid.getY() + 50);
+        }
+        // Level Finishing
+        if (timePoint == 200) {
+            winGame();
         }
     }
 
+
     public void sleep() {
         try {
-            Thread.sleep((long) (1.0/levelSpeed * 100));
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -138,16 +141,24 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    public void failGame() {
+        Navigation.findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+    }
+
+    public void winGame() {
+        Navigation.findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
+    }
+
     private void drawDroid(Canvas canvas) {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), null);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!droid.isJumping() && droid.getY() == screenY - droid.getBitmap().getHeight() - (int) (screenY / 50)) {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);
-
     }
 }

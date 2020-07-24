@@ -20,7 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartFragment">
+    tools:context="com.google.droidjump.StartFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,12 +30,12 @@
             android:id="@+id/game_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
             android:text="@string/app_name"
-            android:textColor="#050505"
-            android:textSize="30sp"
+            android:textColor="@android:color/background_dark"
+            android:textSize="@dimen/header_text_size"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,15 +45,17 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginStart="@dimen/double_fab_margin"
+            android:layout_marginLeft="@dimen/double_fab_margin"
+            android:layout_marginEnd="@dimen/double_fab_margin"
+            android:layout_marginRight="@dimen/double_fab_margin"
             android:text="@string/level_choosing_text"
-            android:textSize="24sp"
+            android:textSize="@dimen/start_menu_item_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/play_button" />
+            app:layout_constraintTop_toTopOf="parent"
+             />
 
         <Button
             android:id="@+id/play_button"
@@ -66,11 +68,10 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:text="@string/play_text"
-            android:textSize="24sp"
+            android:textSize="@dimen/start_menu_item_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/level_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/game_header" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/new_game_button"
@@ -82,23 +83,22 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:text="@string/new_game_text"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="@dimen/start_menu_item_text_size"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/level_button"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/level_button" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/how_to_play_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:clickable="true"
             android:src="@android:drawable/ic_dialog_info"
-            app:backgroundTint="#020202"
+            app:backgroundTint="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:focusable="true" />
@@ -107,27 +107,25 @@
             android:id="@+id/how_to_play"
             android:layout_width="99dp"
             android:layout_height="94dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:text="@string/how_to_play"
-            android:textColor="#000000"
-            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/regular_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
             android:id="@+id/start_draw_view"
-            android:layout_width="213dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="@android:dimen/notification_large_icon_width"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/how_to_play"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

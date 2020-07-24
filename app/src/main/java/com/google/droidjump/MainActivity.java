@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
         currentLevel = gameData.getInt("level", 1);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
     }
 
     public void increaseLevel() {

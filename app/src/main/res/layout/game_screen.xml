@@ -31,7 +31,10 @@
             android:id="@+id/lose_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LoseButton"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="@string/fail_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/win_button" />
 
@@ -39,8 +42,10 @@
             android:id="@+id/win_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Win"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:text="@string/success_text" />
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
