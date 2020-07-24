@@ -44,13 +44,12 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:src="@android:drawable/ic_media_play"
-            app:backgroundTint="@android:color/black"
+            android:src="@drawable/ic_play"
+            app:backgroundTint="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:rippleColor="@android:color/black"
             tools:targetApi="m" />
 
         <ImageButton
@@ -62,10 +61,10 @@
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
             android:background="@drawable/button_bg_round"
-            android:src="@drawable/ic_undo"
+            android:contentDescription="@string/menu_button"
+            android:src="@drawable/ic_menu"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/menu_button" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

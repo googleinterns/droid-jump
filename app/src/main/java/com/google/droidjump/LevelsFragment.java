@@ -25,14 +25,17 @@ import android.widget.Button;
 
 import androidx.navigation.Navigation;
 
+import static androidx.navigation.Navigation.findNavController;
+
 public class LevelsFragment extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.levels_screen, container, false);
         Button levelPlayButton = rootView.findViewById(R.id.level_play);
-        levelPlayButton.setOnClickListener((View view) -> {
-            Navigation.findNavController(view).navigate(R.id.action_levels_screen_to_game_screen);
+        levelPlayButton.setOnClickListener(view -> {
+            findNavController(view).navigate(R.id.action_levels_screen_to_game_screen);
         });
         return rootView;
     }

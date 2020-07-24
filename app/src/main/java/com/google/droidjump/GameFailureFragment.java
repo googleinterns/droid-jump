@@ -26,6 +26,8 @@ import android.widget.ImageButton;
 import java.util.Objects;
 import static androidx.navigation.Navigation.findNavController;
 
+import static androidx.navigation.Navigation.findNavController;
+
 
 public class GameFailureFragment extends Fragment {
     @Override
@@ -38,7 +40,7 @@ public class GameFailureFragment extends Fragment {
         });
         ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
         menuButton.setOnClickListener(view -> {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_start_screen);
         });
         return rootView;
     }

@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 
 import androidx.navigation.Navigation;
 
+import static androidx.navigation.Navigation.findNavController;
+
 public class StartFragment extends Fragment {
 
     @Override
@@ -52,14 +54,14 @@ public class StartFragment extends Fragment {
     }
 
     private void play(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
+        findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
     private void chooseLevel(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_start_screen_to_levels_screen);
+        findNavController(view).navigate(R.id.action_start_screen_to_levels_screen);
     }
 
     private void startNewGame(View view) {
-        Navigation.findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
+        findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 }

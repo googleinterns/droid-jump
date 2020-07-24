@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 
 import java.util.Objects;
 
+
 public class GameFragment extends Fragment {
     private GameView gameView;
 
@@ -34,7 +35,6 @@ public class GameFragment extends Fragment {
                              Bundle savedInstanceState) {
         Point screen = new Point();
         Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(screen);
-
         gameView = new GameView(getActivity(), screen.x, screen.y, true);
         return gameView;
     }

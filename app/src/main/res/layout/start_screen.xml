@@ -49,8 +49,8 @@
             android:layout_marginLeft="@dimen/double_fab_margin"
             android:layout_marginEnd="@dimen/double_fab_margin"
             android:layout_marginRight="@dimen/double_fab_margin"
-            android:text="@string/level_choosing_text"
             android:textSize="@dimen/start_menu_item_text_size"
+            android:text="@string/choose_level_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,15 +105,15 @@
 
         <TextView
             android:id="@+id/how_to_play"
-            android:layout_width="99dp"
-            android:layout_height="94dp"
-            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:layout_marginRight="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
             android:text="@string/how_to_play"
             android:textColor="@android:color/black"
             android:textSize="@dimen/regular_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
