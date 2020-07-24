@@ -43,14 +43,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:src="@android:drawable/ic_menu_revert"
-            app:backgroundTint="@android:color/black"
+            android:focusable="true"
+            android:src="@drawable/ic_replay"
+            app:backgroundTint="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:rippleColor="@android:color/black"
-            android:focusable="true" />
+            app:rippleColor="@android:color/black" />
 
         <ImageButton
             android:id="@+id/success_menu_button"
@@ -62,7 +62,7 @@
             android:layout_marginRight="@dimen/fab_margin"
             android:background="@drawable/button_bg_round"
             android:contentDescription="@string/menu_button"
-            android:src="@drawable/ic_undo"
+            android:src="@drawable/ic_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

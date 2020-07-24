@@ -24,7 +24,7 @@
         android:id="@+id/startFragment"
         android:name="com.google.droidjump.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/start_screen" >
+        tools:layout="@layout/start_screen">
         <action
             android:id="@+id/action_start_screen_to_game_screen"
             app:destination="@id/gameFragment" />
@@ -36,27 +36,37 @@
         android:id="@+id/gameFailureFragment"
         android:name="com.google.droidjump.GameFailureFragment"
         android:label="fragment_game_failure"
-        tools:layout="@layout/game_failure_screen" >
+        tools:layout="@layout/game_failure_screen">
         <action
             android:id="@+id/action_game_failure_screen_to_game_screen"
             app:destination="@id/gameFragment"
             app:popUpTo="@id/startFragment" />
+        <action
+            android:id="@+id/action_game_failure_screen_to_start_screen"
+            app:destination="@id/startFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/gameSuccessFragment"
         android:name="com.google.droidjump.GameSuccessFragment"
         android:label="fragment_game_success"
-        tools:layout="@layout/game_success_screen" >
+        tools:layout="@layout/game_success_screen">
         <action
             android:id="@+id/action_game_success_screen_to_game_screen"
             app:destination="@id/gameFragment"
             app:popUpTo="@id/startFragment" />
+        <action
+            android:id="@+id/action_game_success_screen_to_start_screen"
+            app:destination="@id/startFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.google.droidjump.GameFragment"
         android:label="fragment_game"
-        tools:layout="@layout/game_screen" >
+        tools:layout="@layout/game_screen">
         <action
             android:id="@+id/action_game_screen_to_game_success_screen"
             app:destination="@id/gameSuccessFragment"
@@ -72,7 +82,7 @@
         android:id="@+id/levelsFragment"
         android:name="com.google.droidjump.LevelsFragment"
         android:label="fragment_levels"
-        tools:layout="@layout/levels_screen" >
+        tools:layout="@layout/levels_screen">
         <action
             android:id="@+id/action_levels_screen_to_game_screen"
             app:destination="@id/gameFragment"

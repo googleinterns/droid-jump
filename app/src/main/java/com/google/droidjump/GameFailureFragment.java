@@ -28,6 +28,8 @@ import androidx.navigation.Navigation;
 
 import java.util.Objects;
 
+import static androidx.navigation.Navigation.findNavController;
+
 
 public class GameFailureFragment extends Fragment {
 
@@ -37,11 +39,11 @@ public class GameFailureFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.game_failure_screen, container, false);
         FloatingActionButton retryButton = rootView.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(view -> {
-            Navigation.findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen);
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen);
         });
         ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
         menuButton.setOnClickListener(view -> {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_start_screen);
         });
         return rootView;
     }

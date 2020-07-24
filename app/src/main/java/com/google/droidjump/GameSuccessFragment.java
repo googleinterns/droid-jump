@@ -24,9 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import androidx.navigation.Navigation;
-
 import java.util.Objects;
+
+import static androidx.navigation.Navigation.findNavController;
 
 
 public class GameSuccessFragment extends Fragment {
@@ -37,11 +37,11 @@ public class GameSuccessFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.game_success_screen, container, false);
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         nextLevelButton.setOnClickListener(view -> {
-            Navigation.findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
+            findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
         });
-        ImageButton menuButon = rootView.findViewById(R.id.success_menu_button);
-        menuButon.setOnClickListener(view -> {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+        ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
+        menuButton.setOnClickListener(view -> {
+            findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
         return rootView;
     }
