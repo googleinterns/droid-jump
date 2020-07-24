@@ -26,7 +26,5 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     @Override
-    public void run() {
-
-    }
+    public void run() {}
 }

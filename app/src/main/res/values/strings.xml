@@ -29,7 +29,8 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="fail_text">Fail</string>
+    <string name="fail_text">Game Over</string>
     <string name="losebutton">LoseButton</string>
-    <string name="success_text">Win</string>
+    <string name="success_text">You Win</string>
+    <string name="menu_button">Menu button</string>
 </resources>

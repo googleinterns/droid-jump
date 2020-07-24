@@ -36,12 +36,22 @@
         android:id="@+id/gameFailureFragment"
         android:name="com.google.droidjump.GameFailureFragment"
         android:label="fragment_game_failure"
-        tools:layout="@layout/game_failure_screen" />
+        tools:layout="@layout/game_failure_screen" >
+        <action
+            android:id="@+id/action_game_failure_screen_to_game_screen"
+            app:destination="@id/gameFragment"
+            app:popUpTo="@id/startFragment" />
+    </fragment>
     <fragment
         android:id="@+id/gameSuccessFragment"
         android:name="com.google.droidjump.GameSuccessFragment"
         android:label="fragment_game_success"
-        tools:layout="@layout/game_success_screen" />
+        tools:layout="@layout/game_success_screen" >
+        <action
+            android:id="@+id/action_game_success_screen_to_game_screen"
+            app:destination="@id/gameFragment"
+            app:popUpTo="@id/startFragment" />
+    </fragment>
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.google.droidjump.GameFragment"
