@@ -16,6 +16,7 @@
 
 package com.google.droidjump;
 
+import static androidx.navigation.Navigation.findNavController;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,13 +24,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import static androidx.navigation.Navigation.findNavController;
 
 public class GameFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_screen, container, false);
         Button winButton = rootView.findViewById(R.id.win_button);
         Button loseButton = rootView.findViewById(R.id.lose_button);
