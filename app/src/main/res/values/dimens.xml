@@ -15,11 +15,8 @@
   -->
 
 <resources>
-    <string name="app_name">Droid Jump</string>
-    <string name="play_text">Play</string>
-    <string name="choose_level_text">Choose level</string>
-    <string name="new_game_text">New game</string>
-    <string name="fail_text">Game Over</string>
-    <string name="success_text">You Win</string>
-    <string name="menu_button">Menu button</string>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="header_text_size">36sp</dimen>
+    <dimen name="header_margin">40dp</dimen>
+
 </resources>

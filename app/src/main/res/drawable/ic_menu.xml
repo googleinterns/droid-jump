@@ -14,12 +14,14 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">Droid Jump</string>
-    <string name="play_text">Play</string>
-    <string name="choose_level_text">Choose level</string>
-    <string name="new_game_text">New game</string>
-    <string name="fail_text">Game Over</string>
-    <string name="success_text">You Win</string>
-    <string name="menu_button">Menu button</string>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="24dp"
+    android:height="24dp"
+    android:tint="#FFFFFF"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#fff"
+        android:pathData="M3,18h18v-2L3,16v2zM3,13h18v-2L3,11v2zM3,6v2h18L21,6L3,6z" />
+</vector>

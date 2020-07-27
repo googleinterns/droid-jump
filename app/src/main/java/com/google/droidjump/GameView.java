@@ -16,14 +16,16 @@
 
 package com.google.droidjump;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.content.Context;
+import android.view.SurfaceView;
 
-public class MainActivity extends AppCompatActivity {
+public class GameView extends SurfaceView implements Runnable {
+
+    public GameView(Context context) {
+        super(context);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+    public void run() {
     }
 }
