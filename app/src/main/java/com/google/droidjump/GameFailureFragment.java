@@ -16,6 +16,8 @@
 
 package com.google.droidjump;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -23,16 +25,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import java.util.Objects;
-import static androidx.navigation.Navigation.findNavController;
-
-import static androidx.navigation.Navigation.findNavController;
-
+import android.widget.LinearLayout;
 
 public class GameFailureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_failure_screen, container, false);
         FloatingActionButton retryButton = rootView.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(view -> {
@@ -42,6 +40,11 @@ public class GameFailureFragment extends Fragment {
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_failure_screen_to_start_screen);
         });
+
+        // Drawing a a droid
+        LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
+        drawLayout.addView(new DroidStartView(this.getActivity()));
+
         return rootView;
     }
 }

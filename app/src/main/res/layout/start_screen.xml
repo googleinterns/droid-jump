@@ -117,7 +117,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
-            android:id="@+id/start_draw_view"
+            android:id="@+id/droid_draw_view"
             android:layout_width="@android:dimen/notification_large_icon_width"
             android:layout_height="@android:dimen/notification_large_icon_height"
             android:layout_marginStart="@dimen/fab_margin"

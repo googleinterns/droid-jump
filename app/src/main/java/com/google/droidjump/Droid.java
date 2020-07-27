@@ -33,7 +33,8 @@ public class Droid extends DrawableElement {
         int droidWidth = fullDroidPicture.getWidth() / droidCount;
         int droidHeight = fullDroidPicture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, droidWidth * i, 0, droidWidth, droidHeight);
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, droidWidth * i, 0, droidWidth,
+                    droidHeight);
         }
         setBitmap(droidTypes[5]);
     }

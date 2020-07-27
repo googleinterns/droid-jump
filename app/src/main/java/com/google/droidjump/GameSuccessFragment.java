@@ -25,13 +25,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-
+import android.widget.LinearLayout;
 
 public class GameSuccessFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_success_screen, container, false);
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         nextLevelButton.setOnClickListener(view -> {
@@ -41,6 +41,9 @@ public class GameSuccessFragment extends Fragment {
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
+        // Drawing a a droid
+        LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
+        drawLayout.addView(new DroidStartView(this.getActivity()));
         return rootView;
     }
 }

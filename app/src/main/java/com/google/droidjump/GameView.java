@@ -16,20 +16,15 @@
 
 package com.google.droidjump;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.constraint.solver.Metrics;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 public class GameView extends SurfaceView implements Runnable {
     private boolean isPlaying;
@@ -77,7 +72,8 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void update() {
-        // TODO: Check if time point is in level data and add data to some container, than move it to left
+        // TODO: Check if time point is in level data and add data to some container, than move
+        //  it to left
         if (droid.isJumping()) {
             if (droid.getY() < screenY - droid.getBitmap().getHeight() - 400) {
                 droid.setJumping(false);
@@ -99,11 +95,10 @@ public class GameView extends SurfaceView implements Runnable {
             droid.setY(droid.getY() + 50);
         }
         // Level Finishing
-        if (timePoint == 200) {
-            winGame();
+        if (timePoint == 20) {
+            failGame();
         }
     }
-
 
     public void sleep() {
         try {
@@ -142,11 +137,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void failGame() {
-        Navigation.findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
     }
 
     public void winGame() {
-        Navigation.findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
+        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
     }
 
     private void drawDroid(Canvas canvas) {
@@ -156,7 +151,8 @@ public class GameView extends SurfaceView implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == screenY - droid.getBitmap().getHeight() - (int) (screenY / 50)) {
+        if (!droid.isJumping() && droid.getY() == screenY - droid.getBitmap().getHeight() - (int) (
+                screenY / 50)) {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);

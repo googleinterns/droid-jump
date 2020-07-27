@@ -33,6 +33,7 @@ public class GameFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Getting screen size
         Point screen = new Point();
         Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(screen);
         gameView = new GameView(getActivity(), screen.x, screen.y, true);

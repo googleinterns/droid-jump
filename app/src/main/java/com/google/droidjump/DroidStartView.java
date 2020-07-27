@@ -16,12 +16,12 @@
 
 package com.google.droidjump;
 
-import android.annotation.SuppressLint;
+import static android.graphics.Bitmap.createBitmap;
+import static android.graphics.BitmapFactory.decodeResource;
+
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.view.View;
 
 public class DroidStartView extends View {
@@ -33,9 +33,10 @@ public class DroidStartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        @SuppressLint("DrawAllocation") Bitmap fullDroidPic = BitmapFactory.decodeResource(getResources(), R.mipmap.droid);
+        Bitmap fullDroidPic = decodeResource(getResources(), R.mipmap.droid);
         int droidStep = (int) fullDroidPic.getWidth() / 9;
-        @SuppressLint("DrawAllocation") Bitmap droid = Bitmap.createBitmap(fullDroidPic, droidStep * 4, 0, droidStep, fullDroidPic.getHeight(), null, true);
+        Bitmap droid = createBitmap(fullDroidPic, droidStep * 4, 0, droidStep,
+                fullDroidPic.getHeight(), null, true);
         canvas.drawBitmap(droid, 0, getHeight() - droid.getHeight(), null);
     }
 }
