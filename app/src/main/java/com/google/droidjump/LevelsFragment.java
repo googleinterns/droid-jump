@@ -19,19 +19,29 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.droidjump.databinding.LevelsScreenBinding;
+
 public class LevelsFragment extends Fragment {
+    private LevelsScreenBinding binding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = LevelsScreenBinding.inflate(getLayoutInflater());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.levels_screen, container, false);
-        Button levelPlayButton = rootView.findViewById(R.id.level_play);
+        View rootView = binding.getRoot();
+        Button levelPlayButton = binding.levelPlay;
         levelPlayButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_levels_screen_to_game_screen);
         });

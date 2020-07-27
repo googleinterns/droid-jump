@@ -19,6 +19,7 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,26 +28,35 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.google.droidjump.databinding.GameSuccessScreenBinding;
+
 public class GameSuccessFragment extends Fragment {
+    private GameSuccessScreenBinding binding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = GameSuccessScreenBinding.inflate(getLayoutInflater());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_success_screen, container, false);
-        FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
+        View rootView = binding.getRoot();
+        FloatingActionButton nextLevelButton = binding.nextButton;
         nextLevelButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
         });
-        ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
+        ImageButton menuButton = binding.successMenuButton;
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
         // Drawing a a droid
-        LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
+        LinearLayout drawLayout = binding.droidDrawView;
         drawLayout.addView(new DroidStartView(this.getActivity()));
 
         // Adding a navigation to howToPlay screen
-        FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
+        FloatingActionButton howToPlayButton = binding.howToPlayButton;
         howToPlayButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_how_to_play_screen);
         });

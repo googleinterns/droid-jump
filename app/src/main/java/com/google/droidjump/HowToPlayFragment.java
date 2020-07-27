@@ -17,15 +17,26 @@
 package com.google.droidjump;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.droidjump.databinding.HowToPlayScreenBinding;
+
 public class HowToPlayFragment extends Fragment {
+    private HowToPlayScreenBinding binding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = HowToPlayScreenBinding.inflate(getLayoutInflater());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.how_to_play_screen, container, false);
+        return binding.getRoot();
     }
 }

@@ -26,16 +26,17 @@ import android.view.ViewGroup;
 
 import java.util.Objects;
 
-
 public class GameFragment extends Fragment {
     private GameView gameView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Getting screen size
         Point screen = new Point();
-        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(screen);
+        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(
+                screen);
+        // Drawing gameView
         gameView = new GameView(getActivity(), screen.x, screen.y, true);
         return gameView;
     }
