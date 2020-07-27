@@ -23,10 +23,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.Objects;
 
 public class GameFragment extends Fragment {
+
     private GameView gameView;
 
     @Override

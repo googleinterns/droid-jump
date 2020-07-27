@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
+
     private int currentLevel;
     private int levelCount;
     private SharedPreferences gameData;

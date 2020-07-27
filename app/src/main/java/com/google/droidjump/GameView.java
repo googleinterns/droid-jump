@@ -17,7 +17,6 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,6 +26,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements Runnable {
+
     private boolean isPlaying;
     private int screenX;
     private int screenY;

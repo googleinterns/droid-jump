@@ -17,7 +17,6 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -27,10 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
 import com.google.droidjump.databinding.StartScreenBinding;
 
 public class StartFragment extends Fragment {
+
     private StartScreenBinding binding;
 
     @Override

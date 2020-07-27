@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Droid extends DrawableElement {
+
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;

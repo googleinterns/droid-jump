@@ -17,7 +17,6 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,10 +24,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import com.google.droidjump.databinding.LevelsScreenBinding;
 
 public class LevelsFragment extends Fragment {
+
     private LevelsScreenBinding binding;
 
     @Override

@@ -19,6 +19,7 @@ package com.google.droidjump;
 import android.graphics.Bitmap;
 
 public class DrawableElement {
+
     private int x;
     private int y;
     private Bitmap bitmap;
