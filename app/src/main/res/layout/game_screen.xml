@@ -47,5 +47,6 @@
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
             android:text="@string/success_text" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

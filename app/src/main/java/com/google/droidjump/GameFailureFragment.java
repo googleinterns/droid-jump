@@ -45,6 +45,12 @@ public class GameFailureFragment extends Fragment {
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
         drawLayout.addView(new DroidStartView(this.getActivity()));
 
+        // Adding a navigation to howToPlay screen
+        FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
+        howToPlayButton.setOnClickListener(view -> {
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_how_to_play_screen);
+        });
+
         return rootView;
     }
 }

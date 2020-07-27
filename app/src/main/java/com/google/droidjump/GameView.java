@@ -96,7 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
         // Level Finishing
         if (timePoint == 20) {
-            failGame();
+            winGame();
         }
     }
 
