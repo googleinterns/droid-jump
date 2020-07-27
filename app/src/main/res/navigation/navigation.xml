@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_start_screen_to_levels_screen"
             app:destination="@id/levelsFragment" />
+        <action
+            android:id="@+id/action_start_screen_to_how_to_play_screen"
+            app:destination="@id/howToPlayFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameFailureFragment"
@@ -88,4 +91,9 @@
             app:destination="@id/gameFragment"
             app:popUpTo="@id/startFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/howToPlayFragment"
+        android:name="com.google.droidjump.HowToPlayFragment"
+        android:label="how_to_play_screen"
+        tools:layout="@layout/how_to_play_screen" />
 </navigation>
