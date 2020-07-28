@@ -19,8 +19,11 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -30,11 +33,14 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean isPlaying;
     private int screenX;
     private int screenY;
+    private int screenMargin;
     private SurfaceHolder surfaceHolder;
     private MainActivity activity;
     private Droid droid;
     private int timePoint;
     Thread thread = null;
+    private int levelTimePoints;
+    private int levelSpeed;
 
     public GameView(Context context) {
         super(context);
@@ -49,10 +55,21 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-
+        // Margin in dp
+        float fab_margin_dp = 16f;
+        Resources resources = getResources();
+        // Margin in px
+        screenMargin = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                fab_margin_dp,
+                resources.getDisplayMetrics()
+        );
+        // Measuring droid jump height
+        DrawableElement palm = new DrawableElement(0, 0,
+                BitmapFactory.decodeResource(getResources(), R.mipmap.palm));
+        int jumpHeight = palm.getHeight() + 100;
         // Create droid
-        droid = new Droid(screenX / 20, screenY - screenY / 50, getResources());
-        droid.setY(droid.getY() - droid.getBitmap().getHeight());
+        droid = new Droid(screenMargin, screenY - screenMargin, jumpHeight, getResources());
     }
 
     @Override
@@ -69,19 +86,22 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
+        levelTimePoints = 200;
+        levelSpeed = 3;
     }
 
     public void update() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         if (droid.isJumping()) {
-            if (droid.getY() < screenY - droid.getBitmap().getHeight() - 400) {
+            if (droid.getY() < droid.getInitialY() - droid.getJumpHeight()) {
                 droid.setJumping(false);
             } else {
+                // Setting 4th droid character(droid in jump)
                 droid.setBitmap(droid.getDroidTypes()[4]);
-                droid.setY(droid.getY() - 100);
+                droid.setY(droid.getY() - droid.getJumpHeight() / 3);
             }
-        } else {
+        } else if (droid.getY() == droid.getInitialY()) {
             // Droid Animating
             if (timePoint % 5 < 2) {
                 droid.setBitmap(droid.getDroidTypes()[5]);
@@ -91,11 +111,11 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         // Droid Gravity
-        if (droid.getY() != screenY - droid.getBitmap().getHeight() - (int) (screenY / 50)) {
-            droid.setY(droid.getY() + 50);
+        if (droid.getY() != droid.getInitialY()) {
+            droid.setY(Math.min(droid.getY() + droid.getJumpHeight() / 6, droid.getInitialY()));
         }
         // Level Finishing
-        if (timePoint == 20) {
+        if (timePoint == levelTimePoints) {
             failGame();
         }
     }
@@ -151,8 +171,7 @@ public class GameView extends SurfaceView implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == screenY - droid.getBitmap().getHeight() - (int) (
-                screenY / 50)) {
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);

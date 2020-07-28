@@ -58,4 +58,12 @@ public class DrawableElement {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
+
+    public int getHeight() {
+        return bitmap.getHeight();
+    }
+
+    public int getWidth() {
+        return bitmap.getWidth();
+    }
 }

@@ -25,8 +25,10 @@ public class Droid extends DrawableElement {
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;
+    private int initialY;
+    private int jumpHeight;
 
-    public Droid(int x, int y, Resources resources) {
+    public Droid(int x, int y, int jumpHeight, Resources resources) {
         super(x, y);
         Bitmap fullDroidPicture = BitmapFactory.decodeResource(resources, R.mipmap.droid);
         int droidCount = 9;
@@ -38,6 +40,9 @@ public class Droid extends DrawableElement {
                     droidHeight);
         }
         setBitmap(droidTypes[5]);
+        this.setY(y - getBitmap().getHeight());
+        initialY = getY();
+        this.jumpHeight = jumpHeight;
     }
 
     public boolean isJumping() {
@@ -59,4 +64,13 @@ public class Droid extends DrawableElement {
     public Bitmap[] getDroidTypes() {
         return droidTypes;
     }
+
+    public int getInitialY() {
+        return initialY;
+    }
+
+    public int getJumpHeight() {
+        return jumpHeight;
+    }
+
 }
