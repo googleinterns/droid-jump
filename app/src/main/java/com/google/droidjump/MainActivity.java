@@ -20,10 +20,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-
+    private int levelsCount;
+    private int currentLevel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        levelsCount = 100;
+        currentLevel = 5;
         setContentView(R.layout.main_activity);
+
+    }
+
+    public int getLevelsCount() {
+        return levelsCount;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 }

@@ -30,17 +30,50 @@
             android:id="@+id/choose_level_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
             android:text="@string/choose_level_text"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/header_text_size"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/level_play"
+        <GridView
+            android:id="@+id/levels_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:cacheColorHint="#FFFFFF"
+            android:clipToPadding="false"
+            android:horizontalSpacing="@dimen/fab_margin"
+            android:numColumns="3"
+            android:paddingLeft="@dimen/fab_margin"
+            android:paddingRight="@dimen/fab_margin"
+            android:verticalSpacing="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choose_level_header"
+            app:layout_constraintVertical_bias="0.0"
+            android:scrollbarStyle="outsideOverlay"/>
+
+        <ImageButton
+            android:id="@+id/success_menu_button"
+            style="@style/Widget.AppCompat.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/play_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choose_level_header" />
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:background="@drawable/button_bg_round"
+            android:contentDescription="@string/menu_button"
+            android:src="@drawable/ic_menu"
+            app:layout_constraintBottom_toTopOf="@+id/levels_grid_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

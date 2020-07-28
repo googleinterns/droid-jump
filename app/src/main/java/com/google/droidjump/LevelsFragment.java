@@ -17,23 +17,50 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
+import android.widget.GridView;
+import android.widget.ImageButton;
+import androidx.navigation.Navigation;
 
 public class LevelsFragment extends Fragment {
 
+    private MainActivity activity;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (MainActivity) getActivity();
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.levels_screen, container, false);
-        Button levelPlayButton = rootView.findViewById(R.id.level_play);
-        levelPlayButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_levels_screen_to_game_screen);
+            Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.levels_screen, container,
+                /* attachToRoot= */false);
+        GridView gridView = rootView.findViewById(R.id.levels_grid_view);
+        int[] levels = new int[activity.getLevelsCount()];
+        for (int i = 0; i < levels.length; i++) {
+            levels[i] = i + 1;
+        }
+        LevelsAdapter levelsAdapter = new LevelsAdapter(getContext(), levels,
+                activity.getCurrentLevel());
+        gridView.setAdapter(levelsAdapter);
+        gridView.setOnItemClickListener((adapterView, view, i, l) -> {
+            if (activity.getCurrentLevel() >= (int) levelsAdapter.getItem(i)) {
+                Navigation.findNavController(view).navigate(
+                        R.id.action_levels_screen_to_game_screen);
+            }
+        });
+        ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
+        menuButton.setOnClickListener(view -> {
+            activity.onBackPressed();
         });
         return rootView;
     }
