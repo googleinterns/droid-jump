@@ -31,7 +31,7 @@ public class GameSuccessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_success_screen, container, false);
+        View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */false);
         // Adding redirect to game screen
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         nextLevelButton.setOnClickListener(view -> {

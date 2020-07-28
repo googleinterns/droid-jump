@@ -30,7 +30,7 @@ public class GameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_screen, container, false);
+        View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */false);
         Button winButton = rootView.findViewById(R.id.win_button);
         Button loseButton = rootView.findViewById(R.id.lose_button);
         winButton.setOnClickListener(view -> {
