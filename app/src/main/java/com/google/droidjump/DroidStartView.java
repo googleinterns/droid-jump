@@ -33,11 +33,13 @@ public class DroidStartView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Bitmap fullDroidPic = decodeResource(getResources(), R.mipmap.droid);
-        int droidCountOnFullDroidPic = 9;
-        int droidStep = (int) fullDroidPic.getWidth() / droidCountOnFullDroidPic;
+        int droidStep =
+                fullDroidPic.getWidth() / GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         int droidCharacterStandingNumber = 4;
-        Bitmap droid = createBitmap(fullDroidPic, /* 4th droid on full droid picture */droidStep * droidCharacterStandingNumber, 0, droidStep,
-                fullDroidPic.getHeight());
-        canvas.drawBitmap(droid, 0, getHeight() - droid.getHeight(), /* paint= */null);
+        Bitmap droid = createBitmap(fullDroidPic, /* 4th droid on full droid picture */
+                droidStep * droidCharacterStandingNumber, /* y= */0, /* width= */ droidStep,
+                /* height= */ fullDroidPic.getHeight());
+        canvas.drawBitmap(droid, /* left= */0, /* top= */
+                getHeight() - droid.getHeight(), /* paint= */null);
     }
 }
