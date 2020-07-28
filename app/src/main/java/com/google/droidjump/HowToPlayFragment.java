@@ -16,43 +16,17 @@
 
 package com.google.droidjump;
 
-import android.graphics.Point;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import java.util.Objects;
 
-public class GameFragment extends Fragment {
-
-    private GameView gameView;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Point screen = new Point();
-        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(
-                screen);
-        gameView = new GameView(getActivity(), screen.x, screen.y, /* isPlaying= */true);
-    }
+public class HowToPlayFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return gameView;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        gameView.pause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        gameView.resume();
+        return inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */false);
     }
 }

@@ -19,11 +19,9 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -38,7 +36,7 @@ public class GameView extends SurfaceView implements Runnable {
     private MainActivity activity;
     private Droid droid;
     private int timePoint;
-    Thread thread = null;
+    Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
 
@@ -55,18 +53,12 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-        // Margin in dp
-        float fab_margin_dp = 16f;
-        Resources resources = getResources();
+
         // Margin in px
-        screenMargin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                fab_margin_dp,
-                resources.getDisplayMetrics()
-        );
+        screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         // Measuring droid jump height
-        DrawableElement palm = new DrawableElement(0, 0,
-                BitmapFactory.decodeResource(getResources(), R.mipmap.palm));
+        DrawableElement palm = new DrawableElement(/* x= */0, /* y= */0,
+                /* bitmap= */BitmapFactory.decodeResource(getResources(), R.mipmap.palm));
         int jumpHeight = palm.getHeight() + 100;
         // Create droid
         droid = new Droid(screenMargin, screenY - screenMargin, jumpHeight, getResources());
@@ -98,16 +90,16 @@ public class GameView extends SurfaceView implements Runnable {
                 droid.setJumping(false);
             } else {
                 // Setting 4th droid character(droid in jump)
-                droid.setBitmap(droid.getDroidTypes()[4]);
+                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX]);
                 droid.setY(droid.getY() - droid.getJumpHeight() / 3);
             }
         } else if (droid.getY() == droid.getInitialY()) {
             // Droid Animating
             if (timePoint % 5 < 2) {
-                droid.setBitmap(droid.getDroidTypes()[5]);
+                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX]);
 
             } else {
-                droid.setBitmap(droid.getDroidTypes()[6]);
+                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX]);
             }
         }
         // Droid Gravity
@@ -122,7 +114,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void sleep() {
         try {
-            Thread.sleep(20);
+            Thread.sleep(GameConstants.SLEEP_TIME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -165,7 +157,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawDroid(Canvas canvas) {
-        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), null);
+        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */null);
     }
 
     @SuppressLint("ClickableViewAccessibility")

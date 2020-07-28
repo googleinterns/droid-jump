@@ -15,19 +15,11 @@
  */
 
 package com.google.droidjump;
+public interface GameConstants {
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.WindowManager;
-
-public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Set full screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.main_activity);
-    }
+    int DROID_COUNT_ON_FULL_DROID_PICTURE = 9;
+    int DROID_JUMPING_CHARACTER_INDEX = 4;
+    int DROID_FIRST_STEP_INDEX = 5;
+    int DROID_SECOND_STEP_INDEX = 6;
+    int SLEEP_TIME = 20;
 }
