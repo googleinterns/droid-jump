@@ -31,7 +31,8 @@ public class GameSuccessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */false);
+        View rootView = inflater.inflate(R.layout.game_success_screen,
+                container, /* attachToRoot= */false);
         // Adding redirect to game screen
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         nextLevelButton.setOnClickListener(view -> {
@@ -44,7 +45,7 @@ public class GameSuccessFragment extends Fragment {
         });
         // Drawing a a droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
+        drawLayout.addView(new DroidStartView(getActivity()));
         // Adding redirect to howToPlay screen
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {

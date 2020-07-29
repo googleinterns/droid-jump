@@ -36,10 +36,10 @@ public class DroidStartView extends View {
         int droidWidth =
                 fullDroidPic.getWidth() / GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         int jumpingDroidPosition = droidWidth * GameConstants.DROID_JUMPING_CHARACTER_INDEX;
-        Bitmap droid = createBitmap(fullDroidPic, jumpingDroidPosition, /* y= */0,
+        Bitmap droid = createBitmap(fullDroidPic, jumpingDroidPosition, /* y= */ 0,
                 /* width= */ droidWidth,
                 /* height= */ fullDroidPic.getHeight());
-        canvas.drawBitmap(droid, /* left= */0, /* top= */
-                getHeight() - droid.getHeight(), /* paint= */null);
+        canvas.drawBitmap(droid, /* left= */ 0, /* top= */
+                getHeight() - droid.getHeight(), /* paint= */ null);
     }
 }
