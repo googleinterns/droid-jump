@@ -63,8 +63,8 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (isPlaying) {
-            update();
-            draw();
+            updateGameState();
+            drawScene();
             sleep();
             timePoint++;
         }
@@ -73,10 +73,10 @@ public class GameView extends SurfaceView implements Runnable {
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
-        levelSpeed = 100;
+        levelSpeed = 50;
     }
 
-    public void update() {
+    public void updateGameState() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         updateDroidCoordinates();
@@ -92,23 +92,24 @@ public class GameView extends SurfaceView implements Runnable {
             if (droid.getY() < droid.getInitialY() - droid.getJumpHeight()) {
                 droid.setJumping(false);
             } else {
-                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX]);
+                droid.useJumpingBitmap();
 
-                // Increasing droid Y position to jump smoothly
+                // Increasing droid Y position to make they jump smoothly
                 droid.setY(droid.getY() - levelSpeed * 2);
             }
-        } else if (droid.getY() == droid.getInitialY()) {
-            // Droid Animating
+        }
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+            // Droid Animation
             if (timePoint % 4 < 2) {
-                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX]);
+                droid.useFirstStepBitmap();
             } else {
-                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX]);
+                droid.useSecondStepBitmap();
             }
         }
 
         // Droid Gravity
         if (droid.getY() != droid.getInitialY()) {
-            // decreasing droid Y position to jump smoothly
+            // Decreasing droid Y position to made they jump smoothly
             droid.setY(Math.min(droid.getY() + levelSpeed,
                     droid.getInitialY()));
         }
@@ -122,7 +123,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void draw() {
+    public void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
 

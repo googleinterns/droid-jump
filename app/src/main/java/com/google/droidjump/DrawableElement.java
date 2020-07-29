@@ -20,9 +20,9 @@ import android.graphics.Bitmap;
 
 public class DrawableElement {
 
-    private int x;
-    private int y;
-    private Bitmap bitmap;
+    protected int x;
+    protected int y;
+    protected Bitmap bitmap;
 
     public DrawableElement(int x, int y, Bitmap bitmap) {
         this.x = x;

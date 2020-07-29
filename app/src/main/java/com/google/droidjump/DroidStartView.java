@@ -39,7 +39,8 @@ public class DroidStartView extends View {
         Bitmap droid = createBitmap(fullDroidPic, jumpingDroidPosition, /* y= */0,
                 /* width= */ droidWidth,
                 /* height= */ fullDroidPic.getHeight());
-        canvas.drawBitmap(droid, /* left= */ 0, /* top= */
-                getHeight() - droid.getHeight(), /* paint= */null);
+        canvas.drawBitmap(droid, /* left= */ 0,
+                /* top= */ getHeight() - droid.getHeight(),
+                /* paint= */ null);
     }
 }

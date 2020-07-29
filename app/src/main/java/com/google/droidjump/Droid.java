@@ -22,7 +22,6 @@ import android.graphics.BitmapFactory;
 
 public class Droid extends DrawableElement {
 
-    private final int speed;
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;
@@ -37,15 +36,12 @@ public class Droid extends DrawableElement {
         int droidWidth = fullDroidPicture.getWidth() / droidCount;
         int droidHeight = fullDroidPicture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i, /* y= */
-                    0,
-                    droidWidth,
-                    droidHeight);
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i,
+                    /* y= */ 0, droidWidth, droidHeight);
         }
         setBitmap(droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
         this.setY(y - getBitmap().getHeight());
         initialY = getY();
-        this.speed = speed;
     }
 
     public boolean isJumping() {
@@ -85,5 +81,17 @@ public class Droid extends DrawableElement {
         can easily jump through all obstacles */
         Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
         jumpHeight = palm.getHeight() + this.getHeight() + (palm.getHeight() / 5);
+    }
+
+    public void useJumpingBitmap() {
+        bitmap = getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
+    }
+
+    public void useFirstStepBitmap() {
+        bitmap = getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX];
+    }
+
+    public void useSecondStepBitmap() {
+        bitmap = getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX];
     }
 }
