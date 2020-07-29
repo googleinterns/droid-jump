@@ -80,10 +80,37 @@ public class GameView extends SurfaceView implements Runnable {
     public void update() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
-        droid.update();
+        updateDroidCoordinates();
         // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
+        }
+    }
+
+    private void updateDroidCoordinates() {
+        if (droid.isJumping()) {
+            if (droid.getY() < droid.getInitialY() - droid.getJumpHeight()) {
+                droid.setJumping(false);
+            } else {
+                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX]);
+
+                // Increasing droid Y position to jump smoothly
+                droid.setY(droid.getY() - levelSpeed * 2);
+            }
+        } else if (droid.getY() == droid.getInitialY()) {
+            // Droid Animating
+            if (timePoint % 4 < 2) {
+                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX]);
+            } else {
+                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX]);
+            }
+        }
+
+        // Droid Gravity
+        if (droid.getY() != droid.getInitialY()) {
+            // decreasing droid Y position to jump smoothly
+            droid.setY(Math.min(droid.getY() + levelSpeed,
+                    droid.getInitialY()));
         }
     }
 

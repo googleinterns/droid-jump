@@ -28,7 +28,6 @@ public class Droid extends DrawableElement {
     private Bitmap[] droidTypes;
     private int initialY;
     private int jumpHeight;
-    private int stepCount;
 
     public Droid(int x, int y, int speed, Resources resources) {
         super(x, y);
@@ -38,7 +37,8 @@ public class Droid extends DrawableElement {
         int droidWidth = fullDroidPicture.getWidth() / droidCount;
         int droidHeight = fullDroidPicture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i, /* y= */ 0,
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i, /* y= */
+                    0,
                     droidWidth,
                     droidHeight);
         }
@@ -78,38 +78,6 @@ public class Droid extends DrawableElement {
 
     public void setJumpHeight(int jumpHeight) {
         this.jumpHeight = jumpHeight;
-    }
-
-    public void update() {
-        if (this.isJumping()) {
-            if (this.getY() < this.getInitialY() - this.getJumpHeight()) {
-                setJumping(false);
-            } else {
-                this.setBitmap(getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX]);
-
-                // Increasing droid Y position to jump smoothly
-                setY(getY() - speed * 2);
-            }
-        } else if (getY() == getInitialY()) {
-            // Droid Animating
-            if (stepCount > 5) {
-                setBitmap(getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX]);
-            } else {
-                setBitmap(getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX]);
-            }
-        }
-
-        // Droid Gravity
-        if (getY() != getInitialY()) {
-            // decreasing droid Y position to jump smoothly
-            setY(Math.min(getY() + speed,
-                    getInitialY()));
-        }
-
-        stepCount++;
-        if (stepCount > 10) {
-            stepCount = 1;
-        }
     }
 
     public void setDroidJumpHeight(Resources resources) {
