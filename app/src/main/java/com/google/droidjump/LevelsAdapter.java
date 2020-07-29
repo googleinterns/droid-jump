@@ -56,13 +56,13 @@ public class LevelsAdapter extends BaseAdapter {
         return -1;
     }
 
-    @SuppressLint("ViewHolder")
+    @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (inflater == null) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
-        view = inflater.inflate(R.layout.row_level_item, /* root= */null);
+        view = inflater.inflate(R.layout.row_level_item, /* root= */ null);
         TextView textView = view.findViewById(R.id.row_level_item_text);
         textView.setText(String.valueOf(levels[i]));
         if (currentLevel > levels[i]) {
@@ -71,7 +71,6 @@ public class LevelsAdapter extends BaseAdapter {
             textView.setTextColor(Color.WHITE);
             textView.setBackgroundColor(Color.BLACK);
         }
-
-       return view;
+        return view;
     }
 }

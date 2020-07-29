@@ -43,7 +43,9 @@ public class LevelsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.levels_screen, container,
-                /* attachToRoot= */false);
+                /* attachToRoot= */ false);
+
+        // Finding gridView and putting levels to it
         GridView gridView = rootView.findViewById(R.id.levels_grid_view);
         int[] levels = new int[activity.getLevelsCount()];
         for (int i = 0; i < levels.length; i++) {
@@ -52,12 +54,14 @@ public class LevelsFragment extends Fragment {
         LevelsAdapter levelsAdapter = new LevelsAdapter(getContext(), levels,
                 activity.getCurrentLevel());
         gridView.setAdapter(levelsAdapter);
+        // Adding onClick events
         gridView.setOnItemClickListener((adapterView, view, i, l) -> {
             if (activity.getCurrentLevel() >= (int) levelsAdapter.getItem(i)) {
                 Navigation.findNavController(view).navigate(
                         R.id.action_levels_screen_to_game_screen);
             }
         });
+        // Adding redirect to a start screen
         ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
         menuButton.setOnClickListener(view -> {
             activity.onBackPressed();
