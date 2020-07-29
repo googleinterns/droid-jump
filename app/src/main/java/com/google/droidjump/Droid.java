@@ -22,13 +22,15 @@ import android.graphics.BitmapFactory;
 
 public class Droid extends DrawableElement {
 
+    private final int speed;
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;
     private int initialY;
     private int jumpHeight;
+    private int stepCount;
 
-    public Droid(int x, int y, int jumpHeight, Resources resources) {
+    public Droid(int x, int y, int speed, Resources resources) {
         super(x, y);
         Bitmap fullDroidPicture = BitmapFactory.decodeResource(resources, R.mipmap.droid);
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
@@ -36,13 +38,14 @@ public class Droid extends DrawableElement {
         int droidWidth = fullDroidPicture.getWidth() / droidCount;
         int droidHeight = fullDroidPicture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */droidWidth * i, /* y= */0, droidWidth,
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i, /* y= */ 0,
+                    droidWidth,
                     droidHeight);
         }
         setBitmap(droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
         this.setY(y - getBitmap().getHeight());
         initialY = getY();
-        this.jumpHeight = jumpHeight;
+        this.speed = speed;
     }
 
     public boolean isJumping() {
@@ -73,4 +76,46 @@ public class Droid extends DrawableElement {
         return jumpHeight;
     }
 
+    public void setJumpHeight(int jumpHeight) {
+        this.jumpHeight = jumpHeight;
+    }
+
+    public void update() {
+        if (this.isJumping()) {
+            if (this.getY() < this.getInitialY() - this.getJumpHeight()) {
+                setJumping(false);
+            } else {
+                this.setBitmap(getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX]);
+
+                // Increasing droid Y position to jump smoothly
+                setY(getY() - speed * 2);
+            }
+        } else if (getY() == getInitialY()) {
+            // Droid Animating
+            if (stepCount > 5) {
+                setBitmap(getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX]);
+            } else {
+                setBitmap(getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX]);
+            }
+        }
+
+        // Droid Gravity
+        if (getY() != getInitialY()) {
+            // decreasing droid Y position to jump smoothly
+            setY(Math.min(getY() + speed,
+                    getInitialY()));
+        }
+
+        stepCount++;
+        if (stepCount > 10) {
+            stepCount = 1;
+        }
+    }
+
+    public void setDroidJumpHeight(Resources resources) {
+        /* Returning the highest obstacle height + additional distance for jumping so that droid
+        can easily jump through all obstacles */
+        Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
+        jumpHeight = palm.getHeight() + this.getHeight() + (palm.getHeight() / 5);
+    }
 }

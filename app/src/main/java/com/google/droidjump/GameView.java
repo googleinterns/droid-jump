@@ -19,7 +19,6 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
@@ -33,10 +32,9 @@ public class GameView extends SurfaceView implements Runnable {
     private int screenY;
     private int screenMargin;
     private SurfaceHolder surfaceHolder;
-    private MainActivity activity;
     private Droid droid;
     private int timePoint;
-    Thread thread;
+    private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
 
@@ -47,9 +45,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
+        receiveLevelDetails();
         timePoint = 0;
         surfaceHolder = getHolder();
-        activity = (MainActivity) context;
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
@@ -57,17 +55,14 @@ public class GameView extends SurfaceView implements Runnable {
         // Margin in px
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         // Measuring droid jump height
-        DrawableElement palm = new DrawableElement(/* x= */0, /* y= */0,
-                /* bitmap= */BitmapFactory.decodeResource(getResources(), R.mipmap.palm));
-        int jumpHeight = palm.getHeight() + 100;
+
         // Create droid
-        droid = new Droid(screenMargin, screenY - screenMargin, jumpHeight, getResources());
+        droid = new Droid(screenMargin, screenY - screenMargin, levelSpeed, getResources());
+        droid.setDroidJumpHeight(getResources());
     }
 
     @Override
     public void run() {
-        receiveLevelDetails();
-        draw();
         while (isPlaying) {
             update();
             draw();
@@ -79,36 +74,16 @@ public class GameView extends SurfaceView implements Runnable {
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
-        levelSpeed = 3;
+        levelSpeed = 100;
     }
 
     public void update() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
-        if (droid.isJumping()) {
-            if (droid.getY() < droid.getInitialY() - droid.getJumpHeight()) {
-                droid.setJumping(false);
-            } else {
-                // Setting 4th droid character(droid in jump)
-                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX]);
-                droid.setY(droid.getY() - droid.getJumpHeight() / 3);
-            }
-        } else if (droid.getY() == droid.getInitialY()) {
-            // Droid Animating
-            if (timePoint % 5 < 2) {
-                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX]);
-
-            } else {
-                droid.setBitmap(droid.getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX]);
-            }
-        }
-        // Droid Gravity
-        if (droid.getY() != droid.getInitialY()) {
-            droid.setY(Math.min(droid.getY() + droid.getJumpHeight() / 6, droid.getInitialY()));
-        }
+        droid.update();
         // Level Finishing
         if (timePoint == levelTimePoints) {
-            failGame();
+            winGame();
         }
     }
 
@@ -157,7 +132,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawDroid(Canvas canvas) {
-        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */null);
+        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
     }
 
     @SuppressLint("ClickableViewAccessibility")
