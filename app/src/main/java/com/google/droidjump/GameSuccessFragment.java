@@ -33,19 +33,23 @@ public class GameSuccessFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_success_screen,
                 container, /* attachToRoot= */false);
-        // Adding redirect to game screen
+
+        // Adding redirect to a game screen
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         nextLevelButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
         });
+
         // Adding redirect to start screen
         ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
+
         // Drawing a a droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
         drawLayout.addView(new DroidStartView(getActivity()));
+
         // Adding redirect to howToPlay screen
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {
