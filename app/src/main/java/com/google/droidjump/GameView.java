@@ -54,7 +54,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Margin in px
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        // Measuring droid jump height
 
         // Create droid
         droid = new Droid(screenMargin, screenY - screenMargin, levelSpeed, getResources());
@@ -81,6 +80,7 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         updateDroidCoordinates();
+
         // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
@@ -125,10 +125,13 @@ public class GameView extends SurfaceView implements Runnable {
     public void draw() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
+
             // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
+
             // Drawing droid
             drawDroid(canvas);
+
             // Drawing canvas with all elements
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
