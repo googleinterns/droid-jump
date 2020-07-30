@@ -46,7 +46,7 @@ public class StartFragment extends Fragment {
 
         // Drawing a droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
+        drawLayout.addView(new DroidStartView(getActivity()));
         return rootView;
     }
 

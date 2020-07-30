@@ -30,7 +30,7 @@ public class GameFailureFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.game_failure_screen,
                 container, /* attachToRoot= */false);
@@ -49,7 +49,7 @@ public class GameFailureFragment extends Fragment {
 
         // Drawing a a droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
+        drawLayout.addView(new DroidStartView(getActivity()));
 
         // Adding redirecting on click to howToPlay screen
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
