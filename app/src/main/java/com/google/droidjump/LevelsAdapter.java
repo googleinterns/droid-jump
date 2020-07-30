@@ -15,6 +15,7 @@
  */
 
 package com.google.droidjump;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 public class LevelsAdapter extends BaseAdapter {
 
     private Context context;
@@ -48,12 +50,7 @@ public class LevelsAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        for (int index = 0; i < levels.length; index++) {
-            if (levels[index] == i) {
-                return index;
-            }
-        }
-        return -1;
+        return i-1;
     }
 
     @SuppressLint({"ViewHolder", "InflateParams"})

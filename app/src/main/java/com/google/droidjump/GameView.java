@@ -17,15 +17,28 @@
 package com.google.droidjump;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements Runnable {
+    private int currentLevel;
+    private MainActivity activity;
 
-    public GameView(Context context) {
+    public GameView(Context context, Bundle arguments) {
         super(context);
+        activity = (MainActivity) context;
+        currentLevel = getCurrentLevel(arguments);
+    }
+
+    public int getCurrentLevel(Bundle arguments) {
+        // Get the level from levels screen or get the last level if it was not passed to arguments
+        int level = arguments.getInt("level", /* defaultValue= */ 0);
+        if (level == 0) {
+            level = activity.getCurrentLevel();
+        }
+        return level;
     }
 
     @Override
-    public void run() {
-    }
+    public void run() {}
 }

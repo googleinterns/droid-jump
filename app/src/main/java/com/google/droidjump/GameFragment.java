@@ -39,6 +39,7 @@ public class GameFragment extends Fragment {
         loseButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_screen_to_game_failure_screen);
         });
+
         return rootView;
     }
 }

@@ -41,7 +41,7 @@ public class LevelsFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.levels_screen, container,
                 /* attachToRoot= */ false);
 
@@ -54,13 +54,17 @@ public class LevelsFragment extends Fragment {
         LevelsAdapter levelsAdapter = new LevelsAdapter(getContext(), levels,
                 activity.getCurrentLevel());
         gridView.setAdapter(levelsAdapter);
+
         // Adding onClick events
         gridView.setOnItemClickListener((adapterView, view, i, l) -> {
             if (activity.getCurrentLevel() >= (int) levelsAdapter.getItem(i)) {
-                Navigation.findNavController(view).navigate(
-                        R.id.action_levels_screen_to_game_screen);
+                Bundle args = new Bundle();
+                args.putInt("level", (int) levelsAdapter.getItem(i));
+                findNavController(view).navigate(
+                        R.id.action_levels_screen_to_game_screen, args);
             }
         });
+
         // Adding redirect to a start screen
         ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
         menuButton.setOnClickListener(view -> {
