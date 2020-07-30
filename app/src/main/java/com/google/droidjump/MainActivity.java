@@ -16,12 +16,14 @@
 
 package com.google.droidjump;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+
     private int levelsCount;
     private int currentLevel;
 
@@ -52,20 +54,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void decreaseCurrentLevel() {
-        if (currentLevel != 1) {
-            SharedPreferences gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = gameData.edit();
-            editor.putInt("level", --currentLevel);
-            editor.apply();
-        }
+    public void resetGameData() {
+        currentLevel = 1;
+        SharedPreferences gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = gameData.edit();
+        editor.putInt("level", 1);
+        editor.apply();
     }
 
     public int getCurrentLevel() {
         return currentLevel;
-    }
-
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
     }
 }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2020 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +30,9 @@
         <action
             android:id="@+id/action_start_screen_to_levels_screen"
             app:destination="@id/levelsFragment" />
+        <action
+            android:id="@+id/action_start_screen_to_how_to_play_screen"
+            app:destination="@id/howToPlayFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameFailureFragment"
@@ -46,6 +48,10 @@
             app:destination="@id/startFragment"
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="level"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/gameSuccessFragment"
@@ -61,6 +67,13 @@
             app:destination="@id/startFragment"
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_game_success_screen_to_how_to_play_screen"
+            app:destination="@id/howToPlayFragment" />
+        <argument
+            android:name="level"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
@@ -80,7 +93,7 @@
         <argument
             android:name="level"
             app:argType="integer"
-            app:nullable="true"/>
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/levelsFragment"
@@ -92,4 +105,9 @@
             app:destination="@id/gameFragment"
             app:popUpTo="@id/startFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/howToPlayFragment"
+        android:name="com.google.droidjump.HowToPlayFragment"
+        android:label="how_to_play_screen"
+        tools:layout="@layout/how_to_play_screen" />
 </navigation>

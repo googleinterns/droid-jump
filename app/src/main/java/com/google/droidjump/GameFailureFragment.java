@@ -30,10 +30,10 @@ public class GameFailureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_failure_screen, container, false);
+        View rootView = inflater.inflate(R.layout.game_failure_screen, container, /* attachToRoot= */false);
         FloatingActionButton retryButton = rootView.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen);
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen, getArguments());
         });
         ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
         menuButton.setOnClickListener(view -> {
