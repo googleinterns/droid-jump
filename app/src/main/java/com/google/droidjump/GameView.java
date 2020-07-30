@@ -40,11 +40,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-
-    public GameView(Context context) {
-        super(context);
-        isPlaying = false;
-    }
+    private Bundle arguments;
 
     public GameView(Context context, int screenX, int screenY, Bundle arguments, boolean isPlaying) {
         super(context);
@@ -53,6 +49,7 @@ public class GameView extends SurfaceView implements Runnable {
         timePoint = 0;
         surfaceHolder = getHolder();
         currentLevel = getCurrentLevel(arguments);
+        this.arguments = arguments;
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
@@ -165,15 +162,14 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void failGame() {
-        Bundle args = new Bundle();
-        args.putInt("level", currentLevel);
-        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen, args);
+
+        arguments.putInt("level", currentLevel);
+        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen, arguments);
     }
 
     public void winGame() {
-        Bundle args = new Bundle();
-        args.putInt("level", currentLevel);
-        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen, args);
+        arguments.putInt("level", currentLevel);
+        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen, arguments);
     }
 
     private void drawDroid(Canvas canvas) {

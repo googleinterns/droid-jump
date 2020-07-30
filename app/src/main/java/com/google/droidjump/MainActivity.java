@@ -26,10 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
     private int levelsCount;
     private int currentLevel;
+    private SharedPreferences gameData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
         levelsCount = 100;
         currentLevel = getCurrentLevelFromSharedPreferences();
         setContentView(R.layout.main_activity);
@@ -41,13 +43,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getCurrentLevelFromSharedPreferences() {
-        SharedPreferences gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        return gameData.getInt("level", 1);
+        return gameData.getInt("level", /* defValue= */1);
     }
 
     public void increaseCurrentLevel() {
         if (currentLevel < levelsCount) {
-            SharedPreferences gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = gameData.edit();
             editor.putInt("level", ++currentLevel);
             editor.apply();
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void resetGameData() {
         currentLevel = 1;
-        SharedPreferences gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = gameData.edit();
         editor.putInt("level", 1);
         editor.apply();
