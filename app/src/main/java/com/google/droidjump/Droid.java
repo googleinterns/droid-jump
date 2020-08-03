@@ -49,6 +49,7 @@ public class Droid extends DrawableElement {
         setBitmap(droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
         this.setY(y - getBitmap().getHeight());
         initialY = getY();
+        setJumpHeight(resources);
     }
 
     public boolean isJumping() {
@@ -79,11 +80,7 @@ public class Droid extends DrawableElement {
         return jumpHeight;
     }
 
-    public void setJumpHeight(int jumpHeight) {
-        this.jumpHeight = jumpHeight;
-    }
-
-    public void setDroidJumpHeight(Resources resources) {
+    private void setJumpHeight(Resources resources) {
         /* Returning the highest obstacle height + additional distance for jumping so that droid
         can easily jump through all obstacles */
         Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);

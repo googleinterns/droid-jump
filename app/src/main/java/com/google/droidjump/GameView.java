@@ -57,7 +57,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Create droid
         droid = new Droid(screenMargin, screenY - screenMargin, getResources());
-        droid.setDroidJumpHeight(getResources());
     }
 
     @Override
