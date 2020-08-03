@@ -42,7 +42,7 @@ public class GameFailureFragment extends Fragment {
         });
 
         // Adding redirecting on click to start screen
-        ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
+        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_failure_screen_to_start_screen);
         });
