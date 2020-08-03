@@ -28,7 +28,7 @@ public class Droid extends DrawableElement {
     private int initialY;
     private int jumpHeight;
 
-    public Droid(int x, int y, int speed, Resources resources) {
+    public Droid(int x, int y, Resources resources) {
         super(x, y);
         Bitmap fullDroidPicture = BitmapFactory.decodeResource(resources, R.mipmap.droid);
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
