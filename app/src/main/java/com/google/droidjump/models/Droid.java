@@ -17,4 +17,5 @@
 package com.google.droidjump.models;
 
 public class Droid extends GameItem {
+    boolean isJumping;
 }

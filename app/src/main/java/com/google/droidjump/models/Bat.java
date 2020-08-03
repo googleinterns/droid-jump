@@ -16,5 +16,11 @@
 
 package com.google.droidjump.models;
 
+import android.graphics.BitmapFactory;
+
 public class Bat extends Obstacle {
+    public Bat(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
 }

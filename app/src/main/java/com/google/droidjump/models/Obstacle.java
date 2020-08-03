@@ -17,4 +17,7 @@
 package com.google.droidjump.models;
 
 abstract class Obstacle extends GameItem{
+    public boolean isVisible(){
+        return true;
+    }
 }

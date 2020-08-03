@@ -16,5 +16,34 @@
 
 package com.google.droidjump.models;
 
+import android.graphics.Bitmap;
+
 abstract class GameItem {
+    //protected int pictureID;
+    protected float x;
+    protected float y;
+    protected float height;
+    protected float width;
+    protected Bitmap picture;
+
+    public void updateCoordinates(){
+
+    }
+
+    public float getX(){
+        return x;
+    }
+
+    public float getY(){
+        return y;
+    }
+
+    public float getHeight(){
+        return height;
+    }
+
+    public float getWidth(){
+        return width;
+    }
+
 }
