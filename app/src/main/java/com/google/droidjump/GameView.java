@@ -100,10 +100,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
             // Droid Animation
-            int droidSteps = 4;
-            int droidHalfSteps = droidSteps / 2;
-
-            if (timePoint % droidSteps < droidHalfSteps) {
+            if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
                 droid.useFirstStepBitmap();
             } else {
                 droid.useSecondStepBitmap();
