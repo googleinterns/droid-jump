@@ -16,10 +16,10 @@
 
 package com.google.droidjump;
 public interface GameConstants {
-    int DROID_COUNT_ON_FULL_DROID_PICTURE = 9;
-    int DROID_JUMPING_CHARACTER_INDEX = 4;
-    int DROID_FIRST_STEP_INDEX = 5;
-    int DROID_SECOND_STEP_INDEX = 6;
+
+    int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/mipmap/droid.png image
+    int DROID_JUMPING_CHARACTER_INDEX = 4; // Index of droid at res/mipmap/droid.png image
+    int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image
+    int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image
+    int SLEEP_TIME = 15; // Sleep time in gameView (ms)
 }
-
-
