@@ -80,13 +80,6 @@ public class Droid extends DrawableElement {
         return jumpHeight;
     }
 
-    private void setJumpHeight(Resources resources) {
-        /* Returning the highest obstacle height + additional distance for jumping so that droid
-        can easily jump through all obstacles */
-        Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
-        jumpHeight = palm.getHeight() + additionalHeight;
-    }
-
     public void useJumpingBitmap() {
         bitmap = getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
     }
@@ -97,5 +90,12 @@ public class Droid extends DrawableElement {
 
     public void useSecondStepBitmap() {
         bitmap = getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX];
+    }
+
+    private void setJumpHeight(Resources resources) {
+        /* Returning the highest obstacle height + additional distance for jumping so that droid
+        can easily jump through all obstacles */
+        Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
+        jumpHeight = palm.getHeight() + additionalHeight;
     }
 }
