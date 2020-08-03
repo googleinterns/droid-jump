@@ -89,7 +89,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void updateDroidCoordinates() {
         if (droid.isJumping()) {
-            if (droid.getY() < droid.getInitialY() - droid.getJumpHeight()) {
+            if (droid.getY() + droid.getHeight() < droid.getInitialY() - droid.getJumpHeight()) {
                 droid.setJumping(false);
             } else {
                 droid.useJumpingBitmap();
@@ -100,7 +100,10 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
             // Droid Animation
-            if (timePoint % 4 < 2) {
+            int droidSteps = 4;
+            int droidHalfSteps = droidSteps / 2;
+
+            if (timePoint % droidSteps < droidHalfSteps) {
                 droid.useFirstStepBitmap();
             } else {
                 droid.useSecondStepBitmap();

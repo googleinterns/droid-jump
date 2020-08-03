@@ -80,7 +80,8 @@ public class Droid extends DrawableElement {
         /* Returning the highest obstacle height + additional distance for jumping so that droid
         can easily jump through all obstacles */
         Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
-        jumpHeight = palm.getHeight() + this.getHeight() + (palm.getHeight() / 5);
+        int additionalDistance = 50;
+        jumpHeight = palm.getHeight() + additionalDistance;
     }
 
     public void useJumpingBitmap() {
