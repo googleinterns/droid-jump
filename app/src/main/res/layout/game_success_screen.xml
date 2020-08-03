@@ -28,82 +28,50 @@
 
         <ImageButton
             android:id="@+id/menu_button"
-            style="@style/Widget.AppCompat.ImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:background="@drawable/button_bg_round"
+            style="@style/MenuButton"
             android:contentDescription="@string/menu_button"
-            android:src="@drawable/ic_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/droid_draw_view"
-            android:layout_width="@android:dimen/notification_large_icon_width"
-            android:layout_height="@android:dimen/notification_large_icon_height"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_marginLeft="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:orientation="vertical"
+            style="@style/DroidDrawFrame"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/success_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/CenterHeader"
             android:layout_marginBottom="@dimen/header_margin"
             android:text="@string/success_text"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/header_text_size"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/next_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/how_to_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_margin"
+            style="@style/RegularText"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:text="@string/how_to_play"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/regular_text_size"
             app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/how_to_play_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@android:drawable/ic_dialog_info"
-            app:backgroundTint="@android:color/black"
+            style="@style/HowToPlayButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/next_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
+            style="@style/RoundButton"
             android:src="@drawable/ic_play"
-            app:backgroundTint="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="m" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

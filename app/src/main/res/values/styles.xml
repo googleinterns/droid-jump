@@ -44,6 +44,11 @@
         <item name="android:textSize">@dimen/header_text_size</item>
     </style>
 
+    <style name="CenterHeader" parent="ScreenHeader">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
     <style name="StartScreenButton" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textSize">@dimen/start_menu_item_text_size</item>
         <item name="android:layout_marginLeft">@dimen/double_fab_margin</item>
@@ -85,6 +90,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="color">@android:color/black</item>
+    </style>
+
+    <style name="RoundButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="backgroundTint">@android:color/darker_gray</item>
     </style>
 
 </resources>

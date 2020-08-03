@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/fail_text"
-            style="@style/ScreenHeader"
+            style="@style/CenterHeader"
             android:layout_marginBottom="@dimen/header_margin"
             android:text="@string/fail_text"
             app:layout_constraintBottom_toTopOf="@+id/retry_button"
@@ -50,14 +50,11 @@
 
         <TextView
             android:id="@+id/how_to_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/RegularText"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
             android:text="@string/how_to_play"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/regular_text_size"
             app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -69,17 +66,12 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/retry_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
+            style="@style/RoundButton"
             android:src="@drawable/ic_replay"
-            app:backgroundTint="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:rippleColor="@android:color/black" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

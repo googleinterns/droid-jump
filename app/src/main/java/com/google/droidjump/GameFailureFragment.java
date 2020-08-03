@@ -33,15 +33,15 @@ public class GameFailureFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.game_failure_screen,
-                container, /* attachToRoot= */false);
+                container, /* attachToRoot= */ false);
 
-        // Adding redirecting on click to game screen
+        // Redirecting on click to game screen
         FloatingActionButton retryButton = rootView.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen);
         });
 
-        // Adding redirecting on click to start screen
+        // Redirecting on click to start screen
         ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_failure_screen_to_start_screen);
@@ -51,7 +51,7 @@ public class GameFailureFragment extends Fragment {
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
         drawLayout.addView(new DroidStartView(getActivity()));
 
-        // Adding redirecting on click to howToPlay screen
+        // Redirecting on click to howToPlay screen
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
