@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements Runnable {
+
     private int currentLevel;
     private MainActivity activity;
     private boolean isPlaying;
@@ -41,6 +43,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int levelTimePoints;
     private int levelSpeed;
     private Bundle arguments;
+    private Paint levelPaint;
 
     public GameView(Context context, int screenX, int screenY, Bundle arguments, boolean isPlaying) {
         super(context);
@@ -53,8 +56,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-
-        // Margin in px
+        levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
 
         // Create droid
@@ -62,8 +64,15 @@ public class GameView extends SurfaceView implements Runnable {
         droid.setDroidJumpHeight(getResources());
     }
 
+    public Paint createLevelPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(getResources().getDimension(R.dimen.header_text_size));
+        return paint;
+    }
+
     public int getCurrentLevel(Bundle arguments) {
-        Log.v("MESSAGE", "LEVEL " + String.valueOf(arguments.getInt("level", activity.getCurrentLevel())));
         return arguments.getInt("level", activity.getCurrentLevel());
     }
 
@@ -136,6 +145,9 @@ public class GameView extends SurfaceView implements Runnable {
 
             // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
+
+            // Draw current level
+            canvas.drawText("Lvl. " + String.valueOf(currentLevel), screenMargin, screenMargin + levelPaint.getTextSize(), levelPaint);
 
             // Drawing droid
             drawDroid(canvas);
