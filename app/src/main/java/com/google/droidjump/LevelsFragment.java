@@ -30,7 +30,7 @@ public class LevelsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.levels_screen, container, /* attachToRoot= */false);
+        View rootView = inflater.inflate(R.layout.levels_screen, container, /* attachToRoot= */ false);
         Button levelPlayButton = rootView.findViewById(R.id.level_play);
         levelPlayButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_levels_screen_to_game_screen);
