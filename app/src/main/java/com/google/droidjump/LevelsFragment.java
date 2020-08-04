@@ -26,8 +26,6 @@ import android.widget.Button;
 
 /**
  * Displays Levels Screen.
- *
- * @author maksme@google.com
  */
 public class LevelsFragment extends Fragment {
 
