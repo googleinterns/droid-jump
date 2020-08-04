@@ -49,7 +49,7 @@ public class Droid extends GameItem {
         }
         picture = (droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
         this.y = (y - picture.getHeight());
-        initialY = (int) getY();
+        initialY = getY();
         setJumpHeight(resources);
     }
 
