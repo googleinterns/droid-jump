@@ -46,12 +46,8 @@ public class GameFragment extends Fragment {
         // Writing size to the screen variable
         defaultDisplay.getSize(screen);
 
-        // Extracting screen coordinates
-        int screenX = screen.x;
-        int screenY = screen.y;
-
         // Initializing gameView
-        gameView = new GameView(activity, screenX, screenY, /* isPlaying= */ true);
+        gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
     @Override
