@@ -16,5 +16,10 @@
 
 package com.google.droidjump.models;
 
+import android.content.res.Resources;
+
 public class Cactus extends Obstacle {
+    public Cactus(float x, float y, int pictureID, Resources resources) {
+        super(x, y, pictureID, resources);
+    }
 }

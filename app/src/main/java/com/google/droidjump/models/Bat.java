@@ -16,11 +16,12 @@
 
 package com.google.droidjump.models;
 
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 
 public class Bat extends Obstacle {
-    public Bat(float x, float y){
-        this.x = x;
-        this.y = y;
+
+    public Bat(float x, float y, int pictureID, Resources resources) {
+        super(x, y, pictureID, resources);
     }
 }

@@ -16,15 +16,22 @@
 
 package com.google.droidjump.models;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 abstract class GameItem {
-    //protected int pictureID;
     protected float x;
     protected float y;
     protected float height;
     protected float width;
     protected Bitmap picture;
+
+    public GameItem(float x, float y, int pictureID, Resources resources){
+        this.x = x;
+        this.y = y;
+        picture = BitmapFactory.decodeResource(resources, pictureID);
+    }
 
     public void updateCoordinates(){
 
@@ -46,4 +53,15 @@ abstract class GameItem {
         return width;
     }
 
+    public Bitmap getBitmap(){
+        return picture;
+    }
+
+    protected void setBitmap(Bitmap picture){
+        this.picture = picture;
+    }
+
+    public void setY(float y){
+        this.y = y;
+    }
 }
