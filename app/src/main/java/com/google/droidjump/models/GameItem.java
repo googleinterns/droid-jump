@@ -31,8 +31,12 @@ abstract class GameItem {
         picture = BitmapFactory.decodeResource(resources, pictureID);
     }
 
-    public void updateCoordinates(){
+    public void setX(int x){
+        this.x = x;
+    }
 
+    public void setY(int y){
+        this.y = y;
     }
 
     public int getX(){
@@ -53,9 +57,5 @@ abstract class GameItem {
 
     public Bitmap getBitmap(){
         return picture;
-    }
-
-    public void setY(int y){
-        this.y = y;
     }
 }
