@@ -32,6 +32,6 @@ public class HowToPlayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */false);
+        return inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */ false);
     }
 }

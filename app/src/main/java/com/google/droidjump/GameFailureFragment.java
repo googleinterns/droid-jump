@@ -36,7 +36,8 @@ public class GameFailureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_failure_screen, container, /* attachToRoot= */ false);
+        View rootView = inflater.inflate(R.layout.game_failure_screen,
+                container, /* attachToRoot= */ false);
 
         // Redirecting on click to game screen
         FloatingActionButton retryButton = rootView.findViewById(R.id.retry_button);
