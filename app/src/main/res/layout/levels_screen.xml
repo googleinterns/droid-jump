@@ -28,8 +28,7 @@
 
         <TextView
             android:id="@+id/choose_level_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ScreenHeader"
             android:text="@string/choose_level_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,6 +40,7 @@
             android:text="@string/play_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/choose_level_header" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

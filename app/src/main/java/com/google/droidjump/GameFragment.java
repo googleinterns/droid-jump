@@ -35,12 +35,12 @@ public class GameFragment extends Fragment {
         Point screen = new Point();
         Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(
                 screen);
-        gameView = new GameView(getActivity(), screen.x, screen.y, /* isPlaying= */true);
+        gameView = new GameView(getActivity(), screen.x, screen.y, /* isPlaying= */ true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return gameView;
     }
 
