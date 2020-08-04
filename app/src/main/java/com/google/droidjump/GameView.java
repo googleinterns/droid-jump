@@ -19,6 +19,8 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
@@ -39,6 +41,9 @@ public class GameView extends SurfaceView implements Runnable {
     private int levelTimePoints;
     private int levelSpeed;
 
+    private int platformX = 0;
+    Bitmap platform = BitmapFactory.decodeResource(this.getResources(), R.mipmap.platform);
+
     public GameView(Context context) {
         super(context);
         isPlaying = false;
@@ -57,7 +62,9 @@ public class GameView extends SurfaceView implements Runnable {
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
 
         // Create droid
-        droid = new Droid(screenMargin, screenY - screenMargin, this.getContext());
+        droid = new Droid(screenMargin, screenY - screenMargin, this.getResources());
+
+        platformX = levelSpeed;
     }
 
     @Override
@@ -80,11 +87,13 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         updateDroidCoordinates();
-
+        updatePlatformX();
         // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
         }
+
+
     }
 
     private void updateDroidCoordinates() {
@@ -115,6 +124,10 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    public void updatePlatformX(){
+        platformX = (platformX - levelSpeed) % platform.getWidth();
+    }
+
     public void sleep() {
         try {
             Thread.sleep(GameConstants.SLEEP_TIME);
@@ -132,6 +145,9 @@ public class GameView extends SurfaceView implements Runnable {
 
             // Drawing droid
             drawDroid(canvas);
+
+            // Drawing platform
+            drawPlatform(canvas);
 
             // Drawing canvas with all elements
             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -164,6 +180,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawDroid(Canvas canvas) {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    }
+
+    public void drawPlatform(Canvas canvas){
+        int platformY = screenY - platform.getHeight();
+        for(int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
+            canvas.drawBitmap(platform, curPlatformX, platformY, null);
     }
 
     @SuppressLint("ClickableViewAccessibility")
