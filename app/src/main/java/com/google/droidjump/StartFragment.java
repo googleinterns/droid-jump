@@ -18,24 +18,35 @@ package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class StartFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.start_screen, container, false);
+        View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
         Button levelButton = rootView.findViewById(R.id.level_button);
         Button newGameButton = rootView.findViewById(R.id.new_game_button);
+        FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         playButton.setOnClickListener(this::play);
         levelButton.setOnClickListener(this::chooseLevel);
         newGameButton.setOnClickListener(this::startNewGame);
+
+        howToPlayButton.setOnClickListener(view -> {
+            findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
+        });
+
+        // Drawing a droid
+        LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
+        drawLayout.addView(new DroidStartView(getActivity()));
         return rootView;
     }
 

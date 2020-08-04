@@ -19,6 +19,12 @@
     <string name="play_text">Play</string>
     <string name="choose_level_text">Choose level</string>
     <string name="new_game_text">New game</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="how_to_play">How to play?</string>
+
     <string name="fail_text">Game Over</string>
     <string name="success_text">You Win</string>
     <string name="menu_button">Menu button</string>

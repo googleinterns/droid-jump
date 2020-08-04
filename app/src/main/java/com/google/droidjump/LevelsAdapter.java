@@ -36,6 +36,7 @@ public class LevelsAdapter extends BaseAdapter {
         this.context = context;
         this.levels = levels;
         this.currentLevel = currentLevel;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -56,9 +57,6 @@ public class LevelsAdapter extends BaseAdapter {
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int index, View view, ViewGroup viewGroup) {
-        if (inflater == null) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
         view = inflater.inflate(R.layout.row_level_item, /* root= */ null);
         TextView textView = view.findViewById(R.id.row_level_item_text);
         textView.setText(String.valueOf(levels[index]));
