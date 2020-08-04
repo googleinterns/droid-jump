@@ -21,13 +21,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 abstract class GameItem {
-    protected float x;
-    protected float y;
-    protected float height;
-    protected float width;
+    protected int x;
+    protected int y;
     protected Bitmap picture;
 
-    public GameItem(float x, float y, int pictureID, Resources resources){
+    public GameItem(int x, int y, int pictureID, Resources resources){
         this.x = x;
         this.y = y;
         picture = BitmapFactory.decodeResource(resources, pictureID);
@@ -37,31 +35,27 @@ abstract class GameItem {
 
     }
 
-    public float getX(){
+    public int getX(){
         return x;
     }
 
-    public float getY(){
+    public int getY(){
         return y;
     }
 
     public float getHeight(){
-        return height;
+        return picture.getHeight();
     }
 
     public float getWidth(){
-        return width;
+        return picture.getWidth();
     }
 
     public Bitmap getBitmap(){
         return picture;
     }
 
-    protected void setBitmap(Bitmap picture){
-        this.picture = picture;
-    }
-
-    public void setY(float y){
+    public void setY(int y){
         this.y = y;
     }
 }

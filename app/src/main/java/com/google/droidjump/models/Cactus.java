@@ -17,9 +17,11 @@
 package com.google.droidjump.models;
 
 import android.content.res.Resources;
+import com.google.droidjump.R;
 
 public class Cactus extends Obstacle {
-    public Cactus(float x, float y, int pictureID, Resources resources) {
-        super(x, y, pictureID, resources);
+    public Cactus(int x, int y, Resources resources) {
+        super(x, y, R.mipmap.cactus, resources);
+        this.y = (y - picture.getHeight());
     }
 }

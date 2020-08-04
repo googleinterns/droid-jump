@@ -20,11 +20,7 @@ import android.content.res.Resources;
 
 abstract class Obstacle extends GameItem{
 
-    public Obstacle(float x, float y, int pictureID, Resources resources) {
+    public Obstacle(int x, int y, int pictureID, Resources resources) {
         super(x, y, pictureID, resources);
-    }
-
-    public boolean isVisible(){
-        return true;
     }
 }

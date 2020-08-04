@@ -37,21 +37,20 @@ public class Droid extends GameItem {
     // the variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly
     public final static int animationStepTicks = 2;
 
-    public Droid (float x, float y, Context context){
-        super(x, y, R.mipmap.droid, context.getResources());
-        Bitmap fullDroidPicture = picture;
+    public Droid (int x, int y, Resources resources){
+        super(x, y, R.mipmap.droid, resources);
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];
-        int droidWidth = fullDroidPicture.getWidth() / droidCount;
-        int droidHeight = fullDroidPicture.getHeight();
+        int droidWidth = picture.getWidth() / droidCount;
+        int droidHeight = picture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i,
+            droidTypes[i] = Bitmap.createBitmap(picture, /* x= */ droidWidth * i,
                     /* y= */ 0, droidWidth, droidHeight);
         }
-        setBitmap(droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
+        picture = (droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
         this.y = (y - picture.getHeight());
         initialY = (int) getY();
-        setJumpHeight(context.getResources());
+        setJumpHeight(resources);
     }
 
     public boolean isJumping() {
@@ -70,9 +69,7 @@ public class Droid extends GameItem {
         isCrouching = crouching;
     }
 
-    public Bitmap[] getDroidTypes() {
-        return droidTypes;
-    }
+    public Bitmap[] getDroidTypes() { return droidTypes; }
 
     public int getInitialY() {
         return initialY;
