@@ -25,6 +25,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+/**
+ * Shows main game process.
+ *
+ * @author maksme@google.com
+ */
 public class GameView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;

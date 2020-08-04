@@ -18,6 +18,11 @@ package com.google.droidjump;
 
 import android.graphics.Bitmap;
 
+/**
+ * Represents a parent class of all game elements.
+ *
+ * @author maksme@google.com
+ */
 public class DrawableElement {
 
     protected int x;

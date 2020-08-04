@@ -26,6 +26,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/**
+ * Displays Game Failure Screen.
+ *
+ * @author maksme@google.com
+ */
 public class GameFailureFragment extends Fragment {
 
     @Override

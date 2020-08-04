@@ -26,6 +26,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+/**
+ * Displays Start Screen.
+ *
+ * @author maksme@google.com
+ */
 public class StartFragment extends Fragment {
 
     @Override

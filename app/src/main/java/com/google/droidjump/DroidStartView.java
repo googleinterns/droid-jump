@@ -23,6 +23,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.View;
 
+/**
+ * Draws droid character on different screens.
+ *
+ * @author maksme@google.com
+ */
 public class DroidStartView extends View {
 
     public DroidStartView(Context context) {

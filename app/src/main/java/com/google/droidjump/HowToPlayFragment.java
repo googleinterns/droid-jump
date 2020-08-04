@@ -22,6 +22,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Displays How To Play Screen.
+ *
+ * @author maksme@google.com
+ */
 public class HowToPlayFragment extends Fragment {
 
     @Override

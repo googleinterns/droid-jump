@@ -25,6 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.Objects;
 
+/**
+ * Displays Game Screen.
+ *
+ * @author maksme@google.com
+ */
 public class GameFragment extends Fragment {
 
     private GameView gameView;
