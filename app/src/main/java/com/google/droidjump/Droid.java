@@ -45,14 +45,18 @@ public class Droid extends DrawableElement {
         Bitmap fullDroidPicture = BitmapFactory.decodeResource(resources, R.mipmap.droid);
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];
-        int droidWidth = fullDroidPicture.getWidth() / droidCount;
-        int droidHeight = fullDroidPicture.getHeight();
+        int fullDroidPictureWidth = fullDroidPicture.getWidth();
+        int fullDroidPictureHeight = fullDroidPicture.getHeight();
+        int droidWidth = fullDroidPictureWidth / droidCount;
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i,
-                    /* y= */ 0, droidWidth, droidHeight);
+            int droidX = droidWidth * i;
+            int droidY = 0;
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, droidX,
+                    droidY, droidWidth, fullDroidPictureHeight);
         }
         bitmap = droidTypes[GameConstants.DROID_FIRST_STEP_INDEX];
-        this.y -= bitmap.getHeight();
+        int bitmapHeight = bitmap.getHeight();
+        this.y -= bitmapHeight;
         initialY = getY();
         setJumpHeight(resources);
     }
@@ -61,16 +65,16 @@ public class Droid extends DrawableElement {
         return isJumping;
     }
 
-    public void setJumping(boolean jumping) {
-        isJumping = jumping;
+    public void setJumping(boolean isJumping) {
+        this.isJumping = isJumping;
     }
 
     public boolean isCrouching() {
         return isCrouching;
     }
 
-    public void setCrouching(boolean crouching) {
-        isCrouching = crouching;
+    public void setCrouching(boolean isCrouching) {
+        this.isCrouching = isCrouching;
     }
 
     public Bitmap[] getDroidTypes() {
