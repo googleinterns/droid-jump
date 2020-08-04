@@ -40,7 +40,6 @@
             android:id="@+id/play_button"
             style="@style/StartScreenButton"
             android:text="@string/play_text"
-            android:textSize="@dimen/start_menu_item_text_size"
             app:layout_constraintBottom_toTopOf="@+id/level_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -55,25 +54,17 @@
 
         <LinearLayout
             android:id="@+id/droid_draw_view"
-            android:layout_width="@android:dimen/notification_large_icon_width"
-            android:layout_height="@android:dimen/notification_large_icon_height"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_marginLeft="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:orientation="vertical"
+            style="@style/DroidDrawFrame"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/how_to_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_margin"
+            style="@style/RegularText"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             android:text="@string/how_to_play"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/regular_text_size"
             app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
             app:layout_constraintEnd_toEndOf="parent" />
 

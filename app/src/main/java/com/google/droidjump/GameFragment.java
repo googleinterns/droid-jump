@@ -16,29 +16,43 @@
 
 package com.google.droidjump;
 
-import static androidx.navigation.Navigation.findNavController;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
+import java.util.Objects;
 
 public class GameFragment extends Fragment {
 
+    private GameView gameView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Point screen = new Point();
+        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(
+                screen);
+        gameView = new GameView(getActivity(), screen.x, screen.y, /* isPlaying= */ true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */false);
-        Button winButton = rootView.findViewById(R.id.win_button);
-        Button loseButton = rootView.findViewById(R.id.lose_button);
-        winButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_screen_to_game_success_screen);
-        });
-        loseButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_screen_to_game_failure_screen);
-        });
-        return rootView;
+                             Bundle savedInstanceState) {
+        return gameView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        gameView.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        gameView.resume();
     }
 }
