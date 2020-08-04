@@ -27,8 +27,6 @@ import android.view.SurfaceView;
 
 /**
  * Shows main game process.
- *
- * @author maksme@google.com
  */
 public class GameView extends SurfaceView implements Runnable {
 
@@ -74,12 +72,6 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container
-        levelTimePoints = 200;
-        levelSpeed = 50;
-    }
-
     public void updateGameState() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
@@ -88,34 +80,6 @@ public class GameView extends SurfaceView implements Runnable {
         // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
-        }
-    }
-
-    private void updateDroidCoordinates() {
-        if (droid.isJumping()) {
-            if (droid.getY() + droid.getHeight() < droid.getInitialY() - droid.getJumpHeight()) {
-                droid.setJumping(false);
-            } else {
-                droid.useJumpingBitmap();
-
-                // Increasing droid Y position to make they jump smoothly
-                droid.setY(droid.getY() - levelSpeed * 2);
-            }
-        }
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Droid Animation
-            if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
-                droid.useFirstStepBitmap();
-            } else {
-                droid.useSecondStepBitmap();
-            }
-        }
-
-        // Droid Gravity
-        if (droid.getY() != droid.getInitialY()) {
-            // Decreasing droid Y position to made they jump smoothly
-            droid.setY(Math.min(droid.getY() + levelSpeed,
-                    droid.getInitialY()));
         }
     }
 
@@ -168,6 +132,40 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawDroid(Canvas canvas) {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    }
+
+    private void updateDroidCoordinates() {
+        if (droid.isJumping()) {
+            if (droid.getY() + droid.getHeight() < droid.getInitialY() - droid.getJumpHeight()) {
+                droid.setJumping(false);
+            } else {
+                droid.useJumpingBitmap();
+
+                // Increasing droid Y position to make they jump smoothly
+                droid.setY(droid.getY() - levelSpeed * 2);
+            }
+        }
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+            // Droid Animation
+            if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
+                droid.useFirstStepBitmap();
+            } else {
+                droid.useSecondStepBitmap();
+            }
+        }
+
+        // Droid Gravity
+        if (droid.getY() != droid.getInitialY()) {
+            // Decreasing droid Y position to made they jump smoothly
+            droid.setY(Math.min(droid.getY() + levelSpeed,
+                    droid.getInitialY()));
+        }
+    }
+
+    private void receiveLevelDetails() {
+        // TODO: Serialize current level data and put it in some container
+        levelTimePoints = 200;
+        levelSpeed = 50;
     }
 
     @SuppressLint("ClickableViewAccessibility")

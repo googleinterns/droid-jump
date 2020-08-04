@@ -22,23 +22,20 @@ import android.graphics.BitmapFactory;
 
 /**
  * Represents Droid character.
- *
- * @author maksme@google.com
  */
 public class Droid extends DrawableElement {
 
+    private boolean isJumping;
+    private boolean isCrouching;
+    private Bitmap[] droidTypes;
+    private int initialY;
+    private int jumpHeight;
     // the variable is responsible for how much time ticks full animation of droid goes
     public final static int fullAnimationTicks = 4;
     // the variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly
     public final static int animationStepTicks = 2;
     // so that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height
     private final static int additionalHeight = 50;
-    private boolean isJumping;
-    private boolean isCrouching;
-    private Bitmap[] droidTypes;
-    private int initialY;
-    private int jumpHeight;
-
 
     public Droid(int x, int y, Resources resources) {
         super(x, y);
@@ -89,13 +86,6 @@ public class Droid extends DrawableElement {
         return jumpHeight;
     }
 
-    private void setJumpHeight(Resources resources) {
-        /* Returning the highest obstacle height + additional distance for jumping so that droid
-        can easily jump through all obstacles */
-        Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
-        jumpHeight = palm.getHeight() + additionalHeight;
-    }
-
     public void useJumpingBitmap() {
         bitmap = getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
     }
@@ -106,5 +96,12 @@ public class Droid extends DrawableElement {
 
     public void useSecondStepBitmap() {
         bitmap = getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX];
+    }
+
+    private void setJumpHeight(Resources resources) {
+        /* Returning the highest obstacle height + additional distance for jumping so that droid
+        can easily jump through all obstacles */
+        Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
+        jumpHeight = palm.getHeight() + additionalHeight;
     }
 }

@@ -32,8 +32,7 @@ import android.widget.Button;
 public class LevelsFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.levels_screen, container, /* attachToRoot= */ false);
         Button levelPlayButton = rootView.findViewById(R.id.level_play);
         levelPlayButton.setOnClickListener(view -> {

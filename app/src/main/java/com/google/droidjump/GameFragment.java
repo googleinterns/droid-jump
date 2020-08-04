@@ -30,8 +30,6 @@ import java.util.Objects;
 
 /**
  * Displays Game Screen.
- *
- * @author maksme@google.com
  */
 public class GameFragment extends Fragment {
 

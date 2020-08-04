@@ -25,8 +25,6 @@ import android.view.View;
 
 /**
  * Draws droid character on different screens.
- *
- * @author maksme@google.com
  */
 public class DroidStartView extends View {
 
