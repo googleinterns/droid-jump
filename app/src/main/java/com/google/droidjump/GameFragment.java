@@ -51,7 +51,7 @@ public class GameFragment extends Fragment {
         int screenY = screen.y;
 
         // Initializing gameView
-        gameView = new GameView(getActivity(), screenX, screenY, /* isPlaying= */ true);
+        gameView = new GameView(activity, screenX, screenY, /* isPlaying= */ true);
     }
 
     @Override
