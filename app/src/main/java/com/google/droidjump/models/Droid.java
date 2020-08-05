@@ -39,16 +39,17 @@ public class Droid extends GameItem {
 
     public Droid (int x, int y, Resources resources){
         super(x, y, R.mipmap.droid, resources);
-        this.y = (y - picture.getHeight());
+        Bitmap fullDroidPicture = picture;
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];
-        int droidWidth = picture.getWidth() / droidCount;
-        int droidHeight = picture.getHeight();
+        int droidWidth = fullDroidPicture.getWidth() / droidCount;
+        int droidHeight = fullDroidPicture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(picture, /* x= */ droidWidth * i,
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i,
                     /* y= */ 0, droidWidth, droidHeight);
         }
         picture = (droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
+        this.y = (y - picture.getHeight());
         initialY = getY();
         setJumpHeight(resources);
     }
