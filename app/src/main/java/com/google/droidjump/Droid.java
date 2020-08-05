@@ -30,11 +30,11 @@ public class Droid extends DrawableElement {
     private Bitmap[] droidTypes;
     private int initialY;
     private int jumpHeight;
-    // The variable is responsible for how much time ticks full animation of droid goes
+    // The variable is responsible for how much time ticks full animation of droid goes.
     public final static int fullAnimationTicks = 4;
-    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly
+    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly.
     public final static int animationStepTicks = 2;
-    // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height
+    // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
     private final static int additionalHeight = 50;
 
     public Droid(int x, int y, Resources resources) {
@@ -99,8 +99,8 @@ public class Droid extends DrawableElement {
     }
 
     private void setJumpHeight(Resources resources) {
-        /* Returning the highest obstacle height + additional distance for jumping so that droid
-        can easily jump through all obstacles */
+        /* Returning the sum of highest obstacle height and additional distance for jumping so that droid
+        can easily jump through all obstacles. */
         Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
         jumpHeight = palm.getHeight() + additionalHeight;
     }

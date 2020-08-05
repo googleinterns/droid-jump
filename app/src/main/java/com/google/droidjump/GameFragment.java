@@ -43,10 +43,10 @@ public class GameFragment extends Fragment {
         WindowManager windowManager = Objects.requireNonNull(activity).getWindowManager();
         Display defaultDisplay = windowManager.getDefaultDisplay();
 
-        // Writing size to the screen variable
+        // Writing size to the screen variable.
         defaultDisplay.getSize(screen);
 
-        // Initializing gameView
+        // Initializing gameView.
         gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
