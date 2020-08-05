@@ -24,6 +24,10 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.leveldata.Level;
+import com.google.droidjump.leveldata.LevelData;
+import org.json.JSONException;
+import java.io.IOException;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -37,6 +41,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
+    private LevelData levelData;
 
     public GameView(Context context) {
         super(context);
@@ -45,6 +50,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
+        levelData = new LevelData(Level.LEVEL1, getResources());
         receiveLevelDetails();
         timePoint = 0;
         surfaceHolder = getHolder();
@@ -71,18 +77,27 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
+
         levelTimePoints = 200;
-        levelSpeed = 50;
+        levelSpeed = levelData.getBaseSpeed();
     }
 
     public void updateGameState() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
+        checkTimePoint();
         updateDroidCoordinates();
+    }
 
-        // Level Finishing
-        if (timePoint == levelTimePoints) {
+    private void checkTimePoint(){
+        if (levelData.isEmpty()){
             winGame();
+        }
+        else if (timePoint == levelData.getCurTimeInterval()){
+            System.out.println(timePoint + " time to add new obstacle:");
+            String newObstacleType = levelData.getNewObstacleType();
+            System.out.println(newObstacleType + "\n");
+            timePoint = 0;
         }
     }
 

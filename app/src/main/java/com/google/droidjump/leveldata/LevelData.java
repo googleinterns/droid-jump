@@ -17,24 +17,66 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class LevelData {
+    private int baseSpeed;
+    private LinkedList<Integer> intervals;
+    private LinkedList<String> obstacleTypes;
 
-    public LevelData(Level level, Resources resources) throws IOException, JSONException {
-        JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileID, resources));
+    public LevelData(Level level, Resources resources){
+        intervals = new LinkedList<>();
+        obstacleTypes = new LinkedList<>();
+        try {
+            JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileID, resources));
+            baseSpeed = leveldata.getInt("baseSpeed");
+            JSONArray timeline = leveldata.getJSONArray("timeline");
+            for(int i = 0; i < timeline.length(); i++){
+                JSONObject curObject = timeline.getJSONObject(i);
+                intervals.add(curObject.getInt("interval"));
+                obstacleTypes.add(curObject.getString("type"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private String getJSONStringFromResource(int fileID, Resources resources) throws IOException {
-        InputStream is = resources.openRawResource(fileID);
-        Scanner scanner = new Scanner(is);
-        String JSONString = scanner.useDelimiter("\\A").next();
-        is.close();
+    private String getJSONStringFromResource(int fileID, Resources resources){
+        String JSONString = "";
+        try{
+            InputStream is = resources.openRawResource(fileID);
+            Scanner scanner = new Scanner(is);
+            JSONString = scanner.useDelimiter("\\A").next();
+            is.close();
+        } catch (Resources.NotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
         return JSONString;
+    }
+
+    public int getCurTimeInterval(){
+            return intervals.getFirst();
+    }
+
+    public String getNewObstacleType(){
+        String newObstacleType = obstacleTypes.removeFirst();
+        intervals.removeFirst();
+        return newObstacleType;
+    }
+
+    public int getBaseSpeed(){
+        return baseSpeed;
+    }
+
+    public boolean isEmpty(){
+        return intervals.isEmpty();
     }
 
 }

@@ -20,6 +20,7 @@ import com.google.droidjump.R;
 
 public enum Level {
     LEVEL1 (R.raw.level1);
+
     public final int fileID;
 
     Level(int fileID) {

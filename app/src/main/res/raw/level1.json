@@ -1,5 +1,5 @@
 {
-  "baseSpeed": 3,
+  "baseSpeed": 50,
   "timeline": [
     {
       "interval": 50,
