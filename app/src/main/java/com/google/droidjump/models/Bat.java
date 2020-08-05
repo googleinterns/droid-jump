@@ -24,6 +24,5 @@ public class Bat extends Obstacle {
 
     public Bat(int x, int y, Resources resources) {
         super(x, y, R.mipmap.bat, resources);
-        this.y = (y - picture.getHeight());
     }
 }

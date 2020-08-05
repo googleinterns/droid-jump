@@ -22,6 +22,5 @@ import com.google.droidjump.R;
 public class Palm extends Obstacle {
     public Palm(int x, int y, int pictureID, Resources resources) {
         super(x, y, R.mipmap.palm, resources);
-        this.y = (y - picture.getHeight());
     }
 }

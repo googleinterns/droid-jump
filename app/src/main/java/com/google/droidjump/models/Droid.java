@@ -16,7 +16,6 @@
 
 package com.google.droidjump.models;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,8 +47,7 @@ public class Droid extends GameItem {
             droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i,
                     /* y= */ 0, droidWidth, droidHeight);
         }
-        picture = (droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
-        this.y = (y - picture.getHeight());
+        picture = droidTypes[GameConstants.DROID_FIRST_STEP_INDEX];
         initialY = getY();
         setJumpHeight(resources);
     }
@@ -70,8 +68,6 @@ public class Droid extends GameItem {
         isCrouching = crouching;
     }
 
-    public Bitmap[] getDroidTypes() { return droidTypes; }
-
     public int getInitialY() {
         return initialY;
     }
@@ -81,15 +77,15 @@ public class Droid extends GameItem {
     }
 
     public void useJumpingBitmap() {
-        picture = getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
+        picture = droidTypes[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
     }
 
     public void useFirstStepBitmap() {
-        picture = getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX];
+        picture = droidTypes[GameConstants.DROID_FIRST_STEP_INDEX];
     }
 
     public void useSecondStepBitmap() {
-        picture = getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX];
+        picture = droidTypes[GameConstants.DROID_SECOND_STEP_INDEX];
     }
 
     private void setJumpHeight(Resources resources) {
