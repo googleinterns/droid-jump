@@ -25,37 +25,42 @@ abstract class GameItem {
     protected int y;
     protected Bitmap picture;
 
-    public GameItem(int x, int y, int pictureID, Resources resources){
+    public GameItem(int x, int y, int pictureID, Resources resources) {
         this.x = x;
         this.y = y;
         picture = BitmapFactory.decodeResource(resources, pictureID);
+        correctYCoordinate();
     }
 
-    public void updateCoordinates(){
-
+    protected void correctYCoordinate() {
+        y -= picture.getHeight();
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
 
-    public int getY(){
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
         return y;
     }
 
-    public float getHeight(){
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public float getHeight() {
         return picture.getHeight();
     }
 
-    public float getWidth(){
+    public float getWidth() {
         return picture.getWidth();
     }
 
-    public Bitmap getBitmap(){
+    public Bitmap getBitmap() {
         return picture;
-    }
-
-    public void setY(int y){
-        this.y = y;
     }
 }

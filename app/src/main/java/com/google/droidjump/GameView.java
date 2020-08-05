@@ -26,7 +26,7 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.droidjump.models.*;
+import com.google.droidjump.models.Droid;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -61,7 +61,7 @@ public class GameView extends SurfaceView implements Runnable {
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
 
         // Create droid
-        droid = new Droid(screenMargin, screenY - screenMargin, this.getResources());
+        droid = new Droid(screenMargin, screenY - screenMargin, getResources());
 
         platformX = levelSpeed;
     }
@@ -91,8 +91,6 @@ public class GameView extends SurfaceView implements Runnable {
         if (timePoint == levelTimePoints) {
             winGame();
         }
-
-
     }
 
     private void updateDroidCoordinates() {
