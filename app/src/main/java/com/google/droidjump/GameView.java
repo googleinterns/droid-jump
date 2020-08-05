@@ -69,13 +69,31 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container
-        levelTimePoints = 200;
-        levelSpeed = 50;
+    public void resume() {
+        isPlaying = true;
+        thread = new Thread(this);
+        thread.start();
     }
 
-    public void updateGameState() {
+    public void pause() {
+        isPlaying = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+            droid.setJumping(true);
+        }
+        return super.onTouchEvent(event);
+    }
+
+    private void updateGameState() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         updateDroidCoordinates();
@@ -114,7 +132,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void sleep() {
+    private void sleep() {
         try {
             Thread.sleep(GameConstants.SLEEP_TIME);
         } catch (InterruptedException e) {
@@ -122,7 +140,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void drawScene() {
+    private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
 
@@ -138,26 +156,11 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
-    public void resume() {
-        isPlaying = true;
-        thread = new Thread(this);
-        thread.start();
-    }
-
-    public void pause() {
-        isPlaying = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void failGame() {
+    private void failGame() {
         findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
     }
 
-    public void winGame() {
+    private void winGame() {
         findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
     }
 
@@ -165,12 +168,9 @@ public class GameView extends SurfaceView implements Runnable {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            droid.setJumping(true);
-        }
-        return super.onTouchEvent(event);
+    private void receiveLevelDetails() {
+        // TODO: Serialize current level data and put it in some container
+        levelTimePoints = 200;
+        levelSpeed = 50;
     }
 }

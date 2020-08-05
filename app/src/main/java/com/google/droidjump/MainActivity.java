@@ -20,12 +20,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+
     private int levelsCount;
     private int currentLevel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        levelsCount = 100;
+        levelsCount = GameConstants.GAME_LEVELS_COUNT;
         currentLevel = 5;
         setContentView(R.layout.main_activity);
 

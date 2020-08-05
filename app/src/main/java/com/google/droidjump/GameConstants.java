@@ -22,4 +22,5 @@ public interface GameConstants {
     int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image
     int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image
     int SLEEP_TIME = 15; // Sleep time in gameView (ms)
+    int GAME_LEVELS_COUNT = 100; // Count of game levels
 }
