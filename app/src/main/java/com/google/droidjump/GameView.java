@@ -40,9 +40,8 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-
     private int platformX = 0;
-    Bitmap platform = BitmapFactory.decodeResource(this.getResources(), R.mipmap.platform);
+    private Bitmap platform = BitmapFactory.decodeResource(this.getResources(), R.mipmap.platform);
 
     public GameView(Context context) {
         super(context);
@@ -124,7 +123,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void updatePlatformX(){
+    public void updatePlatformX() {
         platformX = (platformX - levelSpeed) % platform.getWidth();
     }
 
@@ -182,9 +181,9 @@ public class GameView extends SurfaceView implements Runnable {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
     }
 
-    public void drawPlatform(Canvas canvas){
+    public void drawPlatform(Canvas canvas) {
         int platformY = screenY - platform.getHeight();
-        for(int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
+        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
             canvas.drawBitmap(platform, curPlatformX, platformY, null);
     }
 
