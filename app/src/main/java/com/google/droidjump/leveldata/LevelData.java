@@ -30,14 +30,23 @@ public class LevelData {
     private LinkedList<Integer> intervals;
     private LinkedList<String> obstacleTypes;
 
-    public LevelData(Level level, Resources resources){
+    public LevelData(Level level, Resources resources) {
         intervals = new LinkedList<>();
         obstacleTypes = new LinkedList<>();
+        if (level != Level.INFINITE)
+            getDataFromFile(level, resources);
+        else {
+            // For an infinite level, generation will be implemented
+        }
+
+    }
+
+    private void getDataFromFile(Level level, Resources resources) {
         try {
             JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileID, resources));
             baseSpeed = leveldata.getInt("baseSpeed");
             JSONArray timeline = leveldata.getJSONArray("timeline");
-            for(int i = 0; i < timeline.length(); i++){
+            for (int i = 0; i < timeline.length(); i++) {
                 JSONObject curObject = timeline.getJSONObject(i);
                 intervals.add(curObject.getInt("interval"));
                 obstacleTypes.add(curObject.getString("type"));
@@ -47,9 +56,9 @@ public class LevelData {
         }
     }
 
-    private String getJSONStringFromResource(int fileID, Resources resources){
+    private String getJSONStringFromResource(int fileID, Resources resources) {
         String JSONString = "";
-        try{
+        try {
             InputStream is = resources.openRawResource(fileID);
             Scanner scanner = new Scanner(is);
             JSONString = scanner.useDelimiter("\\A").next();
@@ -61,21 +70,21 @@ public class LevelData {
         return JSONString;
     }
 
-    public int getCurTimeInterval(){
-            return intervals.getFirst();
+    public int getCurTimeInterval() {
+        return intervals.getFirst();
     }
 
-    public String getNewObstacleType(){
+    public String getNewObstacleType() {
         String newObstacleType = obstacleTypes.removeFirst();
         intervals.removeFirst();
         return newObstacleType;
     }
 
-    public int getBaseSpeed(){
+    public int getBaseSpeed() {
         return baseSpeed;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return intervals.isEmpty();
     }
 

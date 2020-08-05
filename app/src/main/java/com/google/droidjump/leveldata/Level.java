@@ -19,11 +19,12 @@ package com.google.droidjump.leveldata;
 import com.google.droidjump.R;
 
 public enum Level {
-    LEVEL1 (R.raw.level1);
+    INFINITE(null),
+    LEVEL1(R.raw.level1);
 
-    public final int fileID;
+    public final Integer fileID;
 
-    Level(int fileID) {
+    Level(Integer fileID) {
         this.fileID = fileID;
     }
 }

@@ -26,8 +26,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelData;
-import org.json.JSONException;
-import java.io.IOException;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -89,12 +87,17 @@ public class GameView extends SurfaceView implements Runnable {
         updateDroidCoordinates();
     }
 
-    private void checkTimePoint(){
-        if (levelData.isEmpty()){
+    private void checkTimePoint() {
+        if (levelData.isEmpty()) {
+
+            // When the obstacles end - the level is considered passed
             winGame();
-        }
-        else if (timePoint == levelData.getCurTimeInterval()){
-            System.out.println(timePoint + " time to add new obstacle:");
+        } else if (timePoint == levelData.getCurTimeInterval()) {
+
+            //  This is just an example of how we can get
+            //  info about an obstacle that should appear at the moment
+
+            System.out.println("\n" + timePoint + " time to add new obstacle:");
             String newObstacleType = levelData.getNewObstacleType();
             System.out.println(newObstacleType + "\n");
             timePoint = 0;
