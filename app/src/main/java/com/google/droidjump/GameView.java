@@ -62,9 +62,10 @@ public class GameView extends SurfaceView implements Runnable {
         this.isPlaying = isPlaying;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
+        int droidY = screenY - screenMargin;
 
         // Create droid
-        droid = new Droid(screenMargin, screenY - screenMargin, getResources());
+        droid = new Droid(/* x= */ screenMargin, droidY, getResources());
     }
 
     public int getCurrentLevel(Bundle arguments) {
@@ -144,8 +145,8 @@ public class GameView extends SurfaceView implements Runnable {
         // Droid Gravity
         if (droid.getY() != droid.getInitialY()) {
             // Decreasing droid Y position to made they jump smoothly
-            droid.setY(Math.min(droid.getY() + levelSpeed,
-                    droid.getInitialY()));
+            int newDroidY = droid.getY() + levelSpeed;
+            droid.setY(Math.min(newDroidY, droid.getInitialY()));
         }
     }
 
@@ -165,9 +166,9 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.WHITE);
 
             String levelHeader = GAME_LEVEL_HEADER + " " + currentLevel;
-
+            float levelPaintY = screenMargin + levelPaint.getTextSize();
             // Draw current level
-            canvas.drawText(levelHeader, screenMargin, screenMargin + levelPaint.getTextSize(), levelPaint);
+            canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
 
             // Drawing droid
             drawDroid(canvas);
@@ -201,7 +202,8 @@ public class GameView extends SurfaceView implements Runnable {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
-        paint.setTextSize(getResources().getDimension(R.dimen.header_text_size));
+        float headerTextSize = getResources().getDimension(R.dimen.header_text_size);
+        paint.setTextSize(headerTextSize);
         return paint;
     }
 }

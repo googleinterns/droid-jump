@@ -70,7 +70,7 @@ public class LevelsFragment extends Fragment {
             }
         });
 
-        // Adding redirect to a start screen
+        // Redirecting on click to start screen
         ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             activity.onBackPressed();

@@ -51,7 +51,7 @@ public class StartFragment extends Fragment {
             findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
         });
 
-        // Drawing a droid
+        // Drawing droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
         drawLayout.addView(new DroidStartView(getActivity()));
         return rootView;
