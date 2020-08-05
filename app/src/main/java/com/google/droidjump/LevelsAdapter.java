@@ -25,6 +25,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * Represents LevelsAdapter.
+ */
 public class LevelsAdapter extends BaseAdapter {
 
     private Context context;
@@ -36,6 +39,7 @@ public class LevelsAdapter extends BaseAdapter {
         this.context = context;
         this.levels = levels;
         this.currentLevel = currentLevel;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -44,27 +48,25 @@ public class LevelsAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return levels[i];
+    public Object getItem(int index) {
+        // Receives index, returns level
+        return levels[index];
     }
 
-    @Override
-    public long getItemId(int i) {
-        return i-1;
+    public long getItemId(int level) {
+        // Receives level, returns index
+        return level - 1;
     }
 
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if (inflater == null) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
+    public View getView(int index, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.row_level_item, /* root= */ null);
         TextView textView = view.findViewById(R.id.row_level_item_text);
-        textView.setText(String.valueOf(levels[i]));
-        if (currentLevel > levels[i]) {
+        textView.setText(String.valueOf(levels[index]));
+        if (currentLevel > levels[index]) {
             textView.setTextColor(Color.BLACK);
-        } else if (currentLevel == levels[i]) {
+        } else if (currentLevel == levels[index]) {
             textView.setTextColor(Color.WHITE);
             textView.setBackgroundColor(Color.BLACK);
         }

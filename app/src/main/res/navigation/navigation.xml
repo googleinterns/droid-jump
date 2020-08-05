@@ -49,9 +49,12 @@
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="true" />
         <argument
-            android:name="level"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="java.com.google.droidjump.GameView.Level"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_game_failure_screen_to_how_to_play_screen"
+            app:destination="@id/howToPlayFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameSuccessFragment"
@@ -71,9 +74,9 @@
             android:id="@+id/action_game_success_screen_to_how_to_play_screen"
             app:destination="@id/howToPlayFragment" />
         <argument
-            android:name="level"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="java.com.google.droidjump.GameView.Level"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
@@ -91,9 +94,9 @@
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="false" />
         <argument
-            android:name="level"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="java.com.google.droidjump.GameView.Level"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/levelsFragment"

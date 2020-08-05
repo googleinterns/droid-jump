@@ -17,6 +17,7 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+import static com.google.droidjump.GameConstants.GAME_VIEW_LEVEL_STRING;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +30,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import java.util.Objects;
 
+/**
+ * Displays Game Success Screen.
+ */
 public class GameSuccessFragment extends Fragment {
 
     private MainActivity activity;
@@ -44,12 +48,12 @@ public class GameSuccessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int level = Objects.requireNonNull(args).getInt("level");
+        int level = Objects.requireNonNull(args).getInt(GAME_VIEW_LEVEL_STRING);
         if (level == activity.getCurrentLevel()) {
             activity.increaseCurrentLevel();
         }
-        View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */false);
-        args.putInt("level", level + 1);
+        View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
+        args.putInt(GAME_VIEW_LEVEL_STRING, level + 1);
 
         // Adding redirect to game screen
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
@@ -62,16 +66,16 @@ public class GameSuccessFragment extends Fragment {
         }
 
         // Adding redirect to start screen
-        ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
+        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
 
-        // Drawing a a droid
+        // Drawing droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
+        drawLayout.addView(new DroidStartView(getActivity()));
 
-        // Adding redirect to howToPlay screen
+        // Redirecting on click to How To Play screen
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_how_to_play_screen);

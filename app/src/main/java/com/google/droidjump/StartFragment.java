@@ -17,6 +17,7 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+import static com.google.droidjump.GameConstants.GAME_VIEW_LEVEL_STRING;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+/**
+ * Displays Start Screen.
+ */
 public class StartFragment extends Fragment {
 
     private MainActivity activity;
@@ -34,7 +38,7 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */false);
+        View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
         Button levelButton = rootView.findViewById(R.id.level_button);
         Button newGameButton = rootView.findViewById(R.id.new_game_button);
@@ -49,13 +53,13 @@ public class StartFragment extends Fragment {
 
         // Drawing a droid
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
+        drawLayout.addView(new DroidStartView(getActivity()));
         return rootView;
     }
 
     private void play(View view) {
         Bundle args = new Bundle();
-        args.putInt("level", activity.getCurrentLevel());
+        args.putInt(GAME_VIEW_LEVEL_STRING, activity.getCurrentLevel());
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen, args);
     }
 
@@ -65,7 +69,7 @@ public class StartFragment extends Fragment {
 
     private void startNewGame(View view) {
         Bundle args = new Bundle();
-        args.putInt("level", 1);
+        args.putInt(GAME_VIEW_LEVEL_STRING, 1);
         activity.resetGameData();
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen, args);
     }

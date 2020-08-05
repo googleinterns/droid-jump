@@ -16,12 +16,16 @@
 
 package com.google.droidjump;
 
-
+import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
+import static com.google.droidjump.GameConstants.GAME_VIEW_LEVEL_STRING;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Represents main activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private int levelsCount;
@@ -31,11 +35,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameData = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        levelsCount = 100;
+        gameData = getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
+        levelsCount = GameConstants.GAME_LEVELS_COUNT;
         currentLevel = getCurrentLevelFromSharedPreferences();
         setContentView(R.layout.main_activity);
-
     }
 
     public int getLevelsCount() {
@@ -43,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getCurrentLevelFromSharedPreferences() {
-        return gameData.getInt("level", /* defValue= */1);
+        return gameData.getInt(GAME_VIEW_LEVEL_STRING, /* defValue= */ 1);
     }
 
     public void increaseCurrentLevel() {
         if (currentLevel < levelsCount) {
             SharedPreferences.Editor editor = gameData.edit();
-            editor.putInt("level", ++currentLevel);
+            editor.putInt(GAME_VIEW_LEVEL_STRING, ++currentLevel);
             editor.apply();
         }
     }
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void resetGameData() {
         currentLevel = 1;
         SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt("level", 1);
+        editor.putInt(GAME_VIEW_LEVEL_STRING, 1);
         editor.apply();
     }
 
