@@ -56,7 +56,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.isPlaying = isPlaying;
         // Margin in px.
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        // Create droid.
+        // Droid Creating.
         droid = new Droid(screenMargin, screenY - screenMargin, getResources());
     }
 
@@ -142,14 +142,13 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-            // Cleaning previous canvas
+            // Cleaning previous canvas.
             canvas.drawColor(Color.WHITE);
-            // Drawing droid
+            // Drawing droid.
             drawDroid(canvas);
-            // Drawing canvas with all elements
+            // Drawing a canvas with all elements.
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
-
     }
 
     private void failGame() {
@@ -168,6 +167,5 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
         levelSpeed = 50;
-
     }
 }
