@@ -29,6 +29,9 @@ import android.widget.ImageButton;
 import androidx.navigation.Navigation;
 import java.util.Objects;
 
+/**
+ * Displays Levels Screen.
+ */
 public class LevelsFragment extends Fragment {
 
     private MainActivity activity;

@@ -25,6 +25,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+/**
+ * Shows main game process.
+ */
 public class GameView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;
@@ -172,5 +175,6 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
         levelSpeed = 50;
+
     }
 }
