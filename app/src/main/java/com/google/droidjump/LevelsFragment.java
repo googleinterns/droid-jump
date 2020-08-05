@@ -55,11 +55,11 @@ public class LevelsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.levels_screen, container,
                 /* attachToRoot= */ false);
 
-        // Finding gridView and putting levels to it
+        // Finding gridView and putting levels to it.
         GridView gridView = rootView.findViewById(R.id.levels_grid_view);
         gridView.setAdapter(Objects.requireNonNull(adapter));
 
-        // Adding onClick events
+        // Adding onClick events.
         gridView.setOnItemClickListener((adapterView, view, i, l) -> {
             if (activity.getCurrentLevel() >= (int) adapter.getItem(i)) {
                 Navigation.findNavController(view).navigate(
@@ -67,7 +67,7 @@ public class LevelsFragment extends Fragment {
             }
         });
 
-        // Redirecting on click to a start screen
+        // Redirecting on click to a start screen.
         ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             activity.onBackPressed();
