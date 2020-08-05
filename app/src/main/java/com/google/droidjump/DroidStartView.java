@@ -23,6 +23,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.View;
 
+/**
+ * Draws droid character on different screens.
+ */
 public class DroidStartView extends View {
 
     public DroidStartView(Context context) {
@@ -32,16 +35,16 @@ public class DroidStartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Bitmap fullDroidPic = decodeResource(getResources(), R.mipmap.droid);
-        int droidWidth =
-                fullDroidPic.getWidth() / GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
+        Bitmap fullDroidPicture = decodeResource(getResources(), R.mipmap.droid);
+        int droidWidth = fullDroidPicture.getWidth() / GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         int jumpingDroidPosition = droidWidth * GameConstants.DROID_JUMPING_CHARACTER_INDEX;
-        Bitmap droid = createBitmap(fullDroidPic, jumpingDroidPosition, /* y= */ 0,
+        Bitmap droid = createBitmap(fullDroidPicture, jumpingDroidPosition, /* y= */ 0,
                 /* width= */ droidWidth,
-                /* height= */ fullDroidPic.getHeight());
+                /* height= */ fullDroidPicture.getHeight());
 
+        // To draw droid at the bottom of the frame we need to subtract the last frame point from droid's height.
+        int topMargin = getHeight() - droid.getHeight();
         canvas.drawBitmap(droid, /* left= */ 0,
-                /* top= */ getHeight() - droid.getHeight(),
-                /* paint= */ null);
+                /* top= */ topMargin, /* paint= */ null);
     }
 }
