@@ -42,7 +42,7 @@ public class LevelsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = Objects.requireNonNull((MainActivity) getActivity());
-        levels = createLevels(activity.getLevelsCount());
+        levels = loadLevels();
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), levels,
                 activity.getCurrentLevel());
@@ -75,7 +75,8 @@ public class LevelsFragment extends Fragment {
         return rootView;
     }
 
-    private int[] createLevels(int levelsCount) {
+    private int[] loadLevels() {
+        int levelsCount = activity.getLevelsCount();
         int[] levels = new int[levelsCount];
         for (int i = 0; i < levelsCount; i++) {
             levels[i] = i + 1;

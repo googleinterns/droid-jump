@@ -25,6 +25,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * Represents LevelsAdapter.
+ */
 public class LevelsAdapter extends BaseAdapter {
 
     private Context context;
