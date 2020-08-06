@@ -46,7 +46,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int levelTimePoints;
     private int levelSpeed;
     private int platformX = 0;
-    private Bitmap platform = BitmapFactory.decodeResource(this.getResources(), R.mipmap.platform);
+    private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private List<Obstacle> obstacleList;
 
     public GameView(Context context) {
@@ -66,12 +66,15 @@ public class GameView extends SurfaceView implements Runnable {
         // Margin in px
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
 
+        // Just handpicked value
+        int yMargin = platform.getHeight() / 5 * 3;
+
         // Create droid
-        droid = new Droid(screenMargin, screenY - screenMargin, getResources());
+        droid = new Droid(screenMargin, screenY - yMargin, getResources());
 
         // Create obstacle list (just for animation example)
-        Cactus cactus = new Cactus(screenX, screenY - screenMargin, getResources());
-        Palm palm = new Palm(screenX + 2000, screenY - screenMargin, getResources());
+        Cactus cactus = new Cactus(screenX, screenY - yMargin, getResources());
+        Palm palm = new Palm(screenX + 2000, screenY - yMargin, getResources());
         obstacleList = new LinkedList<>();
         obstacleList.add(palm);
         obstacleList.add(cactus);
