@@ -26,10 +26,8 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.Obstacle;
-import com.google.droidjump.models.Palm;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,7 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
         //  it to left
         updateDroidCoordinates();
         updateObstaclesCoordinates();
-        updatePlatformX();
+        updatePlatformCoordinates();
         // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
@@ -139,7 +137,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void updatePlatformX() {
+    public void updatePlatformCoordinates() {
         // The leftmost coordinate where the new platform starts
         platformX = (platformX - levelSpeed) % platform.getWidth();
     }
