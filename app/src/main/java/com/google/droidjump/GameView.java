@@ -73,7 +73,7 @@ public class GameView extends SurfaceView implements Runnable {
         // Create droid
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
 
-        // Create obstacle list (just for animation example)
+        // Create obstacle list
         obstacleList = new LinkedList<>();
     }
 
