@@ -26,13 +26,16 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class LevelData {
+    final static String baseSpeedKey = "baseSpeed";
+    final static String timelineKey = "timeline";
+    final static String intervalKey = "interval";
+    final static String typeKey = "type";
+
     private int baseSpeed;
-    private LinkedList<Integer> intervals;
-    private LinkedList<String> obstacleTypes;
+    private LinkedList<ObstacleData> obstaclesData;
 
     public LevelData(Level level, Resources resources) {
-        intervals = new LinkedList<>();
-        obstacleTypes = new LinkedList<>();
+        obstaclesData = new LinkedList<>();
         if (level != Level.INFINITE)
             getDataFromFile(level, resources);
         else {
@@ -43,13 +46,14 @@ public class LevelData {
 
     private void getDataFromFile(Level level, Resources resources) {
         try {
-            JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileID, resources));
-            baseSpeed = leveldata.getInt("baseSpeed");
-            JSONArray timeline = leveldata.getJSONArray("timeline");
+            JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileId, resources));
+            baseSpeed = leveldata.getInt(baseSpeedKey);
+            JSONArray timeline = leveldata.getJSONArray(timelineKey);
             for (int i = 0; i < timeline.length(); i++) {
-                JSONObject curObject = timeline.getJSONObject(i);
-                intervals.add(curObject.getInt("interval"));
-                obstacleTypes.add(curObject.getString("type"));
+                JSONObject currentObject = timeline.getJSONObject(i);
+                int interval = currentObject.getInt(intervalKey);
+                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(typeKey));
+                obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -57,27 +61,24 @@ public class LevelData {
     }
 
     private String getJSONStringFromResource(int fileID, Resources resources) {
-        String JSONString = "";
+        String jsonString = "";
         try {
             InputStream is = resources.openRawResource(fileID);
             Scanner scanner = new Scanner(is);
-            JSONString = scanner.useDelimiter("\\A").next();
+            jsonString = scanner.useDelimiter("\\A").next();
             is.close();
         } catch (Resources.NotFoundException | IOException e) {
             e.printStackTrace();
         }
-
-        return JSONString;
+        return jsonString;
     }
 
     public int getCurTimeInterval() {
-        return intervals.getFirst();
+        return obstaclesData.getFirst().getInterval();
     }
 
-    public String getNewObstacleType() {
-        String newObstacleType = obstacleTypes.removeFirst();
-        intervals.removeFirst();
-        return newObstacleType;
+    public ObstacleType getNewObstacleType() {
+        return obstaclesData.removeFirst().getType();
     }
 
     public int getBaseSpeed() {
@@ -85,7 +86,6 @@ public class LevelData {
     }
 
     public boolean isEmpty() {
-        return intervals.isEmpty();
+        return obstaclesData.isEmpty();
     }
-
 }

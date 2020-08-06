@@ -16,15 +16,8 @@
 
 package com.google.droidjump.leveldata;
 
-import com.google.droidjump.R;
-
-public enum Level {
-    INFINITE(null),
-    LEVEL1(R.raw.level1);
-
-    public final Integer fileId;
-
-    Level(Integer fileId) {
-        this.fileId = fileId;
-    }
+public enum ObstacleType {
+    cactus,
+    palm,
+    bat
 }
