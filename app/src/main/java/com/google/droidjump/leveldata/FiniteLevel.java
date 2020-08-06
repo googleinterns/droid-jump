@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class LevelData {
+public class FiniteLevel implements LevelStrategy{
     final static String baseSpeedKey = "baseSpeed";
     final static String timelineKey = "timeline";
     final static String intervalKey = "interval";
@@ -34,7 +34,7 @@ public class LevelData {
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
-    public LevelData(Level level, Resources resources) {
+    public FiniteLevel(Level level, Resources resources) {
         obstaclesData = new LinkedList<>();
         getDataFromFile(level, resources);
     }
@@ -68,18 +68,22 @@ public class LevelData {
         return jsonString;
     }
 
+    @Override
     public int getCurrentTimeInterval() {
         return obstaclesData.getFirst().getInterval();
     }
 
+    @Override
     public ObstacleType getNewObstacleType() {
         return obstaclesData.removeFirst().getType();
     }
 
+    @Override
     public int getBaseSpeed() {
         return baseSpeed;
     }
 
+    @Override
     public boolean isEmpty() {
         return obstaclesData.isEmpty();
     }

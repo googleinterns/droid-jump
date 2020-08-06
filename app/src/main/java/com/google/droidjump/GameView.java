@@ -25,7 +25,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.droidjump.leveldata.Level;
-import com.google.droidjump.leveldata.LevelData;
+import com.google.droidjump.leveldata.FiniteLevel;
 import com.google.droidjump.leveldata.ObstacleType;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -41,7 +41,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-    private LevelData levelData;
+    private FiniteLevel finiteLevel;
 
     public GameView(Context context) {
         super(context);
@@ -50,7 +50,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
-        levelData = new LevelData(Level.LEVEL1, getResources());
+        finiteLevel = new FiniteLevel(Level.LEVEL1, getResources());
         receiveLevelDetails();
         timePoint = 0;
         surfaceHolder = getHolder();
@@ -80,7 +80,7 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Serialize current level data and put it in some container
 
         levelTimePoints = 200;
-        levelSpeed = levelData.getBaseSpeed();
+        levelSpeed = finiteLevel.getBaseSpeed();
     }
 
     public void updateGameState() {
@@ -91,19 +91,19 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void checkTimePoint() {
-        if (levelData.isEmpty()) {
+        if (finiteLevel.isEmpty()) {
 
             // When the obstacles end - the level is considered passed.
             winGame();
             return;
         }
 
-        if (intervalTimePoint == levelData.getCurrentTimeInterval()) {
+        if (intervalTimePoint == finiteLevel.getCurrentTimeInterval()) {
 
             //  This is just an example of how we can get
             //  info about an obstacle that should appear at the moment.
 
-            ObstacleType newObstacleType = levelData.getNewObstacleType();
+            ObstacleType newObstacleType = finiteLevel.getNewObstacleType();
             intervalTimePoint = 0;
         }
     }
