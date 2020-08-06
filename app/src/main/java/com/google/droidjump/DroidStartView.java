@@ -42,7 +42,7 @@ public class DroidStartView extends View {
                 /* width= */ droidWidth,
                 /* height= */ fullDroidPicture.getHeight());
 
-        // To draw droid at the bottom of the frame we need to subtract the last frame point from droid's height
+        // To draw droid at the bottom of the frame we need to subtract the last frame point from droid's height.
         int topMargin = getHeight() - droid.getHeight();
         canvas.drawBitmap(droid, /* left= */ 0,
                 /* top= */ topMargin, /* paint= */ null);

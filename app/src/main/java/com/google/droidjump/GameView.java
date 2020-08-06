@@ -63,8 +63,6 @@ public class GameView extends SurfaceView implements Runnable {
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         int droidY = screenY - screenMargin;
-
-        // Create droid
         droid = new Droid(/* x= */ screenMargin, droidY, getResources());
     }
 
@@ -115,8 +113,6 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         updateDroidCoordinates();
-
-        // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
         }
@@ -128,23 +124,20 @@ public class GameView extends SurfaceView implements Runnable {
                 droid.setJumping(false);
             } else {
                 droid.useJumpingBitmap();
-
-                // Increasing droid Y position to make they jump smoothly
+                // Increasing droid Y position to make they jump smoothly.
                 droid.setY(droid.getY() - levelSpeed * 2);
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Droid Animation
+            // Animating droid.
             if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
                 droid.useFirstStepBitmap();
             } else {
                 droid.useSecondStepBitmap();
             }
         }
-
-        // Droid Gravity
         if (droid.getY() != droid.getInitialY()) {
-            // Decreasing droid Y position to made they jump smoothly
+            // Decreasing droid Y position to made they jump smoothly.
             int newDroidY = droid.getY() + levelSpeed;
             droid.setY(Math.min(newDroidY, droid.getInitialY()));
         }
@@ -161,19 +154,11 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-
-            // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
-
             String levelHeader = GAME_LEVEL_HEADER + " " + currentLevel;
             float levelPaintY = screenMargin + levelPaint.getTextSize();
-            // Draw current level
             canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
-
-            // Drawing droid
             drawDroid(canvas);
-
-            // Drawing canvas with all elements
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }

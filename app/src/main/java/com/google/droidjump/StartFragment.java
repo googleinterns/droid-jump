@@ -46,12 +46,9 @@ public class StartFragment extends Fragment {
         playButton.setOnClickListener(this::play);
         levelButton.setOnClickListener(this::chooseLevel);
         newGameButton.setOnClickListener(this::startNewGame);
+        howToPlayButton.setOnClickListener(this::goToHowToPlayScreen);
 
-        howToPlayButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
-        });
-
-        // Drawing droid
+        // Drawing droid.
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
         drawLayout.addView(new DroidStartView(getActivity()));
         return rootView;
@@ -73,4 +70,9 @@ public class StartFragment extends Fragment {
         activity.resetGameData();
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen, args);
     }
+
+    private void goToHowToPlayScreen(View view) {
+        findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
+    }
+
 }
