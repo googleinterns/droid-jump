@@ -73,7 +73,7 @@ public class LevelData {
         return jsonString;
     }
 
-    public int getCurTimeInterval() {
+    public int getCurrentTimeInterval() {
         return obstaclesData.getFirst().getInterval();
     }
 

@@ -98,7 +98,7 @@ public class GameView extends SurfaceView implements Runnable {
             return;
         }
 
-        if (intervalTimePoint == levelData.getCurTimeInterval()) {
+        if (intervalTimePoint == levelData.getCurrentTimeInterval()) {
 
             //  This is just an example of how we can get
             //  info about an obstacle that should appear at the moment.
