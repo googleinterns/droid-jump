@@ -36,12 +36,7 @@ public class LevelData {
 
     public LevelData(Level level, Resources resources) {
         obstaclesData = new LinkedList<>();
-        if (level != Level.INFINITE)
-            getDataFromFile(level, resources);
-        else {
-            // For an infinite level, generation will be implemented
-        }
-
+        getDataFromFile(level, resources);
     }
 
     private void getDataFromFile(Level level, Resources resources) {
