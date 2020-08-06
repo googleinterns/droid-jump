@@ -66,18 +66,15 @@ public class GameView extends SurfaceView implements Runnable {
         // Margin in px
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
 
-        // Just handpicked value
-        int yMargin = platform.getHeight() / 5 * 3;
+        // Handpicked value
+        // Droid should be on a ground height, but platform includes grass.
+        int groundHeight = platform.getHeight() / 5 * 3;
 
         // Create droid
-        droid = new Droid(screenMargin, screenY - yMargin, getResources());
+        droid = new Droid(screenMargin, screenY - groundHeight, getResources());
 
         // Create obstacle list (just for animation example)
-        Cactus cactus = new Cactus(screenX, screenY - yMargin, getResources());
-        Palm palm = new Palm(screenX + 2000, screenY - yMargin, getResources());
         obstacleList = new LinkedList<>();
-        obstacleList.add(palm);
-        obstacleList.add(cactus);
     }
 
     @Override
@@ -143,6 +140,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void updatePlatformX() {
+        // The leftmost coordinate where the new platform starts
         platformX = (platformX - levelSpeed) % platform.getWidth();
     }
 
@@ -206,12 +204,12 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawPlatform(Canvas canvas) {
         int platformY = screenY - platform.getHeight();
         for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
-            canvas.drawBitmap(platform, curPlatformX, platformY, null);
+            canvas.drawBitmap(platform, curPlatformX, platformY, /* paint= */ null);
     }
 
     private void drawObstacles(Canvas canvas) {
         for (Obstacle obstacle : obstacleList) {
-            canvas.drawBitmap(obstacle.getBitmap(), obstacle.getX(), obstacle.getY(), null);
+            canvas.drawBitmap(obstacle.getBitmap(), obstacle.getX(), obstacle.getY(), /* paint= */ null);
         }
     }
 
