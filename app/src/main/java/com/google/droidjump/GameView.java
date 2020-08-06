@@ -78,8 +78,6 @@ public class GameView extends SurfaceView implements Runnable {
         obstacleList = new LinkedList<>();
         obstacleList.add(palm);
         obstacleList.add(cactus);
-
-        platformX = levelSpeed;
     }
 
     @Override
