@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class FiniteLevel implements LevelStrategy {
+public class StaticFiniteLevel implements LevelStrategy {
     final static String baseSpeedKey = "baseSpeed";
     final static String timelineKey = "timeline";
     final static String intervalKey = "interval";
@@ -34,7 +34,7 @@ public class FiniteLevel implements LevelStrategy {
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
-    public FiniteLevel(Level level, Resources resources) {
+    public StaticFiniteLevel(Level level, Resources resources) {
         obstaclesData = new LinkedList<>();
         getDataFromFile(level, resources);
     }
