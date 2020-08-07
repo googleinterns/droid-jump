@@ -16,13 +16,36 @@
 
 package com.google.droidjump.leveldata;
 
+import android.content.res.Resources;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class InfiniteLevel implements LevelStrategy {
 
-    ObstacleData currentObstacle = new ObstacleData(2, ObstacleType.cactus);
-    int baseSpeed = 30;
+    final static String baseSpeedKey = "baseSpeed";
+    final static String firstObstacleKey = "firstObstacle";
+    final static String intervalKey = "interval";
+    final static String typeKey = "type";
 
-    public InfiniteLevel() {
-        // TODO: Get level properties such as baseSpeed from a file
+    ObstacleData currentObstacle;
+    int baseSpeed;
+
+    public InfiniteLevel(Level level, Resources resources) {
+        getDataFromFile(level, resources);
+    }
+
+    private void getDataFromFile(Level level, Resources resources) {
+        JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
+        try {
+            baseSpeed = leveldata.getInt(baseSpeedKey);
+            JSONObject firstObstacle = leveldata.getJSONObject(firstObstacleKey);
+            int interval = firstObstacle.getInt(intervalKey);
+            ObstacleType type = Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey));
+            currentObstacle = new ObstacleData(interval, type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
