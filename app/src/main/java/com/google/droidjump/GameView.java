@@ -26,7 +26,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.Level;
-import com.google.droidjump.leveldata.FiniteLevel;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 
@@ -52,7 +51,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
-        level = new InfiniteLevel();
+        // TODO: Later, based on the type of level, implement the choice of the strategy
+        level = new InfiniteLevel(Level.INFINITE, getResources());
         receiveLevelDetails();
         timePoint = 0;
         surfaceHolder = getHolder();
@@ -99,12 +99,8 @@ public class GameView extends SurfaceView implements Runnable {
             winGame();
             return;
         }
-
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
-
-            //System.out.println(intervalTimePoint + " time to add new obstacle:");
             ObstacleType newObstacleType = level.getNewObstacleType();
-            //System.out.println(newObstacleType + "\n");
             intervalTimePoint = 0;
         }
     }
