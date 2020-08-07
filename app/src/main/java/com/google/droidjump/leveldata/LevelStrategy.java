@@ -17,8 +17,11 @@
 package com.google.droidjump.leveldata;
 
 public interface LevelStrategy {
-    public int getCurrentTimeInterval();
-    public ObstacleType getNewObstacleType();
-    public boolean isEmpty();
-    public int getBaseSpeed();
+    int getCurrentTimeInterval();
+
+    ObstacleType getNewObstacleType();
+
+    boolean isEmpty();
+
+    int getBaseSpeed();
 }

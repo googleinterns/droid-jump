@@ -16,15 +16,25 @@
 
 package com.google.droidjump.leveldata;
 
-public class InfiniteLevel implements LevelStrategy{
+public class InfiniteLevel implements LevelStrategy {
+
+    ObstacleData currentObstacle = new ObstacleData(2, ObstacleType.cactus);
+    int baseSpeed = 30;
+
+    public InfiniteLevel() {
+        // TODO: Get level properties such as baseSpeed from a file
+    }
+
     @Override
     public int getCurrentTimeInterval() {
-        return 0;
+        return currentObstacle.getInterval();
     }
 
     @Override
     public ObstacleType getNewObstacleType() {
-        return null;
+        ObstacleType newObstacleType = currentObstacle.getType();
+        currentObstacle = generateNextObstacle(currentObstacle.getType());
+        return newObstacleType;
     }
 
     @Override
@@ -34,6 +44,14 @@ public class InfiniteLevel implements LevelStrategy{
 
     @Override
     public int getBaseSpeed() {
-        return 0;
+        return baseSpeed;
+    }
+
+    private ObstacleData generateNextObstacle(ObstacleType obstacleType) {
+        // TODO: Generate obstacle type
+        // TODO: Generate interval
+
+        // So far returns same obstacles
+        return new ObstacleData(40, ObstacleType.cactus);
     }
 }

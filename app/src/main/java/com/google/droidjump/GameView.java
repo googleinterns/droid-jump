@@ -24,8 +24,10 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.FiniteLevel;
+import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -41,7 +43,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-    private FiniteLevel finiteLevel;
+    LevelStrategy level;
 
     public GameView(Context context) {
         super(context);
@@ -50,7 +52,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
-        finiteLevel = new FiniteLevel(Level.LEVEL1, getResources());
+        level = new InfiniteLevel();
         receiveLevelDetails();
         timePoint = 0;
         surfaceHolder = getHolder();
@@ -80,7 +82,7 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Serialize current level data and put it in some container
 
         levelTimePoints = 200;
-        levelSpeed = finiteLevel.getBaseSpeed();
+        levelSpeed = level.getBaseSpeed();
     }
 
     public void updateGameState() {
@@ -91,19 +93,18 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void checkTimePoint() {
-        if (finiteLevel.isEmpty()) {
+        if (level.isEmpty()) {
 
             // When the obstacles end - the level is considered passed.
             winGame();
             return;
         }
 
-        if (intervalTimePoint == finiteLevel.getCurrentTimeInterval()) {
+        if (intervalTimePoint == level.getCurrentTimeInterval()) {
 
-            //  This is just an example of how we can get
-            //  info about an obstacle that should appear at the moment.
-
-            ObstacleType newObstacleType = finiteLevel.getNewObstacleType();
+            //System.out.println(intervalTimePoint + " time to add new obstacle:");
+            ObstacleType newObstacleType = level.getNewObstacleType();
+            //System.out.println(newObstacleType + "\n");
             intervalTimePoint = 0;
         }
     }
