@@ -17,7 +17,7 @@
 package com.google.droidjump;
 
 /**
- * Stores all global constants of the game
+ * Stores all global constants of the game.
  */
 public interface GameConstants {
     int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/mipmap/droid.png image.

@@ -33,10 +33,12 @@ import android.widget.LinearLayout;
 public class StartFragment extends Fragment {
 
     private MainActivity activity;
+    private Bundle arguments;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        arguments = new Bundle();
         activity = (MainActivity) getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
@@ -55,9 +57,8 @@ public class StartFragment extends Fragment {
     }
 
     private void play(View view) {
-        Bundle args = new Bundle();
-        args.putInt(GAME_VIEW_LEVEL_STRING, activity.getCurrentLevel());
-        findNavController(view).navigate(R.id.action_start_screen_to_game_screen, args);
+        arguments.putInt(GAME_VIEW_LEVEL_STRING, activity.getCurrentLevel());
+        findNavController(view).navigate(R.id.action_start_screen_to_game_screen, arguments);
     }
 
     private void chooseLevel(View view) {
@@ -65,14 +66,12 @@ public class StartFragment extends Fragment {
     }
 
     private void startNewGame(View view) {
-        Bundle args = new Bundle();
-        args.putInt(GAME_VIEW_LEVEL_STRING, 1);
+        arguments.putInt(GAME_VIEW_LEVEL_STRING, 1);
         activity.resetGameData();
-        findNavController(view).navigate(R.id.action_start_screen_to_game_screen, args);
+        findNavController(view).navigate(R.id.action_start_screen_to_game_screen, arguments);
     }
 
     private void goToHowToPlayScreen(View view) {
         findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
     }
-
 }
