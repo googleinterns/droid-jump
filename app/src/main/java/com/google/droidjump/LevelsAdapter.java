@@ -33,12 +33,12 @@ public class LevelsAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private int[] levels;
-    private int currentLevel;
+    private int lastLevel;
 
-    public LevelsAdapter(Context context, int[] levels, int currentLevel) {
+    public LevelsAdapter(Context context, int[] levels, int lastLevel) {
         this.context = context;
         this.levels = levels;
-        this.currentLevel = currentLevel;
+        this.lastLevel = lastLevel;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -49,12 +49,12 @@ public class LevelsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int index) {
-        // Receives index, returns level
+        // Receives index, returns level.
         return levels[index];
     }
 
     public long getItemId(int level) {
-        // Receives level, returns index
+        // Receives level, returns index.
         return level - 1;
     }
 
@@ -64,9 +64,9 @@ public class LevelsAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.row_level_item, /* root= */ null);
         TextView textView = view.findViewById(R.id.row_level_item_text);
         textView.setText(String.valueOf(levels[index]));
-        if (currentLevel > levels[index]) {
+        if (lastLevel > levels[index]) {
             textView.setTextColor(Color.BLACK);
-        } else if (currentLevel == levels[index]) {
+        } else if (lastLevel == levels[index]) {
             textView.setTextColor(Color.WHITE);
             textView.setBackgroundColor(Color.BLACK);
         }

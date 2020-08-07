@@ -16,6 +16,7 @@
 
 package com.google.droidjump;
 
+
 import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import android.annotation.SuppressLint;
@@ -36,14 +37,13 @@ import java.util.Objects;
 public class LevelsFragment extends Fragment {
 
     private MainActivity activity;
-    private int[] levels;
     private LevelsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = Objects.requireNonNull((MainActivity) getActivity());
-        levels = createLevels(activity.getLevelsCount());
+        int[] levels = loadLevels();
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), levels,
                 activity.getLastLevel());
@@ -56,11 +56,11 @@ public class LevelsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.levels_screen, container,
                 /* attachToRoot= */ false);
 
-        // Finding gridView and putting levels to it
+        // Finding gridView and putting levels to it.
         GridView gridView = rootView.findViewById(R.id.levels_grid_view);
         gridView.setAdapter(adapter);
 
-        // Adding onClick events
+        // Adding onClick events.
         gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
             int level = (int) adapter.getItem(index);
             if (activity.getLastLevel() >= level) {
@@ -72,7 +72,7 @@ public class LevelsFragment extends Fragment {
             }
         });
 
-        // Redirecting on click to start screen
+        // Redirecting on click to a start screen.
         ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             activity.onBackPressed();
@@ -80,7 +80,8 @@ public class LevelsFragment extends Fragment {
         return rootView;
     }
 
-    private int[] createLevels(int levelsCount) {
+    private int[] loadLevels() {
+        int levelsCount = activity.getLevelsCount();
         int[] levels = new int[levelsCount];
         for (int i = 0; i < levelsCount; i++) {
             levels[i] = i + 1;

@@ -15,7 +15,6 @@
   -->
 
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -114,5 +113,4 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
         <item name="android:numColumns">3</item>
     </style>
-
 </resources>

@@ -56,7 +56,6 @@ public class GameView extends SurfaceView implements Runnable {
         timePoint = 0;
         surfaceHolder = getHolder();
         currentLevel = getCurrentLevel(arguments);
-
         this.arguments = arguments;
         this.screenX = screenX;
         this.screenY = screenY;

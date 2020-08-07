@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         currentLevel = getCurrentLevelFromSharedPreferences();
         lastLevel = getLastLevelFromSharedPreferences();
         setContentView(R.layout.main_activity);
+
     }
 
     public int getLevelsCount() {
