@@ -114,6 +114,4 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
         <item name="android:numColumns">3</item>
     </style>
-
-
 </resources>

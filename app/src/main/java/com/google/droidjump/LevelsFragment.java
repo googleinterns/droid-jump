@@ -60,8 +60,8 @@ public class LevelsFragment extends Fragment {
         gridView.setAdapter(Objects.requireNonNull(adapter));
 
         // Adding onClick events.
-        gridView.setOnItemClickListener((adapterView, view, i, l) -> {
-            if (activity.getCurrentLevel() >= (int) adapter.getItem(i)) {
+        gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
+            if (activity.getCurrentLevel() >= (int) adapter.getItem(index)) {
                 Navigation.findNavController(view).navigate(
                         R.id.action_levels_screen_to_game_screen);
             }

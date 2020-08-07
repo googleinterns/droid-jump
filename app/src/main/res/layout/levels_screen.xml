@@ -49,7 +49,5 @@
             app:layout_constraintBottom_toTopOf="@+id/levels_grid_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
-
 </FrameLayout>
