@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         levelsCount = GameConstants.GAME_LEVELS_COUNT;
-        currentLevel = 5;
+        currentLevel = 1;
         setContentView(R.layout.main_activity);
 
     }
