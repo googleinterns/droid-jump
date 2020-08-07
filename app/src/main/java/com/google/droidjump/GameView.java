@@ -54,9 +54,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-        // Margin in px.
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        // Create droid.
         droid = new Droid(screenMargin, screenY - screenMargin, getResources());
     }
 
@@ -67,37 +65,6 @@ public class GameView extends SurfaceView implements Runnable {
             drawScene();
             sleep();
             timePoint++;
-        }
-    }
-
-    public void updateGameState() {
-        // TODO: Check if time point is in level data and add data to some container, than move
-        //  it to left
-        updateDroidCoordinates();
-
-        // Level finishing.
-        if (timePoint == levelTimePoints) {
-            winGame();
-        }
-    }
-
-    public void sleep() {
-        try {
-            Thread.sleep(GameConstants.SLEEP_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void drawScene() {
-        if (surfaceHolder.getSurface().isValid()) {
-            Canvas canvas = getHolder().lockCanvas();
-            // Cleaning previous canvas.
-            canvas.drawColor(Color.WHITE);
-            // Drawing droid.
-            drawDroid(canvas);
-            // Drawing a canvas with all elements.
-            surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
 
@@ -116,16 +83,23 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void failGame() {
-        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+            droid.setJumping(true);
+        }
+        return super.onTouchEvent(event);
     }
 
-    public void winGame() {
-        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
-    }
-
-    private void drawDroid(Canvas canvas) {
-        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    private void updateGameState() {
+        // TODO: Check if time point is in level data and add data to some container, than move
+        //  it to left
+        updateDroidCoordinates();
+        // Level Finishing.
+        if (timePoint == levelTimePoints) {
+            winGame();
+        }
     }
 
     private void updateDroidCoordinates() {
@@ -155,18 +129,38 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    private void sleep() {
+        try {
+            Thread.sleep(GameConstants.SLEEP_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawScene() {
+        if (surfaceHolder.getSurface().isValid()) {
+            Canvas canvas = getHolder().lockCanvas();
+            canvas.drawColor(Color.WHITE);
+            drawDroid(canvas);
+            surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+    }
+
+    private void failGame() {
+        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+    }
+
+    private void winGame() {
+        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
+    }
+
+    private void drawDroid(Canvas canvas) {
+        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    }
+
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
         levelSpeed = 50;
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            droid.setJumping(true);
-        }
-        return super.onTouchEvent(event);
     }
 }
