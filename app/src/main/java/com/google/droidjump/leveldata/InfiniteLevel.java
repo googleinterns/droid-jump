@@ -17,7 +17,6 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

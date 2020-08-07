@@ -20,10 +20,7 @@ import android.content.res.Resources;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class StaticFiniteLevel implements LevelStrategy {
     final static String baseSpeedKey = "baseSpeed";
