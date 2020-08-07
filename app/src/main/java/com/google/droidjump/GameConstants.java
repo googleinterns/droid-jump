@@ -27,8 +27,10 @@ public interface GameConstants {
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
     int GAME_LEVELS_COUNT = 100; // Count of game levels.
     String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.
-    // String for identifying current level from SharedPreferences.
-    String GAME_VIEW_LEVEL_STRING = "java.com.google.droidjump.GameView.Level";
+    // String for identifying the current level from SharedPreferences.
+    String GAME_VIEW_CURRENT_LEVEL_STRING = "java.com.google.droidjump.GameView.CurrentLevel";
+    // String for identifying the last level from SharedPreferences.
+    String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
     // String to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
 }

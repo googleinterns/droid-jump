@@ -17,7 +17,8 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
-import static com.google.droidjump.GameConstants.GAME_VIEW_LEVEL_STRING;
+import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
+import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -57,7 +58,7 @@ public class StartFragment extends Fragment {
     }
 
     private void play(View view) {
-        arguments.putInt(GAME_VIEW_LEVEL_STRING, activity.getCurrentLevel());
+        arguments.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, activity.getCurrentLevel());
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen, arguments);
     }
 
@@ -66,8 +67,10 @@ public class StartFragment extends Fragment {
     }
 
     private void startNewGame(View view) {
-        arguments.putInt(GAME_VIEW_LEVEL_STRING, 1);
+        // Removing data from SharedPreferences
         activity.resetGameData();
+        // Passing data to arguments
+        arguments.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, 1);
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen, arguments);
     }
 

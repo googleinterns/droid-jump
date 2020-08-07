@@ -16,8 +16,9 @@
 
 package com.google.droidjump;
 
+import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
-import static com.google.droidjump.GameConstants.GAME_VIEW_LEVEL_STRING;
+import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,7 +30,8 @@ import android.support.v7.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private int levelsCount;
-    private int currentLevel;
+    private int currentLevel; // the recent level the user played
+    private int lastLevel; // The biggest level the user played
     private SharedPreferences gameData;
 
     @Override
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         gameData = getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         levelsCount = GameConstants.GAME_LEVELS_COUNT;
         currentLevel = getCurrentLevelFromSharedPreferences();
+        lastLevel = getLastLevelFromSharedPreferences();
         setContentView(R.layout.main_activity);
     }
 
@@ -46,25 +49,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getCurrentLevelFromSharedPreferences() {
-        return gameData.getInt(GAME_VIEW_LEVEL_STRING, /* defValue= */ 1);
+        return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, /* defValue= */ 1);
     }
 
-    public void increaseCurrentLevel() {
+    public int getLastLevelFromSharedPreferences() {
+        return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, /* defValue= */ getCurrentLevel());
+    }
+
+    public void increaseLevel() {
         if (currentLevel < levelsCount) {
             SharedPreferences.Editor editor = gameData.edit();
-            editor.putInt(GAME_VIEW_LEVEL_STRING, ++currentLevel);
+            // Increasing the current level
+            editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevel);
+            // Increasing the last level
+            if (currentLevel > lastLevel) {
+                lastLevel = currentLevel;
+                editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevel);
+            }
             editor.apply();
         }
     }
 
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public void setLastLevel(int lastLevel) {
+        this.lastLevel = lastLevel;
+    }
+
     public void resetGameData() {
         currentLevel = 1;
+        lastLevel = 1;
         SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt(GAME_VIEW_LEVEL_STRING, 1);
+        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, 1);
+        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, 1);
         editor.apply();
     }
 
     public int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public int getLastLevel() {
+        return lastLevel;
     }
 }
