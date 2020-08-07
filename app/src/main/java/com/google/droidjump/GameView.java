@@ -24,6 +24,8 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Shows main game process.
@@ -40,6 +42,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
+    private List<DrawableElement> obstacleList;
 
     public GameView(Context context) {
         super(context);
@@ -48,12 +51,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
-        receiveLevelDetails();
         timePoint = 0;
         surfaceHolder = getHolder();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
+        receiveLevelDetails();
         // Margin in px.
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         // Create droid.
@@ -74,6 +77,7 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         updateDroidCoordinates();
+        updateObstaclesCoordinates();
 
         // Level finishing.
         if (timePoint == levelTimePoints) {
@@ -96,6 +100,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.WHITE);
             // Drawing droid.
             drawDroid(canvas);
+            drawObstacles(canvas);
             // Drawing a canvas with all elements.
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -155,10 +160,23 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    private void updateObstaclesCoordinates() {
+        for (DrawableElement obstacle : obstacleList) {
+            obstacle.setX(obstacle.getX() - levelSpeed);
+        }
+    }
+
+    private void drawObstacles(Canvas canvas) {
+        for (DrawableElement obstacle : obstacleList) {
+            canvas.drawBitmap(obstacle.getBitmap(), obstacle.getX(), obstacle.getY(), /* paint= */ null);
+        }
+    }
+
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
         levelSpeed = 50;
+        obstacleList = new LinkedList<>();
     }
 
     @SuppressLint("ClickableViewAccessibility")
