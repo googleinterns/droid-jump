@@ -40,8 +40,8 @@ public class FiniteLevel implements LevelStrategy {
     }
 
     private void getDataFromFile(Level level, Resources resources) {
+        JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
         try {
-            JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileId, resources));
             baseSpeed = leveldata.getInt(baseSpeedKey);
             JSONArray timeline = leveldata.getJSONArray(timelineKey);
             for (int i = 0; i < timeline.length(); i++) {
@@ -53,19 +53,6 @@ public class FiniteLevel implements LevelStrategy {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private String getJSONStringFromResource(int fileID, Resources resources) {
-        String jsonString = "";
-        try {
-            InputStream is = resources.openRawResource(fileID);
-            Scanner scanner = new Scanner(is);
-            jsonString = scanner.useDelimiter("\\A").next();
-            is.close();
-        } catch (Resources.NotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-        return jsonString;
     }
 
     @Override
