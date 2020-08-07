@@ -25,15 +25,10 @@ abstract class GameItem {
     protected int y;
     protected Bitmap picture;
 
-    public GameItem(int x, int y, int pictureID, Resources resources) {
+    public GameItem(int x, int yWithBitmapOffset, int pictureID, Resources resources) {
         this.x = x;
-        this.y = y;
         picture = BitmapFactory.decodeResource(resources, pictureID);
-        correctYCoordinate();
-    }
-
-    protected void correctYCoordinate() {
-        y -= picture.getHeight();
+        this.y = yWithBitmapOffset - picture.getHeight();
     }
 
     public int getX() {

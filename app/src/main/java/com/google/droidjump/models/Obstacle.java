@@ -20,7 +20,7 @@ import android.content.res.Resources;
 
 public abstract class Obstacle extends GameItem {
 
-    public Obstacle(int x, int y, int pictureID, Resources resources) {
-        super(x, y, pictureID, resources);
+    public Obstacle(int x, int yWithBitmapOffset, int pictureID, Resources resources) {
+        super(x, yWithBitmapOffset, pictureID, resources);
     }
 }

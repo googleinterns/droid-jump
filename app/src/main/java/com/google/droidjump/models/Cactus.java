@@ -20,7 +20,7 @@ import android.content.res.Resources;
 import com.google.droidjump.R;
 
 public class Cactus extends Obstacle {
-    public Cactus(int x, int y, Resources resources) {
-        super(x, y, R.mipmap.cactus, resources);
+    public Cactus(int x, int yWithBitmapOffset, Resources resources) {
+        super(x, yWithBitmapOffset, R.mipmap.cactus, resources);
     }
 }

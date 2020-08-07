@@ -36,8 +36,8 @@ public class Droid extends GameItem {
     // the variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly
     public final static int animationStepTicks = 2;
 
-    public Droid (int x, int y, Resources resources){
-        super(x, y, R.mipmap.droid, resources);
+    public Droid (int x, int yWithBitmapOffset, Resources resources){
+        super(x, yWithBitmapOffset, R.mipmap.droid, resources);
         Bitmap fullDroidPicture = picture;
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];
