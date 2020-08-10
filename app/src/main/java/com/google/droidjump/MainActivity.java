@@ -16,7 +16,7 @@
 
 package com.google.droidjump;
 
-import static com.google.droidjump.GameConstants.GAME_DEFAULT_VALUE;
+import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         return levelsCount;
     }
 
-    public void increaseLevel() {
+    public void onCurrentLevelCompleted() {
         int currentLevel = getCurrentLevel();
         int lastLevel = getLastLevel();
         if (currentLevel < levelsCount) {
@@ -74,16 +74,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void resetGameData() {
         SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, GAME_DEFAULT_VALUE);
-        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, GAME_DEFAULT_VALUE);
+        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
+        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
         editor.apply();
     }
 
     public int getCurrentLevel() {
-        return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, GAME_DEFAULT_VALUE);
+        return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
     public int getLastLevel() {
-        return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, GAME_DEFAULT_VALUE);
+        return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 }

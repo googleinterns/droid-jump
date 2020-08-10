@@ -52,7 +52,7 @@ public class GameSuccessFragment extends Fragment {
         // Redirecting on click to game screen.
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         if (level < activity.getLevelsCount()) {
-            activity.increaseLevel();
+            activity.onCurrentLevelCompleted();
             nextLevelButton.setOnClickListener(view -> {
                 findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
             });
