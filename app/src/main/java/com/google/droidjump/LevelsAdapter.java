@@ -53,9 +53,9 @@ public class LevelsAdapter extends BaseAdapter {
         return levels[index];
     }
 
-    public long getItemId(int level) {
-        // Receives level, returns index.
-        return level - 1;
+    @Override
+    public long getItemId(int position) {
+        return 0;
     }
 
     @SuppressLint({"ViewHolder", "InflateParams"})

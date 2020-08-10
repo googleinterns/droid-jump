@@ -18,6 +18,7 @@ package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -32,19 +33,21 @@ import android.view.SurfaceView;
  */
 public class GameView extends SurfaceView implements Runnable {
 
-    private int currentLevel;
+
     private MainActivity activity;
+    private SurfaceHolder surfaceHolder;
+    private Droid droid;
+    private Thread thread;
+    private Paint levelPaint;
     private boolean isPlaying;
+    private int currentLevel;
     private int screenX;
     private int screenY;
     private int screenMargin;
-    private SurfaceHolder surfaceHolder;
-    private Droid droid;
     private int timePoint;
-    private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-    private Paint levelPaint;
+
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
@@ -60,7 +63,6 @@ public class GameView extends SurfaceView implements Runnable {
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         int droidY = screenY - screenMargin;
         droid = new Droid(/* x= */ screenMargin, droidY, getResources());
-
     }
 
     public GameView(Context context) {
@@ -148,7 +150,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawColor(Color.WHITE);
-            String levelHeader = GAME_LEVEL_HEADER + " " + currentLevel;
+            String levelHeader = String.format("%s %d", GAME_LEVEL_HEADER, currentLevel);
             float levelPaintY = screenMargin + levelPaint.getTextSize();
             canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
             drawDroid(canvas);

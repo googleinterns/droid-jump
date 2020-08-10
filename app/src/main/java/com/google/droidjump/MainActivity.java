@@ -16,9 +16,11 @@
 
 package com.google.droidjump;
 
+import static com.google.droidjump.GameConstants.GAME_DEFAULT_VALUE;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -71,18 +73,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetGameData() {
-        int firstLevel = 1;
         SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, firstLevel);
-        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, firstLevel);
+        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, GAME_DEFAULT_VALUE);
+        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, GAME_DEFAULT_VALUE);
         editor.apply();
     }
 
     public int getCurrentLevel() {
-        return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, /* defValue= */ 1);
+        return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, GAME_DEFAULT_VALUE);
     }
 
     public int getLastLevel() {
-        return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, /* defValue= */ 1);
+        return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, GAME_DEFAULT_VALUE);
     }
 }

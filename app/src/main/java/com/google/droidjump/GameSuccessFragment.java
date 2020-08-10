@@ -17,6 +17,7 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
