@@ -18,6 +18,7 @@ package com.google.droidjump;
 
 import static android.graphics.Bitmap.createBitmap;
 import static android.graphics.BitmapFactory.decodeResource;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

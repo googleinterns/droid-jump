@@ -31,11 +31,11 @@ public class Droid extends DrawableElement {
     private int initialY;
     private int jumpHeight;
     // The variable is responsible for how much time ticks full animation of droid goes.
-    public final static int fullAnimationTicks = 4;
+    public static final int fullAnimationTicks = 4;
     // The variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly.
-    public final static int animationStepTicks = 2;
+    public static final int animationStepTicks = 2;
     // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
-    private final static int additionalHeight = 50;
+    private static final int additionalHeight = 50;
 
     public Droid(int x, int y, Resources resources) {
         super(x, y);

@@ -17,6 +17,7 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
