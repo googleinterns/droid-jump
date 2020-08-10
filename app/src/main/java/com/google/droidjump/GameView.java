@@ -80,6 +80,7 @@ public class GameView extends SurfaceView implements Runnable {
         while (isPlaying) {
             updateGameState();
             drawScene();
+            handleCollision();
             sleep();
             timePoint++;
         }
@@ -188,10 +189,12 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void failGame() {
+        isPlaying = false;
         findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
     }
 
     public void winGame() {
+        isPlaying = false;
         findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
     }
 
@@ -218,5 +221,19 @@ public class GameView extends SurfaceView implements Runnable {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);
+    }
+
+    public void handleCollision() {
+        for (Obstacle obstacle : obstacleList) {
+            if (checkIntersection(droid, obstacle))
+                failGame();
+        }
+    }
+
+    private boolean checkIntersection(Droid droid, Obstacle obstacle) {
+        return !(droid.getY() > obstacle.getY() + obstacle.getHeight()
+                || droid.getY() + droid.getHeight() < obstacle.getY()
+                || droid.getX() > obstacle.getX() + obstacle.getWidth()
+                || droid.getX() + droid.getWidth() < obstacle.getX());
     }
 }
