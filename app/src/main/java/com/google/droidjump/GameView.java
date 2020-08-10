@@ -96,12 +96,9 @@ public class GameView extends SurfaceView implements Runnable {
     public void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-            // Cleaning previous canvas.
             canvas.drawColor(Color.WHITE);
-            // Drawing droid.
             drawDroid(canvas);
             drawObstacles(canvas);
-            // Drawing a canvas with all elements.
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
