@@ -17,6 +17,7 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -142,7 +143,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
             // Droid Animation.
-            if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
+            if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
                 droid.useFirstStepBitmap();
             } else {
                 droid.useSecondStepBitmap();
@@ -159,8 +160,17 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void updateObstaclesCoordinates() {
         for (DrawableElement obstacle : obstacleList) {
+            if (obstacle instanceof Bat) {
+                Bat bat = (Bat) obstacle;
+                if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
+                    bat.useLeftWing();
+                } else {
+                    bat.useRightWing();
+                }
+            }
             obstacle.setX(obstacle.getX() - levelSpeed);
         }
+
     }
 
     private void drawObstacles(Canvas canvas) {

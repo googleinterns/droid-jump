@@ -26,12 +26,10 @@ import java.util.List;
  * Represents obstacle Bat.
  */
 public class Bat extends DrawableElement {
-    private Wing wing;
     private List<Bitmap> batTypes;
 
     public Bat(int x, int y, Resources resources) {
         super(x, y);
-        wing = Wing.left;
         // Extracting bat types from full bat picture.
         Bitmap fullBatPicture = BitmapFactory.decodeResource(resources, R.mipmap.bat);
         int halfWidth = fullBatPicture.getWidth() / 2;
@@ -44,18 +42,15 @@ public class Bat extends DrawableElement {
     }
 
     public Bitmap getBitmap() {
-        bitmap = batTypes.get(wing.getValue());
-        // Changing a wing to opposite
-        changeWing();
         return bitmap;
     }
 
-    private void changeWing() {
-        if (wing == Wing.left) {
-            wing = Wing.right;
-        } else {
-            wing = Wing.left;
-        }
+    public void useLeftWing() {
+        bitmap = batTypes.get(Wing.left.value);
+    }
+
+    public void useRightWing() {
+        bitmap = batTypes.get(Wing.right.value);
     }
 
     private enum Wing {
