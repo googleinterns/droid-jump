@@ -25,12 +25,64 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/how_to_play_header"
-            style="@style/ScreenHeader"
-            android:text="@string/how_to_play"
+        <ImageView
+            android:id="@+id/header_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/title_rounded_box"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/content_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/box_title"
+                style="@style/ScreenHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/how_to_play" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:paddingLeft="@dimen/fab_margin"
+                android:paddingRight="@dimen/fab_margin"
+                android:paddingBottom="@dimen/fab_margin"
+                android:text="@string/lorem"
+                app:lineHeight="@dimen/start_menu_item_text_size" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/menu_button"
+            style="@style/MenuButton"
+            android:contentDescription="@string/menu_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>

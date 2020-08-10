@@ -28,4 +28,5 @@
     <string name="fail_text">Game Over</string>
     <string name="success_text">You Win</string>
     <string name="menu_button">Menu button</string>
+    <string name="lorem">The purpose of the game is to avoid obstacles, pass levels, earn achievements and have fun!\nTo make droid jump, tap on the left side of the screen.\nTo make droid crouch, tap and hold on the right side of the screen.</string>
 </resources>
