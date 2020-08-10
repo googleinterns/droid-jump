@@ -28,6 +28,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.Obstacle;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -104,8 +105,14 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void updateObstaclesCoordinates() {
-        for (Obstacle obstacle : obstacleList) {
+        Iterator<Obstacle> it = obstacleList.iterator();
+        while (it.hasNext()) {
+            Obstacle obstacle = it.next();
             obstacle.setX(obstacle.getX() - levelSpeed);
+
+            // Removal of passed obstacles
+            if (obstacle.getX() + obstacle.getWidth() < 0)
+                it.remove();
         }
     }
 
