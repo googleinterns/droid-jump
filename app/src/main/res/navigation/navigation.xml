@@ -101,7 +101,7 @@
         android:id="@+id/howToPlayFragment"
         android:name="com.google.droidjump.HowToPlayFragment"
         android:label="how_to_play_screen"
-        tools:layout="@layout/how_to_play_screen" >
+        tools:layout="@layout/how_to_play_screen">
         <action
             android:id="@+id/action_how_to_play_screen_to_start_screen"
             app:destination="@id/startFragment"

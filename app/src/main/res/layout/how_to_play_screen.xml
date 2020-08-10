@@ -25,22 +25,20 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/header_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            style="@style/FullWidthImage"
             android:background="@android:color/darker_gray"
             android:contentDescription="@string/app_name"
-            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/title_layout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/title_rounded_box"
             android:orientation="vertical"
@@ -58,9 +56,9 @@
 
         <LinearLayout
             android:id="@+id/content_layout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="@android:color/white"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +72,7 @@
                 android:paddingLeft="@dimen/fab_margin"
                 android:paddingRight="@dimen/fab_margin"
                 android:paddingBottom="@dimen/fab_margin"
-                android:text="@string/lorem"
+                android:text="@string/how_to_play_description"
                 app:lineHeight="@dimen/start_menu_item_text_size" />
         </LinearLayout>
 
