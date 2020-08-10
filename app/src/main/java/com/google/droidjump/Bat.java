@@ -46,7 +46,7 @@ public class Bat extends DrawableElement {
     public Bitmap getBitmap() {
         bitmap = batTypes.get(wing.getValue());
         // Changing a wing to opposite
-        wing = wing == Wing.left ? Wing.right : Wing.left;
+        changeWing();
         return bitmap;
     }
 

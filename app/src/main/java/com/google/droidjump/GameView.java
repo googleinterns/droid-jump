@@ -177,6 +177,8 @@ public class GameView extends SurfaceView implements Runnable {
         levelTimePoints = 200;
         levelSpeed = 50;
         obstacleList = new LinkedList<>();
+        // Example of bat animation: TODO: Replace a hardcoded obstacleList with data from JSON
+        obstacleList.add(new Bat(screenX,screenY - 700, getResources()));
     }
 
     @SuppressLint("ClickableViewAccessibility")
