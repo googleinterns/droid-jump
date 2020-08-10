@@ -20,16 +20,24 @@ package com.google.droidjump;
  * Stores all global constants of the game.
  */
 public interface GameConstants {
+
     int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/mipmap/droid.png image.
     int DROID_JUMPING_CHARACTER_INDEX = 4; // Index of droid at res/mipmap/droid.png image.
     int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image.
     int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image.
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
-    // The variable is responsible for how much time ticks full animation of object goes.
+    // The variable is responsible for how much time ticks full animation of the object goes.
     int FULL_ANIMATION_TICKS = 4;
-    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate object smoothly.
+    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate the object smoothly.
     int ANIMATION_STEP_TICKS = 2;
+    int GAME_LEVELS_COUNT = 4; // Count of game levels.
+    int FIRST_LEVEL_ID = 1; // Default value.
 
-    // String for identifying current level from SharedPreferences.
-    String GAME_VIEW_LEVEL_STRING = "java.com.google.droidjump.GameView.Level";
+    String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.
+    // Used for identifying the current level from SharedPreferences.
+    String GAME_VIEW_CURRENT_LEVEL_STRING = "java.com.google.droidjump.GameView.CurrentLevel";
+    // Used for identifying the last level from SharedPreferences.
+    String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
+    // Used to identifying game data from SharePreferences.
+    String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
 }

@@ -16,26 +16,73 @@
 
 package com.google.droidjump;
 
+
 import static androidx.navigation.Navigation.findNavController;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import java.util.Objects;
 
 /**
  * Displays Levels Screen.
  */
 public class LevelsFragment extends Fragment {
 
+    private MainActivity activity;
+    private LevelsAdapter adapter;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.levels_screen, container, /* attachToRoot= */ false);
-        Button levelPlayButton = rootView.findViewById(R.id.level_play);
-        levelPlayButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_levels_screen_to_game_screen);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = Objects.requireNonNull((MainActivity) getActivity());
+        Context context = getContext();
+        adapter = new LevelsAdapter(Objects.requireNonNull(context), loadLevels(),
+                activity.getLastLevel());
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.levels_screen, container,
+                /* attachToRoot= */ false);
+
+        // Finding gridView and putting levels to it.
+        GridView gridView = rootView.findViewById(R.id.levels_grid_view);
+        gridView.setAdapter(adapter);
+
+        // Adding onClick events.
+        gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
+            int level = (int) adapter.getItem(index);
+            if (activity.getLastLevel() >= level) {
+                activity.setCurrentLevel(level);
+                findNavController(view).navigate(
+                        R.id.action_levels_screen_to_game_screen);
+            }
+        });
+
+        // Redirecting on click to a start screen.
+        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
+        menuButton.setOnClickListener(view -> {
+            activity.onBackPressed();
         });
         return rootView;
+    }
+
+    private int[] loadLevels() {
+        int levelsCount = activity.getLevelsCount();
+        int[] levels = new int[levelsCount];
+        for (int i = 0; i < levelsCount; i++) {
+            levels[i] = i + 1;
+        }
+        return levels;
     }
 }

@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.models;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import com.google.droidjump.R;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents obstacle Bat.
  */
-public class Bat extends DrawableElement {
+public class Bat extends Obstacle implements Animative {
+
     private List<Bitmap> batTypes;
 
     public Bat(int x, int y, Resources resources) {
-        super(x, y);
+        super(x, y, R.mipmap.bat, resources);
         // Extracting bat types from full bat picture.
         Bitmap fullBatPicture = BitmapFactory.decodeResource(resources, R.mipmap.bat);
         int halfWidth = fullBatPicture.getWidth() / 2;
@@ -38,19 +40,19 @@ public class Bat extends DrawableElement {
         batTypes = new ArrayList<>();
         batTypes.add(leftBatWingPicture);
         batTypes.add(rightBatWingPicture);
-        bitmap = leftBatWingPicture;
+        picture = leftBatWingPicture;
     }
 
     public Bitmap getBitmap() {
-        return bitmap;
+        return picture;
     }
 
-    public void useLeftWing() {
-        bitmap = batTypes.get(Wing.left.value);
+    public void useFirstStepBitmap() {
+        picture = batTypes.get(Wing.left.value);
     }
 
-    public void useRightWing() {
-        bitmap = batTypes.get(Wing.right.value);
+    public void useSecondStepBitmap() {
+        picture = batTypes.get(Wing.right.value);
     }
 
     private enum Wing {

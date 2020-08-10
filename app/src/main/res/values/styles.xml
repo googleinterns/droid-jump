@@ -15,7 +15,6 @@
   -->
 
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -103,4 +102,15 @@
         <item name="backgroundTint">@android:color/darker_gray</item>
     </style>
 
+    <style name="ScrollGrid">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">@dimen/fab_margin</item>
+        <item name="android:paddingLeft">@dimen/fab_margin</item>
+        <item name="android:paddingRight">@dimen/fab_margin</item>
+        <item name="android:horizontalSpacing">@dimen/fab_margin</item>
+        <item name="android:verticalSpacing">@dimen/fab_margin</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:numColumns">3</item>
+    </style>
 </resources>

@@ -17,14 +17,20 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.models.Animative;
+import com.google.droidjump.models.Bat;
+import com.google.droidjump.models.Droid;
+import com.google.droidjump.models.Obstacle;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,35 +39,40 @@ import java.util.List;
  */
 public class GameView extends SurfaceView implements Runnable {
 
+    private MainActivity activity;
+    private SurfaceHolder surfaceHolder;
+    private Droid droid;
+    private Thread thread;
+    private Paint levelPaint;
     private boolean isPlaying;
+    private int currentLevel;
     private int screenX;
     private int screenY;
     private int screenMargin;
-    private SurfaceHolder surfaceHolder;
-    private Droid droid;
     private int timePoint;
-    private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-    private List<DrawableElement> obstacleList;
-
-    public GameView(Context context) {
-        super(context);
-        isPlaying = false;
-    }
+    private List<Obstacle> obstacleList;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
+        activity = (MainActivity) context;
         timePoint = 0;
         surfaceHolder = getHolder();
+        currentLevel = activity.getCurrentLevel();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
         receiveLevelDetails();
-        // Margin in px.
+        levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        // Create droid.
-        droid = new Droid(screenMargin, screenY - screenMargin, getResources());
+        int droidY = screenY - screenMargin;
+        droid = new Droid(/* x= */ screenMargin, droidY, getResources());
+    }
+
+    public GameView(Context context) {
+        super(context);
+        isPlaying = false;
     }
 
     @Override
@@ -86,24 +97,6 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void sleep() {
-        try {
-            Thread.sleep(GameConstants.SLEEP_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void drawScene() {
-        if (surfaceHolder.getSurface().isValid()) {
-            Canvas canvas = getHolder().lockCanvas();
-            canvas.drawColor(Color.WHITE);
-            drawDroid(canvas);
-            drawObstacles(canvas);
-            surfaceHolder.unlockCanvasAndPost(canvas);
-        }
-    }
-
     public void resume() {
         isPlaying = true;
         thread = new Thread(this);
@@ -119,16 +112,13 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void failGame() {
-        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
-    }
-
-    public void winGame() {
-        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
-    }
-
-    private void drawDroid(Canvas canvas) {
-        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+            droid.setJumping(true);
+        }
+        return super.onTouchEvent(event);
     }
 
     private void updateDroidCoordinates() {
@@ -137,46 +127,76 @@ public class GameView extends SurfaceView implements Runnable {
                 droid.setJumping(false);
             } else {
                 droid.useJumpingBitmap();
-                // Increasing droid Y position to make them jump smoothly.
+                // Increasing droid Y position to make they jump smoothly.
                 droid.setY(droid.getY() - levelSpeed * 2);
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
             // Droid Animation.
-            if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
-                droid.useFirstStepBitmap();
-            } else {
-                droid.useSecondStepBitmap();
-            }
+            animateGameItem(droid);
         }
-
-        // Droid Gravity.
         if (droid.getY() != droid.getInitialY()) {
             // Decreasing droid Y position to made they jump smoothly.
-            droid.setY(Math.min(droid.getY() + levelSpeed,
-                    droid.getInitialY()));
+            int newDroidY = droid.getY() + levelSpeed;
+            droid.setY(Math.min(newDroidY, droid.getInitialY()));
+        }
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(GameConstants.SLEEP_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawScene() {
+        if (surfaceHolder.getSurface().isValid()) {
+            Canvas canvas = getHolder().lockCanvas();
+            canvas.drawColor(Color.WHITE);
+            String levelHeader = String.format("%s %d", GAME_LEVEL_HEADER, currentLevel);
+            float levelPaintY = screenMargin + levelPaint.getTextSize();
+            canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
+            drawDroid(canvas);
+            drawObstacles(canvas);
+            surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
 
     private void updateObstaclesCoordinates() {
-        for (DrawableElement obstacle : obstacleList) {
+        for (Obstacle obstacle : obstacleList) {
             if (obstacle instanceof Bat) {
                 Bat bat = (Bat) obstacle;
-                if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
-                    bat.useLeftWing();
-                } else {
-                    bat.useRightWing();
-                }
+                animateGameItem(bat);
             }
             obstacle.setX(obstacle.getX() - levelSpeed);
         }
+    }
 
+    public void animateGameItem(Animative object) {
+        if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
+            object.useFirstStepBitmap();
+        } else {
+            object.useSecondStepBitmap();
+        }
     }
 
     private void drawObstacles(Canvas canvas) {
-        for (DrawableElement obstacle : obstacleList) {
+        for (Obstacle obstacle : obstacleList) {
             canvas.drawBitmap(obstacle.getBitmap(), obstacle.getX(), obstacle.getY(), /* paint= */ null);
         }
+    }
+
+    private void failGame() {
+        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+    }
+
+    private void winGame() {
+        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
+    }
+
+    private void drawDroid(Canvas canvas) {
+        canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
     }
 
     private void receiveLevelDetails() {
@@ -189,12 +209,12 @@ public class GameView extends SurfaceView implements Runnable {
         obstacleList.add(new Bat(screenX, batY, getResources()));
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            droid.setJumping(true);
-        }
-        return super.onTouchEvent(event);
+    private Paint createLevelPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLACK);
+        float headerTextSize = getResources().getDimension(R.dimen.header_text_size);
+        paint.setTextSize(headerTextSize);
+        return paint;
     }
 }
