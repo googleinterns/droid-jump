@@ -79,7 +79,5 @@
             android:contentDescription="@string/menu_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
-
 </FrameLayout>
