@@ -20,7 +20,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public abstract class GameItem {
+abstract class GameItem {
 
     protected int x;
     protected int y;
