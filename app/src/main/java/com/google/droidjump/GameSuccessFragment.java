@@ -17,7 +17,10 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,15 +34,31 @@ import android.widget.LinearLayout;
  */
 public class GameSuccessFragment extends Fragment {
 
+    private MainActivity activity;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (MainActivity) getActivity();
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        int level = activity.getCurrentLevel();
         View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
 
         // Redirecting on click to game screen.
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
-        nextLevelButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
-        });
+        if (level < activity.getLevelsCount()) {
+            activity.onCurrentLevelCompleted();
+            nextLevelButton.setOnClickListener(view -> {
+                findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
+            });
+        } else {
+            nextLevelButton.setVisibility(View.INVISIBLE);
+        }
 
         // Redirecting on click to start screen.
         ImageButton menuButton = rootView.findViewById(R.id.menu_button);
