@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.models.Droid;
 
 /**
  * Shows main game process.
