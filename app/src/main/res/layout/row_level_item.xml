@@ -15,24 +15,28 @@
   ~ limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HowToPlayFragment">
-
-    <android.support.constraint.ConstraintLayout
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+    <android.support.v7.widget.CardView
+        android:id="@+id/row_level_item_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
 
         <TextView
-            android:id="@+id/how_to_play_header"
-            style="@style/ScreenHeader"
-            android:text="@string/how_to_play"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
-
-</FrameLayout>
+            android:id="@+id/row_level_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:padding="@dimen/fab_margin"
+            android:textColor="@color/cardview_shadow_start_color"
+            tools:ignore="PrivateResource" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>

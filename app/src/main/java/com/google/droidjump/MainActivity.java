@@ -19,11 +19,32 @@ package com.google.droidjump;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Represents main activity.
+ */
 public class MainActivity extends AppCompatActivity {
+
+    private int levelsCount;
+    private int currentLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        levelsCount = GameConstants.GAME_LEVELS_COUNT;
+        currentLevel = 1;
         setContentView(R.layout.main_activity);
+
+    }
+
+    public int getLevelsCount() {
+        return levelsCount;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 }
