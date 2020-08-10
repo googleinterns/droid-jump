@@ -18,7 +18,6 @@ package com.google.droidjump;
 
 
 import static androidx.navigation.Navigation.findNavController;
-import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -43,9 +42,8 @@ public class LevelsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = Objects.requireNonNull((MainActivity) getActivity());
-        int[] levels = loadLevels();
         Context context = getContext();
-        adapter = new LevelsAdapter(Objects.requireNonNull(context), levels,
+        adapter = new LevelsAdapter(Objects.requireNonNull(context), loadLevels(),
                 activity.getLastLevel());
     }
 
@@ -64,11 +62,9 @@ public class LevelsFragment extends Fragment {
         gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
             int level = (int) adapter.getItem(index);
             if (activity.getLastLevel() >= level) {
-                Bundle args = new Bundle();
-                args.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, level);
                 activity.setCurrentLevel(level);
                 findNavController(view).navigate(
-                        R.id.action_levels_screen_to_game_screen, args);
+                        R.id.action_levels_screen_to_game_screen);
             }
         });
 

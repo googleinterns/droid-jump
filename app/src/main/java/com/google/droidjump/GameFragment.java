@@ -45,9 +45,8 @@ public class GameFragment extends Fragment {
 
         // Writing size to the screen variable.
         defaultDisplay.getSize(screen);
-        Bundle arguments = getArguments();
 
-        gameView = new GameView(activity, screen.x, screen.y, arguments, /* isPlaying= */ true);
+        gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
     @Override

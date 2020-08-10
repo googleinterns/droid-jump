@@ -39,7 +39,7 @@ public class GameFailureFragment extends Fragment {
         // Redirecting on click to game screen.
         FloatingActionButton retryButton = rootView.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen, getArguments());
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_game_screen);
         });
 
         // Redirecting on click to start screen.

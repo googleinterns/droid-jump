@@ -25,7 +25,7 @@ public interface GameConstants {
     int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image.
     int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image.
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
-    int GAME_LEVELS_COUNT = 100; // Count of game levels.
+    int GAME_LEVELS_COUNT = 4; // Count of game levels.
 
     String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.
     // Used for identifying the current level from SharedPreferences.

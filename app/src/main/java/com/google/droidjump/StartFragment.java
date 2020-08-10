@@ -17,8 +17,6 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
-import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
-import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -34,12 +32,10 @@ import android.widget.LinearLayout;
 public class StartFragment extends Fragment {
 
     private MainActivity activity;
-    private Bundle arguments;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        arguments = new Bundle();
         activity = (MainActivity) getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
@@ -58,8 +54,7 @@ public class StartFragment extends Fragment {
     }
 
     private void play(View view) {
-        arguments.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, activity.getCurrentLevel());
-        findNavController(view).navigate(R.id.action_start_screen_to_game_screen, arguments);
+        findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
     private void chooseLevel(View view) {
@@ -67,11 +62,8 @@ public class StartFragment extends Fragment {
     }
 
     private void startNewGame(View view) {
-        // Removing data from SharedPreferences
         activity.resetGameData();
-        // Passing data to arguments
-        arguments.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, 1);
-        findNavController(view).navigate(R.id.action_start_screen_to_game_screen, arguments);
+        findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
     private void goToHowToPlayScreen(View view) {

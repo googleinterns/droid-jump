@@ -18,13 +18,11 @@ package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
-import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -46,17 +44,15 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
-    private Bundle arguments;
     private Paint levelPaint;
 
-    public GameView(Context context, int screenX, int screenY, Bundle arguments, boolean isPlaying) {
+    public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         receiveLevelDetails();
         activity = (MainActivity) context;
         timePoint = 0;
         surfaceHolder = getHolder();
-        currentLevel = getCurrentLevel(arguments);
-        this.arguments = arguments;
+        currentLevel = activity.getCurrentLevel();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
@@ -64,10 +60,7 @@ public class GameView extends SurfaceView implements Runnable {
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         int droidY = screenY - screenMargin;
         droid = new Droid(/* x= */ screenMargin, droidY, getResources());
-    }
 
-    public int getCurrentLevel(Bundle arguments) {
-        return arguments.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, activity.getCurrentLevel());
     }
 
     public GameView(Context context) {
@@ -164,13 +157,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void failGame() {
-        arguments.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevel);
-        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen, arguments);
+        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
     }
 
     private void winGame() {
-        arguments.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevel);
-        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen, arguments);
+        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
     }
 
     private void drawDroid(Canvas canvas) {
