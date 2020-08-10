@@ -78,7 +78,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
-
         levelTimePoints = 200;
         levelSpeed = levelData.getBaseSpeed();
     }
