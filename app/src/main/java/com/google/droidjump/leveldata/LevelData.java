@@ -55,8 +55,7 @@ public class LevelData {
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-            Log.e("LevelData", "Failed parse JSON");
-            e.printStackTrace();
+            Log.e("LevelData", "Failed to parse JSON: " + e.getMessage());
         }
     }
 
@@ -68,7 +67,7 @@ public class LevelData {
             jsonString = scanner.useDelimiter("\\A").next();
             is.close();
         } catch (Resources.NotFoundException | IOException e) {
-            e.printStackTrace();
+            Log.e("LevelData", "Failed to read file: " + e.getMessage());
         }
         return jsonString;
     }
