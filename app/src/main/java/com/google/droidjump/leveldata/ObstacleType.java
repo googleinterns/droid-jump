@@ -16,6 +16,9 @@
 
 package com.google.droidjump.leveldata;
 
+/**
+ * Enumerates obstacle types.
+ */
 public enum ObstacleType {
     cactus,
     palm,

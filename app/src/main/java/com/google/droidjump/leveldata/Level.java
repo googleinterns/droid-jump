@@ -18,6 +18,9 @@ package com.google.droidjump.leveldata;
 
 import com.google.droidjump.R;
 
+/**
+ * Represents level configuration.
+ */
 public enum Level {
     INFINITE(null),
     LEVEL1(R.raw.level1);

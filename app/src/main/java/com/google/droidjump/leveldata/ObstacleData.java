@@ -16,6 +16,9 @@
 
 package com.google.droidjump.leveldata;
 
+/**
+ * Represents info about obstacle in timeline.
+ */
 public class ObstacleData {
     private int interval;
     private ObstacleType type;

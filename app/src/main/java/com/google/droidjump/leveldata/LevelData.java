@@ -25,11 +25,14 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * Managing finite level data.
+ */
 public class LevelData {
-    final static String baseSpeedKey = "baseSpeed";
-    final static String timelineKey = "timeline";
-    final static String intervalKey = "interval";
-    final static String typeKey = "type";
+    final static String BASE_SPEED_KEY = "baseSpeed";
+    final static String TIMELINE_KEY = "timeline";
+    final static String INTERVAL_KEY = "interval";
+    final static String TYPE_KEY = "type";
 
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
@@ -42,12 +45,12 @@ public class LevelData {
     private void getDataFromFile(Level level, Resources resources) {
         try {
             JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileId, resources));
-            baseSpeed = leveldata.getInt(baseSpeedKey);
-            JSONArray timeline = leveldata.getJSONArray(timelineKey);
+            baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
+            JSONArray timeline = leveldata.getJSONArray(TIMELINE_KEY);
             for (int i = 0; i < timeline.length(); i++) {
                 JSONObject currentObject = timeline.getJSONObject(i);
-                int interval = currentObject.getInt(intervalKey);
-                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(typeKey));
+                int interval = currentObject.getInt(INTERVAL_KEY);
+                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
