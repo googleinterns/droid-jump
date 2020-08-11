@@ -83,8 +83,6 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void updateGameState() {
-        // TODO: Check if time point is in level data and add data to some container, than move
-        //  it to left
         checkTimePoint();
         updateDroidCoordinates();
     }
