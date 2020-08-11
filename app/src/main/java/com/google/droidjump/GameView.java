@@ -51,9 +51,9 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         levelData = new LevelData(Level.LEVEL1, getResources());
-        intervalTimePoint = GameConstants.NEW_INTERVAL_TIME_POINT;
+        intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         receiveLevelDetails();
-        timePoint = 0;
+        timePoint = GameConstants.INTERVAL_START_TIME;
         surfaceHolder = getHolder();
         this.screenX = screenX;
         this.screenY = screenY;
@@ -100,7 +100,7 @@ public class GameView extends SurfaceView implements Runnable {
             //  This is just an example of how we can get
             //  info about an obstacle that should appear at the moment.
             ObstacleType newObstacleType = levelData.getNewObstacleType();
-            intervalTimePoint = GameConstants.NEW_INTERVAL_TIME_POINT;
+            intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         }
     }
 
