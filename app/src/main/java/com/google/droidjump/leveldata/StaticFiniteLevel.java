@@ -31,13 +31,13 @@ public class StaticFiniteLevel implements LevelStrategy {
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
-    public StaticFiniteLevel(Level level, Resources resources) {
+    public StaticFiniteLevel(int fileID, Resources resources) {
         obstaclesData = new LinkedList<>();
-        getDataFromFile(level, resources);
+        getDataFromFile(fileID, resources);
     }
 
-    private void getDataFromFile(Level level, Resources resources) {
-        JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
+    private void getDataFromFile(int fileId, Resources resources) {
+        JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(baseSpeedKey);
             JSONArray timeline = leveldata.getJSONArray(timelineKey);

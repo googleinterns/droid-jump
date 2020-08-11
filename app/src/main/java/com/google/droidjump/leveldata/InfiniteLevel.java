@@ -30,12 +30,12 @@ public class InfiniteLevel implements LevelStrategy {
     ObstacleData currentObstacle;
     int baseSpeed;
 
-    public InfiniteLevel(Level level, Resources resources) {
-        getDataFromFile(level, resources);
+    public InfiniteLevel(int fileID, Resources resources) {
+        getDataFromFile(fileID, resources);
     }
 
-    private void getDataFromFile(Level level, Resources resources) {
-        JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
+    private void getDataFromFile(int fileId, Resources resources) {
+        JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(baseSpeedKey);
             JSONObject firstObstacle = leveldata.getJSONObject(firstObstacleKey);

@@ -31,10 +31,10 @@ public class LevelConfig {
 
         switch (levelType) {
             case Infinite:
-                levelStrategy = new InfiniteLevel(Level.INFINITE, context.getResources());
+                levelStrategy = new InfiniteLevel(resourceId, context.getResources());
                 break;
             default:
-                levelStrategy = new InfiniteLevel(Level.LEVEL1, context.getResources());
+                levelStrategy = new InfiniteLevel(resourceId, context.getResources());
         }
     }
 
