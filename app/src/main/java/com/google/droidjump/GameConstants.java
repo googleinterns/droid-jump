@@ -25,8 +25,14 @@ public interface GameConstants {
     int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image.
     int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image.
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
-    int GAME_LEVELS_COUNT = 100; // Count of game levels.
+    int GAME_LEVELS_COUNT = 4; // Count of game levels.
+    int FIRST_LEVEL_ID = 1; // Default value.
 
-    // String for identifying current level from SharedPreferences.
-    String GAME_VIEW_LEVEL_STRING = "java.com.google.droidjump.GameView.Level";
+    String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.
+    // Used for identifying the current level from SharedPreferences.
+    String GAME_VIEW_CURRENT_LEVEL_STRING = "java.com.google.droidjump.GameView.CurrentLevel";
+    // Used for identifying the last level from SharedPreferences.
+    String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
+    // Used to identifying game data from SharePreferences.
+    String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
 }

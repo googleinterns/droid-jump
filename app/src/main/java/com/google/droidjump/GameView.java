@@ -17,10 +17,13 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -35,36 +38,45 @@ import com.google.droidjump.models.Droid;
  */
 public class GameView extends SurfaceView implements Runnable {
 
+
+    private MainActivity activity;
+    private SurfaceHolder surfaceHolder;
+    private Droid droid;
+    private Thread thread;
+    private Paint levelPaint;
     private boolean isPlaying;
+    private int currentLevel;
     private int screenX;
     private int screenY;
     private int screenMargin;
-    private SurfaceHolder surfaceHolder;
-    private Droid droid;
     private int timePoint;
     private int intervalTimePoint;
-    private Thread thread;
     private int levelTimePoints;
     private int levelSpeed;
     LevelStrategy level;
 
-    public GameView(Context context) {
-        super(context);
-        isPlaying = false;
-    }
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         // TODO: Later, based on the type of level, implement the choice of the strategy
         level = new InfiniteLevel(Level.INFINITE, getResources());
         receiveLevelDetails();
+        activity = (MainActivity) context;
         timePoint = 0;
         surfaceHolder = getHolder();
+        currentLevel = activity.getCurrentLevel();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
+        levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        droid = new Droid(screenMargin, screenY - screenMargin, getResources());
+        int droidY = screenY - screenMargin;
+        droid = new Droid(/* x= */ screenMargin, droidY, getResources());
+    }
+
+    public GameView(Context context) {
+        super(context);
+        isPlaying = false;
     }
 
     @Override
@@ -78,10 +90,19 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container
-        levelTimePoints = 200;
-        levelSpeed = level.getBaseSpeed();
+    public void resume() {
+        isPlaying = true;
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public void pause() {
+        isPlaying = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -98,7 +119,6 @@ public class GameView extends SurfaceView implements Runnable {
         //  it to left
         checkTimePoint();
         updateDroidCoordinates();
-        // Level Finishing.
         if (timePoint == levelTimePoints) {
             winGame();
         }
@@ -122,24 +142,22 @@ public class GameView extends SurfaceView implements Runnable {
                 droid.setJumping(false);
             } else {
                 droid.useJumpingBitmap();
-                // Increasing droid Y position to make them jump smoothly.
+                // Increasing droid Y position to make they jump smoothly.
                 droid.setY(droid.getY() - levelSpeed * 2);
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Droid Animation.
+            // Animating droid.
             if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
                 droid.useFirstStepBitmap();
             } else {
                 droid.useSecondStepBitmap();
             }
         }
-
-        // Droid Gravity.
         if (droid.getY() != droid.getInitialY()) {
             // Decreasing droid Y position to made they jump smoothly.
-            droid.setY(Math.min(droid.getY() + levelSpeed,
-                    droid.getInitialY()));
+            int newDroidY = droid.getY() + levelSpeed;
+            droid.setY(Math.min(newDroidY, droid.getInitialY()));
         }
     }
 
@@ -155,36 +173,39 @@ public class GameView extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawColor(Color.WHITE);
+            String levelHeader = String.format("%s %d", GAME_LEVEL_HEADER, currentLevel);
+            float levelPaintY = screenMargin + levelPaint.getTextSize();
+            canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
             drawDroid(canvas);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
 
     }
 
-    public void resume() {
-        isPlaying = true;
-        thread = new Thread(this);
-        thread.start();
-    }
-
-    public void pause() {
-        isPlaying = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void failGame() {
+    private void failGame() {
         findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
     }
 
-    public void winGame() {
+    private void winGame() {
         findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
     }
 
     private void drawDroid(Canvas canvas) {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    }
+
+    private void receiveLevelDetails() {
+        // TODO: Serialize current level data and put it in some container
+        levelTimePoints = 200;
+        levelSpeed = 50;
+    }
+
+    private Paint createLevelPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLACK);
+        float headerTextSize = getResources().getDimension(R.dimen.header_text_size);
+        paint.setTextSize(headerTextSize);
+        return paint;
     }
 }

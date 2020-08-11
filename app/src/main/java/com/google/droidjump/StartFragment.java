@@ -17,6 +17,7 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -31,8 +32,12 @@ import android.widget.LinearLayout;
  */
 public class StartFragment extends Fragment {
 
+    private MainActivity activity;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        activity = (MainActivity) getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
         Button levelButton = rootView.findViewById(R.id.level_button);
@@ -58,11 +63,11 @@ public class StartFragment extends Fragment {
     }
 
     private void startNewGame(View view) {
+        activity.resetGameData();
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
     private void goToHowToPlayScreen(View view) {
         findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
     }
-
 }
