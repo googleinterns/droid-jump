@@ -32,6 +32,7 @@ public interface GameConstants {
     int ANIMATION_STEP_TICKS = 2;
     int GAME_LEVELS_COUNT = 4; // Count of game levels.
     int FIRST_LEVEL_ID = 1; // Default value.
+    int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
 
     String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.
     // Used for identifying the current level from SharedPreferences.

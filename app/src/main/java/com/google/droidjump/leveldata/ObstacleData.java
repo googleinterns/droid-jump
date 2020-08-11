@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
-
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+package com.google.droidjump.leveldata;
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * Represents info about obstacle in timeline.
  */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+public class ObstacleData {
+    private int interval;
+    private ObstacleType type;
+
+    ObstacleData(int interval, ObstacleType type) {
+        this.interval = interval;
+        this.type = type;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public ObstacleType getType() {
+        return type;
     }
 }

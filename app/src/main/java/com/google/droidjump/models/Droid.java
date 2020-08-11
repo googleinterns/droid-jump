@@ -30,7 +30,7 @@ public class Droid extends GameItem implements Animative {
     private int initialY;
     private int jumpHeight;
     // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
-    private final static int additionalHeight = 50;
+    private static final int additionalHeight = 50;
 
     public Droid(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.mipmap.droid, resources);

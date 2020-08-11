@@ -27,6 +27,9 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.leveldata.Level;
+import com.google.droidjump.leveldata.LevelData;
+import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Animative;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
@@ -50,14 +53,20 @@ public class GameView extends SurfaceView implements Runnable {
     private int screenY;
     private int screenMargin;
     private int timePoint;
+    private int intervalTimePoint;
     private int levelTimePoints;
     private int levelSpeed;
     private List<Obstacle> obstacleList;
+    private LevelData levelData;
+
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
+        levelData = new LevelData(Level.LEVEL1, getResources());
+        intervalTimePoint = GameConstants.INTERVAL_START_TIME;
+        receiveLevelDetails();
+        timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
-        timePoint = 0;
         surfaceHolder = getHolder();
         currentLevel = activity.getCurrentLevel();
         this.screenX = screenX;
@@ -82,18 +91,7 @@ public class GameView extends SurfaceView implements Runnable {
             drawScene();
             sleep();
             timePoint++;
-        }
-    }
-
-    public void updateGameState() {
-        // TODO: Check if time point is in level data and add data to some container, than move
-        //  it to left
-        updateDroidCoordinates();
-        updateObstaclesCoordinates();
-
-        // Level finishing.
-        if (timePoint == levelTimePoints) {
-            winGame();
+            intervalTimePoint++;
         }
     }
 
@@ -119,6 +117,30 @@ public class GameView extends SurfaceView implements Runnable {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);
+    }
+
+    private void checkTimePoint() {
+        if (levelData.isEmpty()) {
+            // When the obstacles end - the level is considered passed.
+            winGame();
+            return;
+        }
+
+        if (intervalTimePoint == levelData.getCurrentTimeInterval()) {
+            //  This is just an example of how we can get
+            //  info about an obstacle that should appear at the moment.
+            ObstacleType newObstacleType = levelData.getNewObstacleType();
+            intervalTimePoint = GameConstants.INTERVAL_START_TIME;
+        }
+    }
+
+    private void updateGameState() {
+        checkTimePoint();
+        updateDroidCoordinates();
+        updateObstaclesCoordinates();
+        if (timePoint == levelTimePoints) {
+            winGame();
+        }
     }
 
     private void updateDroidCoordinates() {
