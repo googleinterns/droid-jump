@@ -28,7 +28,11 @@ import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
+import com.google.droidjump.models.Droid;
 
+/**
+ * Shows main game process.
+ */
 public class GameView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;
@@ -59,11 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-
-        // Margin in px
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-
-        // Create droid
         droid = new Droid(screenMargin, screenY - screenMargin, getResources());
     }
 
@@ -80,21 +80,32 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
-
         levelTimePoints = 200;
         levelSpeed = level.getBaseSpeed();
     }
 
-    public void updateGameState() {
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+            droid.setJumping(true);
+        }
+        return super.onTouchEvent(event);
+    }
+
+    private void updateGameState() {
         // TODO: Check if time point is in level data and add data to some container, than move
         //  it to left
         checkTimePoint();
         updateDroidCoordinates();
+        // Level Finishing.
+        if (timePoint == levelTimePoints) {
+            winGame();
+        }
     }
 
     private void checkTimePoint() {
         if (level.isEmpty()) {
-
             // When the obstacles end - the level is considered passed.
             winGame();
             return;
@@ -111,13 +122,12 @@ public class GameView extends SurfaceView implements Runnable {
                 droid.setJumping(false);
             } else {
                 droid.useJumpingBitmap();
-
-                // Increasing droid Y position to make they jump smoothly
+                // Increasing droid Y position to make them jump smoothly.
                 droid.setY(droid.getY() - levelSpeed * 2);
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Droid Animation
+            // Droid Animation.
             if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
                 droid.useFirstStepBitmap();
             } else {
@@ -125,15 +135,15 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        // Droid Gravity
+        // Droid Gravity.
         if (droid.getY() != droid.getInitialY()) {
-            // Decreasing droid Y position to made they jump smoothly
+            // Decreasing droid Y position to made they jump smoothly.
             droid.setY(Math.min(droid.getY() + levelSpeed,
                     droid.getInitialY()));
         }
     }
 
-    public void sleep() {
+    private void sleep() {
         try {
             Thread.sleep(GameConstants.SLEEP_TIME);
         } catch (InterruptedException e) {
@@ -141,17 +151,11 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void drawScene() {
+    private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-
-            // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
-
-            // Drawing droid
             drawDroid(canvas);
-
-            // Drawing canvas with all elements
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
 
@@ -182,14 +186,5 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawDroid(Canvas canvas) {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            droid.setJumping(true);
-        }
-        return super.onTouchEvent(event);
     }
 }

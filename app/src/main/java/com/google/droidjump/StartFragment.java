@@ -26,12 +26,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+/**
+ * Displays Start Screen.
+ */
 public class StartFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
         Button levelButton = rootView.findViewById(R.id.level_button);
         Button newGameButton = rootView.findViewById(R.id.new_game_button);
@@ -39,14 +41,11 @@ public class StartFragment extends Fragment {
         playButton.setOnClickListener(this::play);
         levelButton.setOnClickListener(this::chooseLevel);
         newGameButton.setOnClickListener(this::startNewGame);
+        howToPlayButton.setOnClickListener(this::goToHowToPlayScreen);
 
-        howToPlayButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
-        });
-
-        // Drawing a droid
+        // Drawing droid.
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
+        drawLayout.addView(new DroidStartView(getActivity()));
         return rootView;
     }
 
@@ -61,4 +60,9 @@ public class StartFragment extends Fragment {
     private void startNewGame(View view) {
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
+
+    private void goToHowToPlayScreen(View view) {
+        findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
+    }
+
 }
