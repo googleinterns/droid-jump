@@ -22,7 +22,7 @@ import com.google.droidjump.R;
 
 public class Bat extends Obstacle {
 
-    public Bat(int x, int y, Resources resources) {
-        super(x, y, R.mipmap.bat, resources);
+    public Bat(int x, int yWithBitmapOffset, Resources resources) {
+        super(x, yWithBitmapOffset, R.mipmap.bat, resources);
     }
 }

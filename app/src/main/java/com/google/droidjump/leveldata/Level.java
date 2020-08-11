@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.models;
+package com.google.droidjump.leveldata;
 
-import android.content.res.Resources;
 import com.google.droidjump.R;
 
-public class Palm extends Obstacle {
-    public Palm(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.palm, resources);
+/**
+ * Represents level configuration.
+ */
+public enum Level {
+    INFINITE(null),
+    LEVEL1(R.raw.level1);
+
+    public final Integer fileId;
+
+    Level(Integer fileId) {
+        this.fileId = fileId;
     }
 }

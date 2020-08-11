@@ -28,17 +28,9 @@
 
         <TextView
             android:id="@+id/how_to_play_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginTop="@dimen/fab_margin"
+            style="@style/ScreenHeader"
             android:text="@string/how_to_play"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/header_text_size"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
 </FrameLayout>
