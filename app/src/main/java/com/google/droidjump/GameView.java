@@ -27,6 +27,9 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.leveldata.Level;
+import com.google.droidjump.leveldata.LevelData;
+import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Droid;
 
 /**
@@ -46,13 +49,18 @@ public class GameView extends SurfaceView implements Runnable {
     private int screenY;
     private int screenMargin;
     private int timePoint;
+    private int intervalTimePoint;
     private int levelTimePoints;
     private int levelSpeed;
+    private LevelData levelData;
 
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
+        levelData = new LevelData(Level.LEVEL1, getResources());
+        intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         receiveLevelDetails();
+        timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
         timePoint = 0;
         surfaceHolder = getHolder();
@@ -78,6 +86,7 @@ public class GameView extends SurfaceView implements Runnable {
             drawScene();
             sleep();
             timePoint++;
+            intervalTimePoint++;
         }
     }
 
@@ -105,9 +114,23 @@ public class GameView extends SurfaceView implements Runnable {
         return super.onTouchEvent(event);
     }
 
+    private void checkTimePoint() {
+        if (levelData.isEmpty()) {
+            // When the obstacles end - the level is considered passed.
+            winGame();
+            return;
+        }
+
+        if (intervalTimePoint == levelData.getCurrentTimeInterval()) {
+            //  This is just an example of how we can get
+            //  info about an obstacle that should appear at the moment.
+            ObstacleType newObstacleType = levelData.getNewObstacleType();
+            intervalTimePoint = GameConstants.INTERVAL_START_TIME;
+        }
+    }
+
     private void updateGameState() {
-        // TODO: Check if time point is in level data and add data to some container, than move
-        //  it to left
+        checkTimePoint();
         updateDroidCoordinates();
         if (timePoint == levelTimePoints) {
             winGame();

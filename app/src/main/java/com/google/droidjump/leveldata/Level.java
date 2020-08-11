@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.leveldata;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import com.google.droidjump.R;
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * Represents level configuration.
  */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+public enum Level {
+    INFINITE(null),
+    LEVEL1(R.raw.level1);
+
+    public final Integer fileId;
+
+    Level(Integer fileId) {
+        this.fileId = fileId;
     }
 }
