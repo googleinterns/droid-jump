@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.models;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.res.Resources;
 
-/**
- * Displays How To Play Screen.
- */
-public class HowToPlayFragment extends Fragment {
+public abstract class Obstacle extends GameItem {
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */ false);
+    public Obstacle(int x, int yWithBitmapOffset, int pictureID, Resources resources) {
+        super(x, yWithBitmapOffset, pictureID, resources);
     }
 }

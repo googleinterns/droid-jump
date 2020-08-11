@@ -14,40 +14,42 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.models;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import com.google.droidjump.GameConstants;
+import com.google.droidjump.R;
 
-public class Droid extends DrawableElement {
+public class Droid extends GameItem {
 
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;
     private int initialY;
     private int jumpHeight;
-    // so that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height
-    private final static int additionalHeight = 50;
-    // the variable is responsible for how much time ticks full animation of droid goes
+    // The variable is responsible for how much time ticks full animation of droid goes.
     public final static int fullAnimationTicks = 4;
-    // the variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly
+    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly.
     public final static int animationStepTicks = 2;
+    // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
+    private final static int additionalHeight = 50;
 
-
-    public Droid(int x, int y, Resources resources) {
-        super(x, y);
-        Bitmap fullDroidPicture = BitmapFactory.decodeResource(resources, R.mipmap.droid);
+    public Droid (int x, int yWithBitmapOffset, Resources resources){
+        super(x, yWithBitmapOffset, R.mipmap.droid, resources);
+        Bitmap fullDroidPicture = picture;
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];
         int droidWidth = fullDroidPicture.getWidth() / droidCount;
         int droidHeight = fullDroidPicture.getHeight();
         for (int i = 0; i < droidCount; i++) {
-            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, /* x= */ droidWidth * i,
-                    /* y= */ 0, droidWidth, droidHeight);
+            int droidX = droidWidth * i;
+            int droidY = 0;
+            droidTypes[i] = Bitmap.createBitmap(fullDroidPicture, droidX,
+                    droidY, droidWidth, droidHeight);
         }
-        setBitmap(droidTypes[GameConstants.DROID_FIRST_STEP_INDEX]);
-        this.setY(y - getBitmap().getHeight());
+        picture = droidTypes[GameConstants.DROID_FIRST_STEP_INDEX];
         initialY = getY();
         setJumpHeight(resources);
     }
@@ -56,20 +58,16 @@ public class Droid extends DrawableElement {
         return isJumping;
     }
 
+    public void setJumping(boolean isJumping) {
+        this.isJumping = isJumping;
+    }
+
     public boolean isCrouching() {
         return isCrouching;
     }
 
-    public void setJumping(boolean jumping) {
-        isJumping = jumping;
-    }
-
-    public void setCrouching(boolean crouching) {
-        isCrouching = crouching;
-    }
-
-    public Bitmap[] getDroidTypes() {
-        return droidTypes;
+    public void setCrouching(boolean isCrouching) {
+        this.isCrouching = isCrouching;
     }
 
     public int getInitialY() {
@@ -81,20 +79,20 @@ public class Droid extends DrawableElement {
     }
 
     public void useJumpingBitmap() {
-        bitmap = getDroidTypes()[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
+        picture = droidTypes[GameConstants.DROID_JUMPING_CHARACTER_INDEX];
     }
 
     public void useFirstStepBitmap() {
-        bitmap = getDroidTypes()[GameConstants.DROID_FIRST_STEP_INDEX];
+        picture = droidTypes[GameConstants.DROID_FIRST_STEP_INDEX];
     }
 
     public void useSecondStepBitmap() {
-        bitmap = getDroidTypes()[GameConstants.DROID_SECOND_STEP_INDEX];
+        picture = droidTypes[GameConstants.DROID_SECOND_STEP_INDEX];
     }
 
     private void setJumpHeight(Resources resources) {
-        /* Returning the highest obstacle height + additional distance for jumping so that droid
-        can easily jump through all obstacles */
+        /* Returning the sum of highest obstacle height and additional distance for jumping so that droid
+        can easily jump through all obstacles. */
         Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
         jumpHeight = palm.getHeight() + additionalHeight;
     }

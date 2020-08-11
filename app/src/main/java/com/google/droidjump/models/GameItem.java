@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.models;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
-public class DrawableElement {
-
+abstract class GameItem {
     protected int x;
     protected int y;
-    protected Bitmap bitmap;
+    protected Bitmap picture;
 
-    public DrawableElement(int x, int y, Bitmap bitmap) {
+    public GameItem(int x, int yWithBitmapOffset, int pictureID, Resources resources) {
         this.x = x;
-        this.y = y;
-        this.bitmap = bitmap;
-    }
-
-    public DrawableElement(int x, int y) {
-        this.x = x;
-        this.y = y;
+        picture = BitmapFactory.decodeResource(resources, pictureID);
+        this.y = yWithBitmapOffset - picture.getHeight();
     }
 
     public int getX() {
@@ -51,19 +47,15 @@ public class DrawableElement {
         this.y = y;
     }
 
+    public float getHeight() {
+        return picture.getHeight();
+    }
+
+    public float getWidth() {
+        return picture.getWidth();
+    }
+
     public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
-    public int getHeight() {
-        return bitmap.getHeight();
-    }
-
-    public int getWidth() {
-        return bitmap.getWidth();
+        return picture;
     }
 }

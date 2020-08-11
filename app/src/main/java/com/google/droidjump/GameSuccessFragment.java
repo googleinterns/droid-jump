@@ -17,7 +17,10 @@
 package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,31 +29,52 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/**
+ * Displays Game Success Screen.
+ */
 public class GameSuccessFragment extends Fragment {
 
+    private MainActivity activity;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (MainActivity) getActivity();
+    }
+
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */false);
-        // Adding redirect to game screen
+                             Bundle savedInstanceState) {
+        int level = activity.getCurrentLevel();
+        View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
+
+        // Redirecting on click to game screen.
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
-        nextLevelButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
-        });
-        // Adding redirect to start screen
-        ImageButton menuButton = rootView.findViewById(R.id.success_menu_button);
+        if (level < activity.getLevelsCount()) {
+            activity.onCurrentLevelCompleted();
+            nextLevelButton.setOnClickListener(view -> {
+                findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
+            });
+        } else {
+            nextLevelButton.setVisibility(View.INVISIBLE);
+        }
+
+        // Redirecting on click to start screen.
+        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
-        // Drawing a a droid
+
+        // Drawing droid.
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(this.getActivity()));
-        // Adding redirect to howToPlay screen
+        drawLayout.addView(new DroidStartView(getActivity()));
+
+        // Redirecting on click to How To Play screen.
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_how_to_play_screen);
         });
-
         return rootView;
     }
 }

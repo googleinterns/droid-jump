@@ -16,15 +16,21 @@
 
 package com.google.droidjump;
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import java.util.Objects;
 
+/**
+ * Displays Game Screen.
+ */
 public class GameFragment extends Fragment {
 
     private GameView gameView;
@@ -33,14 +39,19 @@ public class GameFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
-        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getSize(
-                screen);
-        gameView = new GameView(getActivity(), screen.x, screen.y, /* isPlaying= */true);
+        Activity activity = getActivity();
+        WindowManager windowManager = Objects.requireNonNull(activity).getWindowManager();
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+
+        // Writing size to the screen variable.
+        defaultDisplay.getSize(screen);
+
+        gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return gameView;
     }
 
