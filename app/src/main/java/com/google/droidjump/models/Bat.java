@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.leveldata;
+package com.google.droidjump.models;
 
-/**
- * Represents info about obstacle in timeline.
- */
-public class ObstacleData {
-    private int interval;
-    private ObstacleType type;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import com.google.droidjump.R;
 
-    ObstacleData(int interval, ObstacleType type) {
-        this.interval = interval;
-        this.type = type;
-    }
+public class Bat extends Obstacle {
 
-    public int getInterval() {
-        return interval;
-    }
-
-    public ObstacleType getType() {
-        return type;
+    public Bat(int x, int yWithBitmapOffset, Resources resources) {
+        super(x, yWithBitmapOffset, R.mipmap.bat, resources);
     }
 }
