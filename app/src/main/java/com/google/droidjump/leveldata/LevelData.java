@@ -17,6 +17,7 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class LevelData {
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
+            Log.e("LevelData", "Failed parse JSON");
             e.printStackTrace();
         }
     }
