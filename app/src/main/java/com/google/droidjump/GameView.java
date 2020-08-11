@@ -89,7 +89,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void receiveLevelDetails() {
         // TODO: Serialize current level data and put it in some container
         levelTimePoints = 200;
-        levelSpeed = 20;
+        levelSpeed = 50;
     }
 
     public void updateGameState() {
@@ -160,17 +160,11 @@ public class GameView extends SurfaceView implements Runnable {
     public void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-
             // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
 
-            // Drawing droid
             drawDroid(canvas);
-
-            // Drawing Obstacles
             drawObstacles(canvas);
-
-            // Drawing platform
             drawPlatform(canvas);
 
             // Drawing canvas with all elements
