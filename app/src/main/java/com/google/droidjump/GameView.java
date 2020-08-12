@@ -53,8 +53,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int intervalTimePoint;
     private int levelTimePoints;
     private int levelSpeed;
-    LevelStrategy level;
-
+    private LevelStrategy level;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);

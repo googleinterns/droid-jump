@@ -40,8 +40,7 @@ public class InfiniteLevel implements LevelStrategy {
             baseSpeed = leveldata.getInt(baseSpeedKey);
             JSONObject firstObstacle = leveldata.getJSONObject(firstObstacleKey);
             int interval = firstObstacle.getInt(intervalKey);
-            ObstacleType type = Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey));
-            currentObstacle = new ObstacleData(interval, type);
+            currentObstacle = new ObstacleData(interval, Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
