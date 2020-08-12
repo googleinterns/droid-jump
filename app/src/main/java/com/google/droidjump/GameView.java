@@ -18,9 +18,13 @@ package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
+import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
+import static com.google.droidjump.leveldata.ObstacleType.*;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,14 +34,18 @@ import android.view.SurfaceView;
 import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
+import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Droid;
+import com.google.droidjump.models.Obstacle;
+import com.google.droidjump.models.Palm;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-
-
     private MainActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
@@ -51,6 +59,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int intervalTimePoint;
     private int levelTimePoints;
     private int levelSpeed;
+    private int platformX = 0;
+    private int groundHeight;
+    private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
+    private List<Obstacle> obstacleList;
     private LevelStrategy level;
 
 
@@ -67,13 +79,12 @@ public class GameView extends SurfaceView implements Runnable {
         this.isPlaying = isPlaying;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        int droidY = screenY - screenMargin;
-        droid = new Droid(/* x= */ screenMargin, droidY, getResources());
-    }
 
-    public GameView(Context context) {
-        super(context);
-        isPlaying = false;
+        // Droid should be on a ground height, but platform includes grass.
+        groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
+
+        droid = new Droid(screenMargin, screenY - groundHeight, getResources());
+        obstacleList = new LinkedList<>();
     }
 
     @Override
@@ -112,9 +123,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void updateGameState() {
-
         checkTimePoint();
         updateDroidCoordinates();
+        updateObstaclesCoordinates();
+        updatePlatformCoordinates();
+        // Level Finishing
         if (timePoint == levelTimePoints) {
             winGame();
         }
@@ -128,7 +141,27 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
             ObstacleType newObstacleType = level.getNewObstacleType();
+            switch (newObstacleType){
+                case cactus:
+                    obstacleList.add(new Cactus(0, screenY - groundHeight, getResources()));
+                    break;
+                case palm:
+                    obstacleList.add(new Palm(0, screenY - groundHeight, getResources()));
+                    break;
+            }
             intervalTimePoint = GameConstants.INTERVAL_START_TIME;
+        }
+    }
+
+    private void updateObstaclesCoordinates() {
+        Iterator<Obstacle> it = obstacleList.iterator();
+        while (it.hasNext()) {
+            Obstacle obstacle = it.next();
+            obstacle.setX(obstacle.getX() - levelSpeed);
+
+            // Removal of passed obstacles
+            if (obstacle.getX() + obstacle.getWidth() < 0)
+                it.remove();
         }
     }
 
@@ -157,6 +190,11 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    public void updatePlatformCoordinates() {
+        // The leftmost coordinate where the new platform starts
+        platformX = (platformX - levelSpeed) % platform.getWidth();
+    }
+
     private void sleep() {
         try {
             Thread.sleep(GameConstants.SLEEP_TIME);
@@ -168,11 +206,16 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
+            // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
             String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, activity.getCurrentLevelName());
             float levelPaintY = screenMargin + levelPaint.getTextSize();
             canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
             drawDroid(canvas);
+            drawObstacles(canvas);
+            drawPlatform(canvas);
+
+            // Drawing canvas with all elements
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -189,6 +232,18 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawDroid(Canvas canvas) {
         canvas.drawBitmap(droid.getBitmap(), droid.getX(), droid.getY(), /* paint= */ null);
+    }
+
+    private void drawPlatform(Canvas canvas) {
+        int platformY = screenY - platform.getHeight();
+        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
+            canvas.drawBitmap(platform, curPlatformX, platformY, /* paint= */ null);
+    }
+
+    private void drawObstacles(Canvas canvas) {
+        for (Obstacle obstacle : obstacleList) {
+            canvas.drawBitmap(obstacle.getBitmap(), obstacle.getX(), obstacle.getY(), /* paint= */ null);
+        }
     }
 
     private void receiveLevelDetails() {

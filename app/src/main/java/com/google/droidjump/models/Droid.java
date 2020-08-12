@@ -23,7 +23,6 @@ import com.google.droidjump.GameConstants;
 import com.google.droidjump.R;
 
 public class Droid extends GameItem {
-
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;
@@ -36,7 +35,7 @@ public class Droid extends GameItem {
     // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
     private static final int additionalHeight = 50;
 
-    public Droid (int x, int yWithBitmapOffset, Resources resources){
+    public Droid(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.mipmap.droid, resources);
         Bitmap fullDroidPicture = picture;
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
