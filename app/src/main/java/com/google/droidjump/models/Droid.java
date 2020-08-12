@@ -22,8 +22,10 @@ import android.graphics.BitmapFactory;
 import com.google.droidjump.GameConstants;
 import com.google.droidjump.R;
 
+/**
+ * Represents Droid character.
+ */
 public class Droid extends GameItem implements TwoStepAnimative {
-
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;

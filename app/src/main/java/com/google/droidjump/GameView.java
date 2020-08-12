@@ -30,10 +30,10 @@ import android.view.SurfaceView;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelData;
 import com.google.droidjump.leveldata.ObstacleType;
-import com.google.droidjump.models.TwoStepAnimative;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.Obstacle;
+import com.google.droidjump.models.TwoStepAnimative;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,11 +75,6 @@ public class GameView extends SurfaceView implements Runnable {
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         int droidY = screenY - screenMargin;
         droid = new Droid(/* x= */ screenMargin, droidY, getResources());
-    }
-
-    public GameView(Context context) {
-        super(context);
-        isPlaying = false;
     }
 
     @Override
@@ -220,11 +215,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container
+        // TODO: Serialize current level data and put it in some container (Assigned to Daria)
         levelTimePoints = 200;
         levelSpeed = 50;
         obstacleList = new LinkedList<>();
-        // Example of bat animation: TODO: Replace a hardcoded obstacleList with data from JSON
+        // Example of bat animation: TODO: Replace a hardcoded obstacleList with data from JSON (Assigned to Daria)
         int batY = screenY - 700; // random hardcoded value
         obstacleList.add(new Bat(screenX, batY, getResources()));
     }
