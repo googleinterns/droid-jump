@@ -20,18 +20,38 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/coroutines.pro'
+    }
 }
 
 dependencies {
+    def nav_version = "2.3.0"
+    def fragment_version = "1.2.5"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "androidx.constraintlayout:constraintlayout:2.0.0-rc1"
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.2.0'
+
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Testing
     testImplementation 'junit:junit:4.12'
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    androidTestImplementation "androidx.test:core-ktx:1.2.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+
+    // Espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // Mockito
+    androidTestImplementation "org.mockito:mockito-core:2.7.22"
+    androidTestImplementation "org.mockito:mockito-android:2.7.22"
 }

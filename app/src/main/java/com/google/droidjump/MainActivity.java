@@ -24,12 +24,12 @@ import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * Represents main activity.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
     private int levelsCount;
     private SharedPreferences gameData;
     private SharedPreferences.Editor gameDataEditor;
