@@ -34,7 +34,7 @@ public class LevelConfig {
                 levelStrategy = new InfiniteLevel(resourceId, context.getResources());
                 break;
             default:
-                levelStrategy = new InfiniteLevel(resourceId, context.getResources());
+                levelStrategy = new StaticFiniteLevel(resourceId, context.getResources());
         }
     }
 
