@@ -17,11 +17,9 @@
 package com.google.droidjump.models;
 
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import com.google.droidjump.R;
 
 public class Bat extends Obstacle {
-
     public Bat(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.mipmap.bat, resources);
     }

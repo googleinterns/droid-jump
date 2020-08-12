@@ -43,8 +43,6 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-
-
     private MainActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;

@@ -27,7 +27,7 @@ public interface GameConstants {
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
     int GAME_LEVELS_COUNT = 4; // Count of game levels.
     int FIRST_LEVEL_ID = 1; // Default value.
-    int INTERVAL_START_TIME =  0; // Beginning of the new time interval between obstacles
+    int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     double GROUND_PROPORTION = 0.6; // Handpicked value of proportion in a platform picture
 
     String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.
