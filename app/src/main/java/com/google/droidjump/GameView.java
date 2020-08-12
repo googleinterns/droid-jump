@@ -18,6 +18,7 @@ package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
+import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -82,7 +83,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Handpicked value
         // Droid should be on a ground height, but platform includes grass.
-        int groundHeight = platform.getHeight() / 5 * 3;
+        int groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
 
         int droidY = screenY - screenMargin;
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
