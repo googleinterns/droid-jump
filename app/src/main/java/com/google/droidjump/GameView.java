@@ -129,7 +129,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void updateGameState() {
+    private void updateGameState() {
         checkTimePoint();
         updateDroidCoordinates();
         if (timePoint == levelTimePoints) {
