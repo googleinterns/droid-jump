@@ -30,7 +30,7 @@ import android.view.SurfaceView;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelData;
 import com.google.droidjump.leveldata.ObstacleType;
-import com.google.droidjump.models.Animative;
+import com.google.droidjump.models.TwoStepAnimative;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.Obstacle;
@@ -193,7 +193,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void animateGameItem(Animative object) {
+    private void animateGameItem(TwoStepAnimative object) {
         if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
             object.useFirstStepBitmap();
         } else {

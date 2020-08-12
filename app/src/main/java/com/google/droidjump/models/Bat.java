@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Represents obstacle Bat.
  */
-public class Bat extends Obstacle implements Animative {
+public class Bat extends Obstacle implements TwoStepAnimative {
 
     private List<Bitmap> batTypes;
 
