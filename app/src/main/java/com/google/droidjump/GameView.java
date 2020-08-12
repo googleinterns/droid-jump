@@ -52,16 +52,17 @@ public class GameView extends SurfaceView implements Runnable {
     private int intervalTimePoint;
     private int levelTimePoints;
     private int levelSpeed;
-    LevelStrategy level;
+    private LevelStrategy level;
 
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         // TODO: Later, based on the type of level, implement the choice of the strategy
         level = new InfiniteLevel(R.raw.infinite_level, getResources());
+        intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         receiveLevelDetails();
+        timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
-        timePoint = 0;
         surfaceHolder = getHolder();
         currentLevel = activity.getCurrentLevel();
         this.screenX = screenX;
@@ -114,8 +115,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void updateGameState() {
-        // TODO: Check if time point is in level data and add data to some container, than move
-        //  it to left
+
         checkTimePoint();
         updateDroidCoordinates();
         if (timePoint == levelTimePoints) {
@@ -131,7 +131,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
             ObstacleType newObstacleType = level.getNewObstacleType();
-            intervalTimePoint = 0;
+            intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         }
     }
 
@@ -178,7 +178,6 @@ public class GameView extends SurfaceView implements Runnable {
             drawDroid(canvas);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
-
     }
 
     private void failGame() {

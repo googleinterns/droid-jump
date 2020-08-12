@@ -16,23 +16,18 @@
 
 package com.google.droidjump.leveldata;
 
+import com.google.droidjump.R;
+
 /**
- * Represents info about obstacle in timeline.
+ * Represents level configuration.
  */
-public class ObstacleData {
-    private int interval;
-    private ObstacleType type;
+public enum Level {
+    INFINITE(null),
+    LEVEL1(R.raw.level1);
 
-    ObstacleData(int interval, ObstacleType type) {
-        this.interval = interval;
-        this.type = type;
-    }
+    public final Integer fileId;
 
-    public int getInterval() {
-        return interval;
-    }
-
-    public ObstacleType getType() {
-        return type;
+    Level(Integer fileId) {
+        this.fileId = fileId;
     }
 }

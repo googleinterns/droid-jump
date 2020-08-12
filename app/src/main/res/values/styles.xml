@@ -113,4 +113,10 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
         <item name="android:numColumns">3</item>
     </style>
+
+    <style name="FullWidthImage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
 </resources>
