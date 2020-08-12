@@ -23,7 +23,6 @@ import java.util.List;
  * Represents a game level.
  */
 public class Level {
-
     private int number;
     private List<String> obstacles;
     private List<Integer> intervals;

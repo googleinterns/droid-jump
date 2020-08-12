@@ -41,7 +41,6 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-
     private MainActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
@@ -194,7 +193,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void animateGameItem(Animative object) {
+    private void animateGameItem(Animative object) {
         if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
             object.useFirstStepBitmap();
         } else {

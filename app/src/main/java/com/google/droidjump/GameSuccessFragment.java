@@ -33,7 +33,6 @@ import android.widget.LinearLayout;
  * Displays Game Success Screen.
  */
 public class GameSuccessFragment extends Fragment {
-
     private MainActivity activity;
 
     @Override

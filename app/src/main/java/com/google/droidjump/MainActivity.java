@@ -30,7 +30,6 @@ import android.support.v7.app.AppCompatActivity;
  * Represents main activity.
  */
 public class MainActivity extends AppCompatActivity {
-
     private int levelsCount;
     private SharedPreferences gameData;
     private SharedPreferences.Editor gameDataEditor;

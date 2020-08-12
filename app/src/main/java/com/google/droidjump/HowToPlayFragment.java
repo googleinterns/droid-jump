@@ -29,7 +29,6 @@ import android.widget.ImageButton;
  * Displays How To Play Screen.
  */
 public class HowToPlayFragment extends Fragment {
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */ false);

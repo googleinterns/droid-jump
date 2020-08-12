@@ -32,7 +32,6 @@ import java.util.Objects;
  * Displays Game Screen.
  */
 public class GameFragment extends Fragment {
-
     private GameView gameView;
 
     @Override

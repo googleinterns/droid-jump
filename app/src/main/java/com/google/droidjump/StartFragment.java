@@ -31,7 +31,6 @@ import android.widget.LinearLayout;
  * Displays Start Screen.
  */
 public class StartFragment extends Fragment {
-
     private MainActivity activity;
 
     @Override

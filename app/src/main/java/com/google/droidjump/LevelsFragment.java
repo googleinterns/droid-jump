@@ -35,7 +35,6 @@ import java.util.Objects;
  * Displays Levels Screen.
  */
 public class LevelsFragment extends Fragment {
-
     private MainActivity activity;
     private LevelsAdapter adapter;
 

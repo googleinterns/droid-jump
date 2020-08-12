@@ -20,7 +20,6 @@ package com.google.droidjump;
  * Stores all global constants of the game.
  */
 public interface GameConstants {
-
     int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/mipmap/droid.png image.
     int DROID_JUMPING_CHARACTER_INDEX = 4; // Index of droid at res/mipmap/droid.png image.
     int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image.
