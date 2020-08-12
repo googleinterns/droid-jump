@@ -1,0 +1,16 @@
+{
+  "levels": [
+    {
+      "levelName": "1",
+      "resourceName": "level1",
+      "levelType": "Finite"
+    },
+    {
+      "levelName": "Infinite level",
+      "resourceName": "infinite_level",
+      "levelType": "Infinite"
+
+    }
+  ]
+}
+
