@@ -59,7 +59,6 @@ public class GameView extends SurfaceView implements Runnable {
     private List<Obstacle> obstacleList;
     private LevelData levelData;
 
-
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         levelData = new LevelData(Level.LEVEL1, getResources());
