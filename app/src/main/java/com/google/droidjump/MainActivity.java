@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.LevelConfigParser;
+import com.google.droidjump.leveldata.LevelStrategy;
 import java.util.ArrayList;
 
 /**
@@ -90,5 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
     public int getLastLevelIndex() {
         return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
+    }
+
+    public LevelStrategy getCurrentLevelStrategy() {
+        return gameLevels.get(getCurrentLevelIndex()).getLevelStrategy();
+    }
+
+    public String getCurrentLevelName(){
+        return gameLevels.get(getCurrentLevelIndex()).getLevelName();
     }
 }
