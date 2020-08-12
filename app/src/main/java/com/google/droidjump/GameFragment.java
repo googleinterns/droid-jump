@@ -19,20 +19,19 @@ package com.google.droidjump;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
 /**
  * Displays Game Screen.
  */
 public class GameFragment extends Fragment {
-
     private GameView gameView;
 
     @Override

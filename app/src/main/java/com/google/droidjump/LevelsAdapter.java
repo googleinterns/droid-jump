@@ -29,7 +29,6 @@ import android.widget.TextView;
  * Represents LevelsAdapter.
  */
 public class LevelsAdapter extends BaseAdapter {
-
     private Context context;
     private LayoutInflater inflater;
     private int[] levels;

@@ -22,20 +22,19 @@ import static androidx.navigation.Navigation.findNavController;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
 /**
  * Displays Levels Screen.
  */
 public class LevelsFragment extends Fragment {
-
     private MainActivity activity;
     private LevelsAdapter adapter;
 
