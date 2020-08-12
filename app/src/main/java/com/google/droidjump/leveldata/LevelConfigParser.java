@@ -17,7 +17,6 @@
 package com.google.droidjump.leveldata;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,16 +29,9 @@ public class LevelConfigParser {
     final static String LEVEL_NAME_KEY = "levelName";
     final static String LEVEL_TYPE_KEY = "LevelType";
 
-    private ArrayList<LevelConfig> levelConfigs;
-
-    public ArrayList<LevelConfig> getLevelConfigsFromResource(int fileId, Context context){
-        levelConfigs = new ArrayList();
-        getDataFromFile(fileId, context);
-        return levelConfigs;
-    }
-
-    private void getDataFromFile(int fileId, Context context){
+    public static ArrayList<LevelConfig> getLevelConfigsFromResource(int fileId, Context context){
         JSONObject configsData = JSONReader.getJSONObjectFromResource(fileId, context.getResources());
+        ArrayList<LevelConfig> levelConfigs = new ArrayList<>();
         try {
             JSONArray levels = configsData.getJSONArray(LEVELS_KEY);
             for (int i = 0; i < levels.length(); i++) {
@@ -52,5 +44,6 @@ public class LevelConfigParser {
         } catch (JSONException e) {
             Log.e("LevelConfigParser", "Failed to parse JSON: " + e.getMessage());
         }
+        return levelConfigs;
     }
 }
