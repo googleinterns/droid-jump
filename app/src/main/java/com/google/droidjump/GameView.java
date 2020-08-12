@@ -44,7 +44,6 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private Paint levelPaint;
     private boolean isPlaying;
-    private int currentLevel;
     private int screenX;
     private int screenY;
     private int screenMargin;
@@ -57,14 +56,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
-        // TODO: Later, based on the type of level, implement the choice of the strategy
-        level = new InfiniteLevel(R.raw.infinite_level, getResources());
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         receiveLevelDetails();
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
         surfaceHolder = getHolder();
-        currentLevel = activity.getCurrentLevelIndex();
+        level = activity.getCurrentLevelStrategy();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
@@ -172,7 +169,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawColor(Color.WHITE);
-            String levelHeader = String.format("%s %d", GAME_LEVEL_HEADER, currentLevel);
+            String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, activity.getCurrentLevelName());
             float levelPaintY = screenMargin + levelPaint.getTextSize();
             canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
             drawDroid(canvas);

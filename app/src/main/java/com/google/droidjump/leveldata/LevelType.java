@@ -18,6 +18,6 @@ package com.google.droidjump.leveldata;
 
 public enum LevelType {
     Infinite,
-    FiniteStatic,
+    Finite,
     FiniteGenerated;
 }
