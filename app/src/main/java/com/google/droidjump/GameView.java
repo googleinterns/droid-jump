@@ -64,7 +64,7 @@ public class GameView extends SurfaceView implements Runnable {
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
         surfaceHolder = getHolder();
-        currentLevel = activity.getCurrentLevel();
+        currentLevel = activity.getCurrentLevelIndex();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;

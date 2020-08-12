@@ -25,6 +25,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import com.google.droidjump.leveldata.LevelConfig;
+import com.google.droidjump.leveldata.LevelConfigParser;
+import java.util.ArrayList;
 
 /**
  * Represents main activity.
@@ -34,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private int levelsCount;
     private SharedPreferences gameData;
     private SharedPreferences.Editor gameDataEditor;
+    private ArrayList<LevelConfig> gameLevels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameData = getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         gameDataEditor = gameData.edit();
+        gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, this);
         levelsCount = GameConstants.GAME_LEVELS_COUNT;
         setContentView(R.layout.main_activity);
     }
@@ -49,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCurrentLevelCompleted() {
-        int currentLevel = getCurrentLevel();
-        int lastLevel = getLastLevel();
+        int currentLevel = getCurrentLevelIndex();
+        int lastLevel = getLastLevelIndex();
         if (currentLevel < levelsCount) {
             // Increasing the current level
             gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevel);
@@ -62,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setCurrentLevel(int currentLevel) {
+    public void setCurrentLevelIndex(int currentLevel) {
         gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevel);
         gameDataEditor.apply();
     }
 
-    public void setLastLevel(int lastLevel) {
+    public void setLastLevelIndex(int lastLevel) {
         gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevel);
         gameDataEditor.apply();
     }
@@ -79,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public int getCurrentLevel() {
+    public int getCurrentLevelIndex() {
         return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
-    public int getLastLevel() {
+    public int getLastLevelIndex() {
         return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 }

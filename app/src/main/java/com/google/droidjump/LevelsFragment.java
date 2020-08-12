@@ -45,7 +45,7 @@ public class LevelsFragment extends Fragment {
         activity = Objects.requireNonNull((MainActivity) getActivity());
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), loadLevels(),
-                activity.getLastLevel());
+                activity.getLastLevelIndex());
     }
 
     @SuppressLint("SetTextI18n")
@@ -62,8 +62,8 @@ public class LevelsFragment extends Fragment {
         // Adding onClick events.
         gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
             int level = (int) adapter.getItem(index);
-            if (activity.getLastLevel() >= level) {
-                activity.setCurrentLevel(level);
+            if (activity.getLastLevelIndex() >= level) {
+                activity.setCurrentLevelIndex(level);
                 findNavController(view).navigate(
                         R.id.action_levels_screen_to_game_screen);
             }

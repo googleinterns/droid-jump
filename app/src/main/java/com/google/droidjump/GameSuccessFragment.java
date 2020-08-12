@@ -46,7 +46,7 @@ public class GameSuccessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int level = activity.getCurrentLevel();
+        int level = activity.getCurrentLevelIndex();
         View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
 
         // Redirecting on click to game screen.
