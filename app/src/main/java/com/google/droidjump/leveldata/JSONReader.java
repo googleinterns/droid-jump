@@ -17,6 +17,7 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -33,12 +34,12 @@ public class JSONReader {
             jsonString = scanner.useDelimiter("\\A").next();
             is.close();
         } catch (Resources.NotFoundException | IOException e) {
-            e.printStackTrace();
+            Log.e("JSONReader", "Failed to open resource: " + e.getMessage());
         }
         try {
             jsonObject = new JSONObject(jsonString);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("JSONReader", "Failed to parse JSON: " + e.getMessage());
         }
         return jsonObject;
     }
