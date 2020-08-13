@@ -16,7 +16,6 @@
 
 package com.google.droidjump;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.LevelManager;
@@ -25,10 +24,6 @@ import com.google.droidjump.models.LevelManager;
  * Represents main activity.
  */
 public class MainActivity extends FragmentActivity {
-    private int levelsCount;
-    private SharedPreferences gameData;
-    private SharedPreferences.Editor gameDataEditor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
