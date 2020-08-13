@@ -69,7 +69,9 @@ public class InfiniteLevel implements LevelStrategy {
         // TODO(dnikolskaia): Generate obstacle type
         // TODO(dnikolskaia): Generate interval
 
-        // So far returns same obstacles
+        // So far returns same obstacles.
+        // interval = 40, because with this value Droid can easily pass every cactus.
+        // It will be removed when generation will be implemented.
         return new ObstacleData(40, ObstacleType.cactus);
     }
 }
