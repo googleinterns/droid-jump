@@ -35,7 +35,10 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class StartScreenTest {
-    private static final Intent MAIN_ACTIVITY_INTENT = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), MainActivity.class);
+    private static final Intent MAIN_ACTIVITY_INTENT =
+            new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), MainActivity.class);
+    @Rule
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {
@@ -45,7 +48,6 @@ public class StartScreenTest {
     @Test
     public void navigateToGameScreen() {
         onView(ViewMatchers.withId(R.id.play_button)).perform(ViewActions.click());
-
     }
 
     @Test
@@ -64,7 +66,4 @@ public class StartScreenTest {
         assertEquals(LevelManager.getCurrentLevel(), GameConstants.FIRST_LEVEL_ID);
         assertEquals(LevelManager.getLastLevel(), GameConstants.FIRST_LEVEL_ID);
     }
-
-    @Rule
-    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class);
 }
