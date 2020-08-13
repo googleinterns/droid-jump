@@ -43,10 +43,16 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.3'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     androidTestImplementation "androidx.test:core-ktx:1.2.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+
+    // Set this dependency to use JUnit 4 rules
+    androidTestImplementation ('androidx.test:rules:1.2.0'){
+        exclude module: 'support-annotations'
+    }
 
     // Espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

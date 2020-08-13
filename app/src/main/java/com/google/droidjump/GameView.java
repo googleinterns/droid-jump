@@ -31,6 +31,7 @@ import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelData;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Droid;
+import com.google.droidjump.models.LevelManager;
 
 /**
  * Shows main game process.
@@ -62,7 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
         activity = (MainActivity) context;
         timePoint = 0;
         surfaceHolder = getHolder();
-        currentLevel = activity.getCurrentLevel();
+        currentLevel = LevelManager.getCurrentLevel();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
