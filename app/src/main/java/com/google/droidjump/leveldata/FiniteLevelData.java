@@ -17,20 +17,22 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.LinkedList;
 
-public class InfiniteLevel implements LevelStrategy {
-
+public class FiniteLevelData implements LevelStrategy {
     final static String baseSpeedKey = "baseSpeed";
-    final static String firstObstacleKey = "firstObstacle";
+    final static String timelineKey = "timeline";
     final static String intervalKey = "interval";
     final static String typeKey = "type";
 
-    ObstacleData currentObstacle;
-    int baseSpeed;
+    private int baseSpeed;
+    private LinkedList<ObstacleData> obstaclesData;
 
-    public InfiniteLevel(int fileID, Resources resources) {
+    public FiniteLevelData(int fileID, Resources resources) {
+        obstaclesData = new LinkedList<>();
         getDataFromFile(fileID, resources);
     }
 
@@ -38,10 +40,13 @@ public class InfiniteLevel implements LevelStrategy {
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(baseSpeedKey);
-            JSONObject firstObstacle = leveldata.getJSONObject(firstObstacleKey);
-            int interval = firstObstacle.getInt(intervalKey);
-            ObstacleType type = Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey));
-            currentObstacle = new ObstacleData(interval, type);
+            JSONArray timeline = leveldata.getJSONArray(timelineKey);
+            for (int i = 0; i < timeline.length(); i++) {
+                JSONObject currentObject = timeline.getJSONObject(i);
+                int interval = currentObject.getInt(intervalKey);
+                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(typeKey));
+                obstaclesData.add(new ObstacleData(interval, type));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -49,19 +54,12 @@ public class InfiniteLevel implements LevelStrategy {
 
     @Override
     public int getCurrentTimeInterval() {
-        return currentObstacle.getInterval();
+        return obstaclesData.getFirst().getInterval();
     }
 
     @Override
     public ObstacleType getNewObstacleType() {
-        ObstacleType newObstacleType = currentObstacle.getType();
-        currentObstacle = generateNextObstacle(currentObstacle.getType());
-        return newObstacleType;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
+        return obstaclesData.removeFirst().getType();
     }
 
     @Override
@@ -69,11 +67,8 @@ public class InfiniteLevel implements LevelStrategy {
         return baseSpeed;
     }
 
-    private ObstacleData generateNextObstacle(ObstacleType obstacleType) {
-        // TODO: Generate obstacle type
-        // TODO: Generate interval
-
-        // So far returns same obstacles
-        return new ObstacleData(40, ObstacleType.cactus);
+    @Override
+    public boolean isEmpty() {
+        return obstaclesData.isEmpty();
     }
 }

@@ -17,22 +17,20 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.LinkedList;
 
-public class StaticFiniteLevel implements LevelStrategy {
+public class InfiniteLevelData implements LevelStrategy {
+
     final static String baseSpeedKey = "baseSpeed";
-    final static String timelineKey = "timeline";
+    final static String firstObstacleKey = "firstObstacle";
     final static String intervalKey = "interval";
     final static String typeKey = "type";
 
-    private int baseSpeed;
-    private LinkedList<ObstacleData> obstaclesData;
+    ObstacleData currentObstacle;
+    int baseSpeed;
 
-    public StaticFiniteLevel(int fileID, Resources resources) {
-        obstaclesData = new LinkedList<>();
+    public InfiniteLevelData(int fileID, Resources resources) {
         getDataFromFile(fileID, resources);
     }
 
@@ -40,13 +38,10 @@ public class StaticFiniteLevel implements LevelStrategy {
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(baseSpeedKey);
-            JSONArray timeline = leveldata.getJSONArray(timelineKey);
-            for (int i = 0; i < timeline.length(); i++) {
-                JSONObject currentObject = timeline.getJSONObject(i);
-                int interval = currentObject.getInt(intervalKey);
-                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(typeKey));
-                obstaclesData.add(new ObstacleData(interval, type));
-            }
+            JSONObject firstObstacle = leveldata.getJSONObject(firstObstacleKey);
+            int interval = firstObstacle.getInt(intervalKey);
+            ObstacleType type = Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey));
+            currentObstacle = new ObstacleData(interval, type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -54,12 +49,19 @@ public class StaticFiniteLevel implements LevelStrategy {
 
     @Override
     public int getCurrentTimeInterval() {
-        return obstaclesData.getFirst().getInterval();
+        return currentObstacle.getInterval();
     }
 
     @Override
     public ObstacleType getNewObstacleType() {
-        return obstaclesData.removeFirst().getType();
+        ObstacleType newObstacleType = currentObstacle.getType();
+        currentObstacle = generateNextObstacle(currentObstacle.getType());
+        return newObstacleType;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
     }
 
     @Override
@@ -67,8 +69,11 @@ public class StaticFiniteLevel implements LevelStrategy {
         return baseSpeed;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return obstaclesData.isEmpty();
+    private ObstacleData generateNextObstacle(ObstacleType obstacleType) {
+        // TODO: Generate obstacle type
+        // TODO: Generate interval
+
+        // So far returns same obstacles
+        return new ObstacleData(40, ObstacleType.cactus);
     }
 }

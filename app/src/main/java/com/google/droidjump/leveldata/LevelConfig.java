@@ -47,10 +47,10 @@ public class LevelConfig {
     public LevelStrategy getLevelStrategy() {
         switch (levelType) {
             case Infinite:
-                levelStrategy = new InfiniteLevel(resourceId, context.getResources());
+                levelStrategy = new InfiniteLevelData(resourceId, context.getResources());
                 break;
             case Finite:
-                levelStrategy = new StaticFiniteLevel(resourceId, context.getResources());
+                levelStrategy = new FiniteLevelData(resourceId, context.getResources());
                 break;
             case FiniteGenerated:
                 break;
