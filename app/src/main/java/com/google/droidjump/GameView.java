@@ -86,7 +86,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         int droidY = screenY - screenMargin;
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
-        obstacleList = new LinkedList<>();
     }
 
     @Override
@@ -244,8 +243,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawPlatform(Canvas canvas) {
         int platformY = screenY - platform.getHeight();
-        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
+        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth()) {
             canvas.drawBitmap(platform, curPlatformX, platformY, /* paint= */ null);
+        }
     }
 
     private void drawObstacles(Canvas canvas) {
@@ -258,7 +258,6 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO(dnikolskaia): Serialize current level data and put it in some container.
         levelTimePoints = 200;
         levelSpeed = 50;
-        // TODO(dnikolskaia): Replace a hardcoded obstacleList with data from JSON (Assigned to Daria)
         obstacleList = new LinkedList<>();
         int batY = screenY - 700; // random hardcoded value
         obstacleList.add(new Bat(screenX, batY, getResources()));
@@ -275,8 +274,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void handleCollision() {
         for (Obstacle obstacle : obstacleList) {
-            if (checkIntersection(droid, obstacle))
+            if (checkIntersection(droid, obstacle)) {
                 failGame();
+            }
         }
     }
 
