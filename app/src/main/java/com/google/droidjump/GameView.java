@@ -136,12 +136,15 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
             ObstacleType newObstacleType = level.getNewObstacleType();
+            // Adding new obstacle to game.
             switch (newObstacleType){
                 case cactus:
                     obstacleList.add(new Cactus(screenX, screenY - groundHeight, getResources()));
                     break;
                 case palm:
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
+                    break;
+                case bat:
                     break;
             }
             intervalTimePoint = GameConstants.INTERVAL_START_TIME;

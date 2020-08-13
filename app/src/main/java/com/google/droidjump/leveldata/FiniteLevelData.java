@@ -49,7 +49,7 @@ public class FiniteLevelData implements LevelStrategy {
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+           Log.e("FiniteLevelData", "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 
