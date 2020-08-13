@@ -48,21 +48,10 @@ public class Bat extends Obstacle implements TwoStepAnimative {
     }
 
     public void useFirstStepBitmap() {
-        picture = batTypes.get(Wing.left.value);
+        picture = batTypes.get(0);
     }
 
     public void useSecondStepBitmap() {
-        picture = batTypes.get(Wing.right.value);
-    }
-
-    private enum Wing {
-        left(0),
-        right(1);
-
-        private int value;
-
-        Wing(int value) {
-            this.value = value;
-        }
+        picture = batTypes.get(1);
     }
 }
