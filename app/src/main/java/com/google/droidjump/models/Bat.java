@@ -64,9 +64,5 @@ public class Bat extends Obstacle implements TwoStepAnimative {
         Wing(int value) {
             this.value = value;
         }
-
-        public int getValue() {
-            return value;
-        }
     }
 }

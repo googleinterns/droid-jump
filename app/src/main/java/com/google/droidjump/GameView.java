@@ -253,11 +253,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container (Assigned to Daria)
+        // TODO(dnikolskaia): Serialize current level data and put it in some container.
         levelTimePoints = 200;
         levelSpeed = 50;
+        // TODO(dnikolskaia): Replace a hardcoded obstacleList with data from JSON (Assigned to Daria)
         obstacleList = new LinkedList<>();
-        // Example of bat animation: TODO: Replace a hardcoded obstacleList with data from JSON (Assigned to Daria)
         int batY = screenY - 700; // random hardcoded value
         obstacleList.add(new Bat(screenX, batY, getResources()));
     }

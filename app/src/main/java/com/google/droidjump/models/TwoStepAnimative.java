@@ -17,7 +17,7 @@
 package com.google.droidjump.models;
 
 /**
- * Represents the common behaviour of objects that must animate
+ * Represents the common behaviour of objects that must animate.
  */
 public interface TwoStepAnimative {
 
