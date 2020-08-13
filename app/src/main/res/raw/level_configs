@@ -6,10 +6,9 @@
       "levelType": "Finite"
     },
     {
-      "levelName": "Infinite level",
-      "resourceName": "infinite_level",
-      "levelType": "Infinite"
-
+      "levelName": "2",
+      "resourceName": "level1",
+      "levelType": "Finite"
     }
   ]
 }
