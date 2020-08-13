@@ -70,8 +70,8 @@ public class InfiniteLevel implements LevelStrategy {
     }
 
     private ObstacleData generateNextObstacle(ObstacleType obstacleType) {
-        // TODO: Generate obstacle type
-        // TODO: Generate interval
+        // TODO(dnikolskaia): Generate obstacle type
+        // TODO(dnikolskaia): Generate interval
 
         // So far returns same obstacles
         return new ObstacleData(40, ObstacleType.cactus);
