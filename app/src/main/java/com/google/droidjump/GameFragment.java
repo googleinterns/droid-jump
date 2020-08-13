@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
@@ -44,14 +45,16 @@ public class GameFragment extends Fragment {
 
         // Writing size to the screen variable.
         defaultDisplay.getSize(screen);
-
         gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return gameView;
+        View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
+        ConstraintLayout layout = rootView.findViewById(R.id.game_layout);
+        layout.addView(gameView);
+        return rootView;
     }
 
     @Override
