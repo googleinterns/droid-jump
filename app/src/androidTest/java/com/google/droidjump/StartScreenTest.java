@@ -58,10 +58,10 @@ public class StartScreenTest {
 
     @Test
     public void startNewGame() {
-        // Set the handpicked current level
+        // Set the handpicked current level.
         int testingCurrentLevel = GameConstants.GAME_LEVELS_COUNT / 2;
         LevelManager.setCurrentLevel(testingCurrentLevel);
-        // Click on new game button
+        // Click on new game button.
         onView(withId(R.id.new_game_button)).perform(click());
         assertEquals(LevelManager.getCurrentLevel(), GameConstants.FIRST_LEVEL_ID);
         assertEquals(LevelManager.getLastLevel(), GameConstants.FIRST_LEVEL_ID);

@@ -72,7 +72,6 @@ public class LevelsScreenTest {
                 lastLevel = LevelManager.getLastLevel();
             }
             int notAvailableLevelStartsFromLevel = lastLevel + 1;
-
             int notAvailableLevel = (int) (Math.random() *
                     (levelsCount - notAvailableLevelStartsFromLevel + 1) + notAvailableLevelStartsFromLevel);
             onView(withText(String.valueOf(notAvailableLevel))).perform(click());
