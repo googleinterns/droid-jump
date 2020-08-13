@@ -34,7 +34,7 @@ public class JSONReader {
             jsonString = scanner.useDelimiter("\\A").next();
             is.close();
         } catch (Resources.NotFoundException | IOException e) {
-            e.printStackTrace();
+            Log.e("JSONReader", "Failed to open resource: " + e.getMessage());
         }
         try {
             jsonObject = new JSONObject(jsonString);
