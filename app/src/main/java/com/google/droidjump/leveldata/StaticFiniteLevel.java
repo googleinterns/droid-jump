@@ -27,6 +27,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.LinkedList;
 
+/**
+ * Manages finite level data.
+ */
 public class StaticFiniteLevel implements LevelStrategy {
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;

@@ -16,6 +16,9 @@
 
 package com.google.droidjump.leveldata;
 
+/**
+ * Describes behavior for managing levels.
+ */
 public interface LevelStrategy {
     int getCurrentTimeInterval();
 

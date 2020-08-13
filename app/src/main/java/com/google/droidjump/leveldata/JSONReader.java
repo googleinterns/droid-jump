@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/**
+ * Reads JSON files and converts data to JSONObjects.
+ */
 public class JSONReader {
     public static JSONObject getJSONObjectFromResource(int fileID, Resources resources) {
         String jsonString = "";

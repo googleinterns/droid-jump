@@ -22,6 +22,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Manages infinite level data.
+ */
 public class InfiniteLevel implements LevelStrategy {
     ObstacleData currentObstacle;
     int baseSpeed;

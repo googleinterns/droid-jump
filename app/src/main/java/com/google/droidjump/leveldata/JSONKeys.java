@@ -16,6 +16,9 @@
 
 package com.google.droidjump.leveldata;
 
+/**
+ * Stores keys for level properties in JSON files.
+ */
 public interface JSONKeys {
     final static String BASE_SPEED_KEY = "baseSpeed";
     final static String TIMELINE_KEY = "timeline";
