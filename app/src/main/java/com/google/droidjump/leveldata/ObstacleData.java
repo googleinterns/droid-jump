@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.models;
+package com.google.droidjump.leveldata;
 
-import android.content.res.Resources;
-import com.google.droidjump.R;
+/**
+ * Represents info about obstacle in timeline.
+ */
+public class ObstacleData {
+    private int interval;
+    private ObstacleType type;
 
-public class Cactus extends Obstacle {
+    ObstacleData(int interval, ObstacleType type) {
+        this.interval = interval;
+        this.type = type;
+    }
 
-    public Cactus(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.cactus, resources);
+    public int getInterval() {
+        return interval;
+    }
+
+    public ObstacleType getType() {
+        return type;
     }
 }

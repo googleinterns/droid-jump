@@ -15,18 +15,28 @@
   ~ limitations under the License.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.droidjump.MainActivity">
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/row_level_item_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/row_level_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="@dimen/fab_margin"
+            android:textColor="@color/cardview_shadow_start_color"
+            android:textStyle="bold"
+            tools:ignore="PrivateResource" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

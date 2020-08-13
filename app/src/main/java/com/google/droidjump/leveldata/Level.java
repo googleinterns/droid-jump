@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.models;
+package com.google.droidjump.leveldata;
 
-import android.content.res.Resources;
 import com.google.droidjump.R;
 
-public class Cactus extends Obstacle {
+/**
+ * Represents level configuration.
+ */
+public enum Level {
+    INFINITE(null),
+    LEVEL1(R.raw.level1);
 
-    public Cactus(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.cactus, resources);
+    public final Integer fileId;
+
+    Level(Integer fileId) {
+        this.fileId = fileId;
     }
 }
