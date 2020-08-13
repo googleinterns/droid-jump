@@ -40,8 +40,7 @@ public class InfiniteLevel implements LevelStrategy {
         try {
             baseSpeed = leveldata.getInt(baseSpeedKey);
             JSONObject firstObstacle = leveldata.getJSONObject(firstObstacleKey);
-            int interval = firstObstacle.getInt(intervalKey);
-            currentObstacle = new ObstacleData(interval, Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey)));
+            currentObstacle = new ObstacleData(firstObstacle.getInt(intervalKey), Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey)));
         } catch (JSONException e) {
             Log.e("InfiniteLevel", "Failed to get data from JSONObject: " + e.getMessage());
         }
