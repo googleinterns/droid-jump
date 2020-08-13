@@ -17,6 +17,7 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +43,7 @@ public class InfiniteLevel implements LevelStrategy {
             int interval = firstObstacle.getInt(intervalKey);
             currentObstacle = new ObstacleData(interval, Enum.valueOf(ObstacleType.class, firstObstacle.getString(typeKey)));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("InfiniteLevel", "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 

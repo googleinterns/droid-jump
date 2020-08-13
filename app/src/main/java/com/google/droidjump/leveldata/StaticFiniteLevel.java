@@ -17,6 +17,7 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ public class StaticFiniteLevel implements LevelStrategy {
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("StaticFiniteLevel", "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 

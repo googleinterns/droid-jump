@@ -17,6 +17,7 @@
 package com.google.droidjump.leveldata;
 
 import android.content.res.Resources;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class JSONReader {
         try {
             jsonObject = new JSONObject(jsonString);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("JSONReader", "Failed to parse JSON: " + e.getMessage());
         }
         return jsonObject;
     }
