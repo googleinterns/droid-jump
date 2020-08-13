@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.droidjump.models.LevelManager;
 
 /**
  * Displays Start Screen.
@@ -62,7 +63,7 @@ public class StartFragment extends Fragment {
     }
 
     private void startNewGame(View view) {
-        activity.resetGameData();
+        LevelManager.resetGameData();
         findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
     }
 
