@@ -44,9 +44,7 @@ public class LevelManager {
         int currentLevel = getCurrentLevel();
         int lastLevel = getLastLevel();
         if (currentLevel < levelsCount) {
-            // Increasing the current level
             gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevel);
-            // Increasing the last level
             if (currentLevel > lastLevel) {
                 gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevel);
             }
