@@ -129,7 +129,9 @@ public class GameView extends SurfaceView implements Runnable {
     private void checkTimePoint() {
         if (level.isEmpty()) {
             // When the obstacles end - the level is considered passed.
-            winGame();
+            if (obstacleList.isEmpty()){
+                winGame();
+            }
             return;
         }
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
