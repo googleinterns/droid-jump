@@ -22,7 +22,7 @@
     android:layout_height="match_parent"
     tools:context=".GameFailureFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -58,13 +58,13 @@
             app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/how_to_play_button"
             style="@style/HowToPlayButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/retry_button"
             style="@style/RoundButton"
             android:src="@drawable/ic_replay"
@@ -79,5 +79,5 @@
             android:contentDescription="@string/menu_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -24,13 +24,12 @@ import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Represents main activity.
  */
 public class MainActivity extends AppCompatActivity {
-
     private int levelsCount;
     private SharedPreferences gameData;
     private SharedPreferences.Editor gameDataEditor;
