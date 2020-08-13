@@ -19,7 +19,6 @@ package com.google.droidjump;
 import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
-import static com.google.droidjump.leveldata.ObstacleType.*;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,7 +30,6 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Cactus;
@@ -57,7 +55,6 @@ public class GameView extends SurfaceView implements Runnable {
     private int screenMargin;
     private int timePoint;
     private int intervalTimePoint;
-    private int levelTimePoints;
     private int levelSpeed;
     private int platformX = 0;
     private int groundHeight;
@@ -69,7 +66,6 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
-        receiveLevelDetails();
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
         surfaceHolder = getHolder();
@@ -79,6 +75,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.isPlaying = isPlaying;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
+        receiveLevelDetails();
 
         // Droid should be on a ground height, but platform includes grass.
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
@@ -127,10 +124,6 @@ public class GameView extends SurfaceView implements Runnable {
         updateDroidCoordinates();
         updateObstaclesCoordinates();
         updatePlatformCoordinates();
-        // Level Finishing
-        if (timePoint == levelTimePoints) {
-            winGame();
-        }
     }
 
     private void checkTimePoint() {
@@ -247,9 +240,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container
-        levelTimePoints = 200;
-        levelSpeed = 50;
+        levelSpeed = level.getBaseSpeed();
     }
 
     private Paint createLevelPaint() {
