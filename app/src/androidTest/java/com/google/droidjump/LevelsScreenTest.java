@@ -9,10 +9,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import android.content.Intent;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.google.droidjump.models.LevelManager;
 import org.junit.Before;
@@ -22,15 +20,17 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class LevelsScreenTest {
-    private static final Intent MAIN_ACTIVITY_INTENT =
-            new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), MainActivity.class);
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {
-        activityTestRule.launchActivity(MAIN_ACTIVITY_INTENT);
+        // Running the levels screen.
+        activityTestRule.getActivity().getSupportFragmentManager()
+                .beginTransaction().replace(R.id.activity_wrapper, new LevelsFragment());
         onView(withId(R.id.level_button)).perform(click());
+
+        // Setting the game data.
         int lastLevel = (int) (Math.random() * (LevelManager.getLevelsCount()
                 - GameConstants.FIRST_LEVEL_ID + 1) + GameConstants.FIRST_LEVEL_ID);
         LevelManager.setLastLevel(lastLevel);
@@ -64,10 +64,19 @@ public class LevelsScreenTest {
 
     @Test
     public void chooseNotAvailableLevel() {
-        // Set the last and the current level to 1.
-        LevelManager.resetGameData();
-        int biggestLevel = LevelManager.getLevelsCount();
-        onView(withText(String.valueOf(biggestLevel))).perform(click());
-        assertNotEquals(LevelManager.getCurrentLevel(), biggestLevel);
+        int levelsCount = LevelManager.getLevelsCount();
+        if (levelsCount > 1) {
+            int lastLevel = LevelManager.getLastLevel();
+            if (lastLevel == levelsCount) {
+                LevelManager.resetGameData();
+                lastLevel = LevelManager.getLastLevel();
+            }
+            int notAvailableLevelStartsFromLevel = lastLevel + 1;
+
+            int notAvailableLevel = (int) (Math.random() *
+                    (levelsCount - notAvailableLevelStartsFromLevel + 1) + notAvailableLevelStartsFromLevel);
+            onView(withText(String.valueOf(notAvailableLevel))).perform(click());
+            assertNotEquals(LevelManager.getCurrentLevel(), notAvailableLevel);
+        }
     }
 }
