@@ -51,7 +51,7 @@ public class StaticFiniteLevel implements LevelStrategy {
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-            Log.e("StaticFiniteLevel", "Failed to get data from JSONObject: " + e.getMessage());
+            Log.e(StaticFiniteLevel.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 

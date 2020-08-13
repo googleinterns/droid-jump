@@ -39,7 +39,7 @@ public class InfiniteLevel implements LevelStrategy {
         try {
             baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
         } catch (JSONException e) {
-            Log.e("InfiniteLevel", "Failed to get data from JSONObject: " + e.getMessage());
+            Log.e(InfiniteLevel.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 
