@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 abstract class GameItem {
+
     protected int x;
     protected int y;
     protected Bitmap picture;

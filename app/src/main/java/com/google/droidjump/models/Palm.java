@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import com.google.droidjump.R;
 
 public class Palm extends Obstacle {
+
     public Palm(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.mipmap.palm, resources);
     }

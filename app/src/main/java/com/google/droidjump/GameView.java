@@ -33,8 +33,10 @@ import android.view.SurfaceView;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelData;
 import com.google.droidjump.leveldata.ObstacleType;
+import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.Obstacle;
+import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,11 +59,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int intervalTimePoint;
     private int levelTimePoints;
     private int levelSpeed;
+    private List<Obstacle> obstacleList;
     private LevelData levelData;
     private int platformX = 0;
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
-    private List<Obstacle> obstacleList;
-
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
@@ -70,12 +71,12 @@ public class GameView extends SurfaceView implements Runnable {
         receiveLevelDetails();
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
-        timePoint = 0;
         surfaceHolder = getHolder();
         currentLevel = activity.getCurrentLevel();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
+        receiveLevelDetails();
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
 
@@ -153,8 +154,13 @@ public class GameView extends SurfaceView implements Runnable {
         Iterator<Obstacle> it = obstacleList.iterator();
         while (it.hasNext()) {
             Obstacle obstacle = it.next();
+            // Animating bat.
+            if (obstacle instanceof Bat) {
+                Bat bat = (Bat) obstacle;
+                animateGameItem(bat);
+            }
+            // Moving obstacles to the left.
             obstacle.setX(obstacle.getX() - levelSpeed);
-
             // Removal of passed obstacles
             if (obstacle.getX() + obstacle.getWidth() < 0)
                 it.remove();
@@ -172,12 +178,8 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Animating droid.
-            if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
-                droid.useFirstStepBitmap();
-            } else {
-                droid.useSecondStepBitmap();
-            }
+            // Droid Animation.
+            animateGameItem(droid);
         }
         if (droid.getY() != droid.getInitialY()) {
             // Decreasing droid Y position to made they jump smoothly.
@@ -216,6 +218,14 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    private void animateGameItem(TwoStepAnimative object) {
+        if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
+            object.useFirstStepBitmap();
+        } else {
+            object.useSecondStepBitmap();
+        }
+    }
+
     private void failGame() {
         isPlaying = false;
         findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
@@ -243,9 +253,13 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void receiveLevelDetails() {
-        // TODO: Serialize current level data and put it in some container
+        // TODO(dnikolskaia): Serialize current level data and put it in some container.
         levelTimePoints = 200;
         levelSpeed = 50;
+        // TODO(dnikolskaia): Replace a hardcoded obstacleList with data from JSON (Assigned to Daria)
+        obstacleList = new LinkedList<>();
+        int batY = screenY - 700; // random hardcoded value
+        obstacleList.add(new Bat(screenX, batY, getResources()));
     }
 
     private Paint createLevelPaint() {

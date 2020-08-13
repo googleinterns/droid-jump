@@ -25,6 +25,10 @@ public interface GameConstants {
     int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image.
     int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image.
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
+    // The variable is responsible for how much time ticks full animation of the object goes.
+    int FULL_ANIMATION_TICKS = 4;
+    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate the object smoothly.
+    int ANIMATION_STEP_TICKS = 2;
     int GAME_LEVELS_COUNT = 4; // Count of game levels.
     int FIRST_LEVEL_ID = 1; // Default value.
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
