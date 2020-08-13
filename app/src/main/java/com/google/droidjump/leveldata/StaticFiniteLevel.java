@@ -16,6 +16,10 @@
 
 package com.google.droidjump.leveldata;
 
+import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.INTERVAL_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.TIMELINE_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.TYPE_KEY;
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONArray;
@@ -24,11 +28,6 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 
 public class StaticFiniteLevel implements LevelStrategy {
-    final static String baseSpeedKey = "baseSpeed";
-    final static String timelineKey = "timeline";
-    final static String intervalKey = "interval";
-    final static String typeKey = "type";
-
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
@@ -40,12 +39,12 @@ public class StaticFiniteLevel implements LevelStrategy {
     private void getDataFromFile(Level level, Resources resources) {
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
         try {
-            baseSpeed = leveldata.getInt(baseSpeedKey);
-            JSONArray timeline = leveldata.getJSONArray(timelineKey);
+            baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
+            JSONArray timeline = leveldata.getJSONArray(TIMELINE_KEY);
             for (int i = 0; i < timeline.length(); i++) {
                 JSONObject currentObject = timeline.getJSONObject(i);
-                int interval = currentObject.getInt(intervalKey);
-                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(typeKey));
+                int interval = currentObject.getInt(INTERVAL_KEY);
+                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {

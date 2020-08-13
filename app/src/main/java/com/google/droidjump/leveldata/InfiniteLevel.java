@@ -16,15 +16,13 @@
 
 package com.google.droidjump.leveldata;
 
+import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class InfiniteLevel implements LevelStrategy {
-
-    final static String baseSpeedKey = "baseSpeed";
-
     ObstacleData currentObstacle;
     int baseSpeed;
 
@@ -36,7 +34,7 @@ public class InfiniteLevel implements LevelStrategy {
     private void getDataFromFile(Level level, Resources resources) {
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
         try {
-            baseSpeed = leveldata.getInt(baseSpeedKey);
+            baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
         } catch (JSONException e) {
             Log.e("InfiniteLevel", "Failed to get data from JSONObject: " + e.getMessage());
         }
