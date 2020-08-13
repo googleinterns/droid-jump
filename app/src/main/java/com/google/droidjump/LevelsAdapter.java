@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import com.google.droidjump.leveldata.LevelConfig;
+import java.util.ArrayList;
 
 /**
  * Represents LevelsAdapter.
@@ -31,25 +33,25 @@ import android.widget.TextView;
 public class LevelsAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private int[] levels;
-    private int lastLevel;
+    private ArrayList<LevelConfig> levels;
+    private int lastLevelIndex;
 
-    public LevelsAdapter(Context context, int[] levels, int lastLevel) {
+    public LevelsAdapter(Context context, ArrayList<LevelConfig> levels, int lastLevelIndex) {
         this.context = context;
         this.levels = levels;
-        this.lastLevel = lastLevel;
+        this.lastLevelIndex = lastLevelIndex;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return levels.length;
+        return levels.size();
     }
 
     @Override
     public Object getItem(int index) {
         // Receives index, returns level.
-        return levels[index];
+        return index;
     }
 
     @Override
@@ -62,10 +64,10 @@ public class LevelsAdapter extends BaseAdapter {
     public View getView(int index, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.row_level_item, /* root= */ null);
         TextView textView = view.findViewById(R.id.row_level_item_text);
-        textView.setText(String.valueOf(levels[index]));
-        if (lastLevel > levels[index]) {
+        textView.setText(levels.get(index).getLevelName());
+        if (lastLevelIndex > index) {
             textView.setTextColor(Color.BLACK);
-        } else if (lastLevel == levels[index]) {
+        } else if (lastLevelIndex == index) {
             textView.setTextColor(Color.WHITE);
             textView.setBackgroundColor(Color.BLACK);
         }

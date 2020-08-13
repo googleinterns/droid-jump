@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * Represents main activity.
  */
 public class MainActivity extends AppCompatActivity {
-    private int levelsCount;
+    private int levelsLastIndex;
     private SharedPreferences gameData;
     private SharedPreferences.Editor gameDataEditor;
     private ArrayList<LevelConfig> gameLevels;
@@ -45,23 +45,23 @@ public class MainActivity extends AppCompatActivity {
         gameData = getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         gameDataEditor = gameData.edit();
         gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, this);
-        levelsCount = GameConstants.GAME_LEVELS_COUNT;
+        levelsLastIndex = gameLevels.size() - 1;
         setContentView(R.layout.main_activity);
     }
 
-    public int getLevelsCount() {
-        return levelsCount;
+    public int getLevelsLastIndex() {
+        return levelsLastIndex;
     }
 
     public void onCurrentLevelCompleted() {
-        int currentLevel = getCurrentLevelIndex();
+        int currentLevelIndex = getCurrentLevelIndex();
         int lastLevel = getLastLevelIndex();
-        if (currentLevel < levelsCount) {
+        if (currentLevelIndex < levelsLastIndex) {
             // Increasing the current level
-            gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevel);
+            gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevelIndex);
             // Increasing the last level
-            if (currentLevel > lastLevel) {
-                gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevel);
+            if (currentLevelIndex > lastLevel) {
+                gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevelIndex);
             }
             gameDataEditor.apply();
         }
@@ -98,5 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
     public String getCurrentLevelName(){
         return gameLevels.get(getCurrentLevelIndex()).getLevelName();
+    }
+
+    public ArrayList<LevelConfig> getGameLevels(){
+        return (ArrayList<LevelConfig>) gameLevels.clone();
     }
 }
