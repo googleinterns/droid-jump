@@ -53,6 +53,7 @@ public class LevelConfig {
                 levelStrategy = new FiniteLevelData(resourceId, context.getResources());
                 break;
             case FiniteGenerated:
+                // TODO(dnikolskaia): create class for Finite Generated Level
                 break;
         }
         return levelStrategy;
