@@ -19,6 +19,7 @@ package com.google.droidjump.leveldata;
 import android.content.Context;
 
 public class LevelConfig {
+    private Context context;
     private String levelName;
     private LevelType levelType;
     private LevelStrategy levelStrategy;
@@ -27,15 +28,8 @@ public class LevelConfig {
     LevelConfig(String levelName, LevelType levelType, String resourceName, Context context) {
         this.levelName = levelName;
         this.levelType = levelType;
+        this.context = context;
         resourceId = context.getResources().getIdentifier(resourceName, "raw", context.getPackageName());
-
-        switch (levelType) {
-            case Infinite:
-                levelStrategy = new InfiniteLevel(resourceId, context.getResources());
-                break;
-            default:
-                levelStrategy = new StaticFiniteLevel(resourceId, context.getResources());
-        }
     }
 
     public String getLevelName() {
@@ -51,6 +45,16 @@ public class LevelConfig {
     }
 
     public LevelStrategy getLevelStrategy() {
+        switch (levelType) {
+            case Infinite:
+                levelStrategy = new InfiniteLevel(resourceId, context.getResources());
+                break;
+            case Finite:
+                levelStrategy = new StaticFiniteLevel(resourceId, context.getResources());
+                break;
+            case FiniteGenerated:
+                break;
+        }
         return levelStrategy;
     }
 }
