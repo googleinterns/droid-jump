@@ -19,6 +19,9 @@ package com.google.droidjump.models;
 import android.content.res.Resources;
 import com.google.droidjump.R;
 
+/**
+ * Represents obstacle Cactus.
+ */
 public class Cactus extends Obstacle {
 
     public Cactus(int x, int yWithBitmapOffset, Resources resources) {
