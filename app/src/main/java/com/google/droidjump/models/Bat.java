@@ -17,10 +17,37 @@
 package com.google.droidjump.models;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import com.google.droidjump.R;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Bat extends Obstacle {
+/**
+ * Represents obstacle Bat.
+ */
+public class Bat extends Obstacle implements TwoStepAnimative {
+
+    private List<Bitmap> batTypes;
+
     public Bat(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.mipmap.bat, resources);
+        // Extracting bat types from full bat picture.
+        Bitmap fullBatPicture = BitmapFactory.decodeResource(resources, R.mipmap.bat);
+        int halfWidth = fullBatPicture.getWidth() / 2;
+        Bitmap leftBatWingPicture = Bitmap.createBitmap(fullBatPicture, 0, 0, halfWidth, fullBatPicture.getHeight());
+        Bitmap rightBatWingPicture = Bitmap.createBitmap(fullBatPicture, halfWidth, 0, halfWidth, fullBatPicture.getHeight());
+        batTypes = new ArrayList<>();
+        batTypes.add(leftBatWingPicture);
+        batTypes.add(rightBatWingPicture);
+        picture = leftBatWingPicture;
+    }
+
+    public void useFirstStepBitmap() {
+        picture = batTypes.get(0);
+    }
+
+    public void useSecondStepBitmap() {
+        picture = batTypes.get(1);
     }
 }

@@ -33,9 +33,11 @@ import android.view.SurfaceView;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Cactus;
+import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.Palm;
+import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,10 +58,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int timePoint;
     private int intervalTimePoint;
     private int levelSpeed;
+    private List<Obstacle> obstacleList;
     private int platformX = 0;
     private int groundHeight;
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
-    private List<Obstacle> obstacleList;
     private LevelStrategy level;
 
 
@@ -81,7 +83,6 @@ public class GameView extends SurfaceView implements Runnable {
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
 
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
-        obstacleList = new LinkedList<>();
     }
 
     @Override
@@ -89,6 +90,7 @@ public class GameView extends SurfaceView implements Runnable {
         while (isPlaying) {
             updateGameState();
             drawScene();
+            handleCollision();
             sleep();
             timePoint++;
             intervalTimePoint++;
@@ -155,11 +157,17 @@ public class GameView extends SurfaceView implements Runnable {
         Iterator<Obstacle> it = obstacleList.iterator();
         while (it.hasNext()) {
             Obstacle obstacle = it.next();
+            // Animating bat.
+            if (obstacle instanceof Bat) {
+                Bat bat = (Bat) obstacle;
+                animateGameItem(bat);
+            }
+            // Moving obstacles to the left.
             obstacle.setX(obstacle.getX() - levelSpeed);
-
             // Removal of passed obstacles
-            if (obstacle.getX() + obstacle.getWidth() < 0)
+            if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
+            }
         }
     }
 
@@ -174,12 +182,8 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Animating droid.
-            if (timePoint % Droid.fullAnimationTicks < Droid.animationStepTicks) {
-                droid.useFirstStepBitmap();
-            } else {
-                droid.useSecondStepBitmap();
-            }
+            // Droid Animation.
+            animateGameItem(droid);
         }
         if (droid.getY() != droid.getInitialY()) {
             // Decreasing droid Y position to made they jump smoothly.
@@ -218,6 +222,14 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    private void animateGameItem(TwoStepAnimative object) {
+        if (timePoint % GameConstants.FULL_ANIMATION_TICKS < GameConstants.ANIMATION_STEP_TICKS) {
+            object.useFirstStepBitmap();
+        } else {
+            object.useSecondStepBitmap();
+        }
+    }
+
     private void failGame() {
         isPlaying = false;
         findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
@@ -234,8 +246,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawPlatform(Canvas canvas) {
         int platformY = screenY - platform.getHeight();
-        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
+        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth()) {
             canvas.drawBitmap(platform, curPlatformX, platformY, /* paint= */ null);
+        }
     }
 
     private void drawObstacles(Canvas canvas) {
@@ -246,6 +259,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void receiveLevelDetails() {
         levelSpeed = level.getBaseSpeed();
+        obstacleList = new LinkedList<>();
+        int batY = screenY - 700; // random hardcoded value
+        obstacleList.add(new Bat(screenX, batY, getResources()));
     }
 
     private Paint createLevelPaint() {
@@ -255,5 +271,20 @@ public class GameView extends SurfaceView implements Runnable {
         float headerTextSize = getResources().getDimension(R.dimen.header_text_size);
         paint.setTextSize(headerTextSize);
         return paint;
+    }
+
+    public void handleCollision() {
+        for (Obstacle obstacle : obstacleList) {
+            if (checkIntersection(droid, obstacle)) {
+                failGame();
+            }
+        }
+    }
+
+    private boolean checkIntersection(Droid droid, Obstacle obstacle) {
+        return !(droid.getY() > obstacle.getY() + obstacle.getHeight()
+                || droid.getY() + droid.getHeight() < obstacle.getY()
+                || droid.getX() > obstacle.getX() + obstacle.getWidth()
+                || droid.getX() + droid.getWidth() < obstacle.getX());
     }
 }
