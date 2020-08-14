@@ -29,6 +29,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.droidjump.models.LevelManager;
 import java.util.Objects;
 
 /**
@@ -44,7 +45,7 @@ public class LevelsFragment extends Fragment {
         activity = Objects.requireNonNull((MainActivity) getActivity());
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), loadLevels(),
-                activity.getLastLevel());
+                LevelManager.getLastLevel());
     }
 
     @SuppressLint("SetTextI18n")
@@ -61,8 +62,8 @@ public class LevelsFragment extends Fragment {
         // Adding onClick events.
         gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
             int level = (int) adapter.getItem(index);
-            if (activity.getLastLevel() >= level) {
-                activity.setCurrentLevel(level);
+            if (LevelManager.getLastLevel() >= level) {
+                LevelManager.setCurrentLevel(level);
                 findNavController(view).navigate(
                         R.id.action_levels_screen_to_game_screen);
             }
@@ -77,7 +78,7 @@ public class LevelsFragment extends Fragment {
     }
 
     private int[] loadLevels() {
-        int levelsCount = activity.getLevelsCount();
+        int levelsCount = LevelManager.getLevelsCount();
         int[] levels = new int[levelsCount];
         for (int i = 0; i < levelsCount; i++) {
             levels[i] = i + 1;

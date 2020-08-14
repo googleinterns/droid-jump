@@ -47,7 +47,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/box_title"
+                android:id="@+id/how_to_play_title"
                 style="@style/ScreenHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

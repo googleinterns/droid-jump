@@ -36,6 +36,7 @@ import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
+import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
@@ -74,7 +75,7 @@ public class GameView extends SurfaceView implements Runnable {
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
         surfaceHolder = getHolder();
-        currentLevel = activity.getCurrentLevel();
+        currentLevel = LevelManager.getCurrentLevel();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
