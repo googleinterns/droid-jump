@@ -16,7 +16,6 @@
 
 package com.google.droidjump;
 
-import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 
@@ -37,6 +36,7 @@ import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
@@ -230,12 +230,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void failGame() {
         isPlaying = false;
-        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+        NavigationHelper.navigateToFragment(activity, new GameFailureFragment());
     }
 
     private void winGame() {
         isPlaying = false;
-        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
+        NavigationHelper.navigateToFragment(activity, new GameSuccessFragment());
     }
 
     private void drawDroid(Canvas canvas) {

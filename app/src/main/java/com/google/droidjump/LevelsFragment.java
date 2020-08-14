@@ -17,8 +17,6 @@
 package com.google.droidjump;
 
 
-import static androidx.navigation.Navigation.findNavController;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,23 +27,27 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 import java.util.Objects;
 
 /**
  * Displays Levels Screen.
  */
 public class LevelsFragment extends Fragment {
-    private MainActivity activity;
+    private FragmentActivity activity;
     private LevelsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = Objects.requireNonNull((MainActivity) getActivity());
+        activity = getActivity();
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), loadLevels(),
                 LevelManager.getLastLevel());
+
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @SuppressLint("SetTextI18n")
@@ -64,8 +66,7 @@ public class LevelsFragment extends Fragment {
             int level = (int) adapter.getItem(index);
             if (LevelManager.getLastLevel() >= level) {
                 LevelManager.setCurrentLevel(level);
-                findNavController(view).navigate(
-                        R.id.action_levels_screen_to_game_screen);
+                NavigationHelper.navigateToFragment(activity, new GameFragment());
             }
         });
 

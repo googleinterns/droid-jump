@@ -23,16 +23,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Displays Start Screen.
  */
 public class StartFragment extends Fragment {
+    private FragmentActivity activity;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        activity = getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         Button playButton = rootView.findViewById(R.id.play_button);
         Button levelButton = rootView.findViewById(R.id.level_button);
@@ -50,13 +55,11 @@ public class StartFragment extends Fragment {
     }
 
     private void play(View view) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.activity_wrapper, new GameFragment()).commit();
+        NavigationHelper.navigateToFragment(activity, new GameFragment());
     }
 
     private void chooseLevel(View view) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.activity_wrapper, new LevelsFragment()).commit();
+        NavigationHelper.navigateToFragment(activity, new LevelsFragment());
     }
 
     private void startNewGame(View view) {
@@ -65,7 +68,6 @@ public class StartFragment extends Fragment {
     }
 
     private void goToHowToPlayScreen(View view) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.activity_wrapper, new HowToPlayFragment()).commit();
+        NavigationHelper.navigateToFragment(activity, new HowToPlayFragment());
     }
 }
