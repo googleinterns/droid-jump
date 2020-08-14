@@ -53,6 +53,7 @@ public class StartScreenTest {
     @Test
     public void navigateToLevelsScreen() {
         onView(withId(R.id.level_button)).perform(click());
+
         onView(withId(R.id.choose_level_header)).check(matches(isDisplayed()));
     }
 
@@ -63,6 +64,7 @@ public class StartScreenTest {
         LevelManager.setCurrentLevel(testingCurrentLevel);
         // Click on new game button.
         onView(withId(R.id.new_game_button)).perform(click());
+
         assertEquals(LevelManager.getCurrentLevel(), GameConstants.FIRST_LEVEL_ID);
         assertEquals(LevelManager.getLastLevel(), GameConstants.FIRST_LEVEL_ID);
     }

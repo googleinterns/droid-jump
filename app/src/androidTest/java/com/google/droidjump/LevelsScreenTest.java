@@ -48,6 +48,7 @@ public class LevelsScreenTest {
     public void chooseLastLevel() {
         int lastLevel = LevelManager.getLastLevel();
         onView(withText(String.valueOf(lastLevel))).perform(ViewActions.click());
+
         assertEquals(LevelManager.getCurrentLevel(), lastLevel);
         assertEquals(LevelManager.getLastLevel(), lastLevel);
     }
@@ -59,6 +60,7 @@ public class LevelsScreenTest {
         int availableLevel = (int) (Math.random() *
                 (lastLevel - GameConstants.FIRST_LEVEL_ID + 1) + GameConstants.FIRST_LEVEL_ID);
         onView(withText(String.valueOf(availableLevel))).perform(click());
+
         assertEquals(LevelManager.getCurrentLevel(), availableLevel);
     }
 
@@ -75,6 +77,7 @@ public class LevelsScreenTest {
             int notAvailableLevel = (int) (Math.random() *
                     (levelsCount - notAvailableLevelStartsFromLevel + 1) + notAvailableLevelStartsFromLevel);
             onView(withText(String.valueOf(notAvailableLevel))).perform(click());
+
             assertNotEquals(LevelManager.getCurrentLevel(), notAvailableLevel);
         }
     }
