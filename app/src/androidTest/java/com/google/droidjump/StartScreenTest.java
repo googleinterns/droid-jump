@@ -69,4 +69,10 @@ public class StartScreenTest {
         assertEquals(LevelManager.getCurrentLevel(), FIRST_LEVEL_ID);
         assertEquals(LevelManager.getLastLevel(), FIRST_LEVEL_ID);
     }
+
+    @Test
+    public void navigateToHowToPlayScreen() {
+        onView(ViewMatchers.withId(R.id.how_to_play_button)).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.how_to_play_title)).check(matches(isDisplayed()));
+    }
 }
