@@ -16,36 +16,32 @@
 
 package com.google.droidjump.leveldata;
 
+import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.INTERVAL_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.TIMELINE_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.TYPE_KEY;
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 /**
- * Managing finite level data.
+ * Manages finite level data.
  */
-public class LevelData {
-    final static String BASE_SPEED_KEY = "baseSpeed";
-    final static String TIMELINE_KEY = "timeline";
-    final static String INTERVAL_KEY = "interval";
-    final static String TYPE_KEY = "type";
-
+public class StaticFiniteLevel implements LevelStrategy {
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
-    public LevelData(Level level, Resources resources) {
+    public StaticFiniteLevel(Level level, Resources resources) {
         obstaclesData = new LinkedList<>();
         getDataFromFile(level, resources);
     }
 
     private void getDataFromFile(Level level, Resources resources) {
+        JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
         try {
-            JSONObject leveldata = new JSONObject(getJSONStringFromResource(level.fileId, resources));
             baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
             JSONArray timeline = leveldata.getJSONArray(TIMELINE_KEY);
             for (int i = 0; i < timeline.length(); i++) {
@@ -55,35 +51,26 @@ public class LevelData {
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-            Log.e("LevelData", "Failed to parse JSON: " + e.getMessage());
+            Log.e(StaticFiniteLevel.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 
-    private String getJSONStringFromResource(int fileID, Resources resources) {
-        String jsonString = "";
-        try {
-            InputStream is = resources.openRawResource(fileID);
-            Scanner scanner = new Scanner(is);
-            jsonString = scanner.useDelimiter("\\A").next();
-            is.close();
-        } catch (Resources.NotFoundException | IOException e) {
-            Log.e("LevelData", "Failed to read file: " + e.getMessage());
-        }
-        return jsonString;
-    }
-
+    @Override
     public int getCurrentTimeInterval() {
         return obstaclesData.getFirst().getInterval();
     }
 
+    @Override
     public ObstacleType getNewObstacleType() {
         return obstaclesData.removeFirst().getType();
     }
 
+    @Override
     public int getBaseSpeed() {
         return baseSpeed;
     }
 
+    @Override
     public boolean isEmpty() {
         return obstaclesData.isEmpty();
     }

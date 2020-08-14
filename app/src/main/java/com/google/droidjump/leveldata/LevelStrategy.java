@@ -16,18 +16,15 @@
 
 package com.google.droidjump.leveldata;
 
-import com.google.droidjump.R;
-
 /**
- * Represents level configuration.
+ * Describes behavior for managing levels.
  */
-public enum Level {
-    INFINITE(R.raw.infinite_level),
-    LEVEL1(R.raw.level1);
+public interface LevelStrategy {
+    int getCurrentTimeInterval();
 
-    public final Integer fileId;
+    ObstacleType getNewObstacleType();
 
-    Level(Integer fileId) {
-        this.fileId = fileId;
-    }
+    boolean isEmpty();
+
+    int getBaseSpeed();
 }

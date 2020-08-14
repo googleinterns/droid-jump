@@ -30,8 +30,9 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.Level;
-import com.google.droidjump.leveldata.LevelData;
+import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
@@ -60,14 +61,15 @@ public class GameView extends SurfaceView implements Runnable {
     private int levelTimePoints;
     private int levelSpeed;
     private List<Obstacle> obstacleList;
-    private LevelData levelData;
+    private LevelStrategy level;
     private int platformX = 0;
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
-        levelData = new LevelData(Level.LEVEL1, getResources());
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
+        // TODO: Later, based on the type of level, implement the choice of the strategy
+        level = new InfiniteLevel(Level.INFINITE, getResources());
         receiveLevelDetails();
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
@@ -125,16 +127,14 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void checkTimePoint() {
-        if (levelData.isEmpty()) {
+        if (level.isEmpty()) {
             // When the obstacles end - the level is considered passed.
             winGame();
             return;
         }
 
-        if (intervalTimePoint == levelData.getCurrentTimeInterval()) {
-            //  This is just an example of how we can get
-            //  info about an obstacle that should appear at the moment.
-            ObstacleType newObstacleType = levelData.getNewObstacleType();
+        if (intervalTimePoint == level.getCurrentTimeInterval()) {
+            ObstacleType newObstacleType = level.getNewObstacleType();
             intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         }
     }
@@ -257,7 +257,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void receiveLevelDetails() {
         // TODO(dnikolskaia): Serialize current level data and put it in some container.
         levelTimePoints = 200;
-        levelSpeed = 50;
+        levelSpeed = level.getBaseSpeed();
         obstacleList = new LinkedList<>();
         int batY = screenY - 700; // random hardcoded value
         obstacleList.add(new Bat(screenX, batY, getResources()));

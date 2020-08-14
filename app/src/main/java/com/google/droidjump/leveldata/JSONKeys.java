@@ -16,18 +16,12 @@
 
 package com.google.droidjump.leveldata;
 
-import com.google.droidjump.R;
-
 /**
- * Represents level configuration.
+ * Stores keys for level properties in JSON files.
  */
-public enum Level {
-    INFINITE(R.raw.infinite_level),
-    LEVEL1(R.raw.level1);
-
-    public final Integer fileId;
-
-    Level(Integer fileId) {
-        this.fileId = fileId;
-    }
+public interface JSONKeys {
+    final static String BASE_SPEED_KEY = "baseSpeed";
+    final static String TIMELINE_KEY = "timeline";
+    final static String INTERVAL_KEY = "interval";
+    final static String TYPE_KEY = "type";
 }
