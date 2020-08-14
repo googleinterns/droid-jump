@@ -16,6 +16,9 @@
 
 package com.google.droidjump.leveldata;
 
+/**
+ * Enumerates level types.
+ */
 public enum LevelType {
     Infinite,
     Finite,

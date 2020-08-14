@@ -18,6 +18,9 @@ package com.google.droidjump.leveldata;
 
 import android.content.Context;
 
+/**
+ * Stores level configurations.
+ */
 public class LevelConfig {
     private Context context;
     private String levelName;

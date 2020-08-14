@@ -23,6 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
+/**
+ * Parses info about level configs from resource.
+ */
 public class LevelConfigParser {
     final static String LEVELS_KEY = "levels";
     final static String RESOURCE_NAME_KEY = "resourceName";
