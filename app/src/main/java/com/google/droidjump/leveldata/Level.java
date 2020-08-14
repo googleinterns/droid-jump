@@ -22,7 +22,7 @@ import com.google.droidjump.R;
  * Represents level configuration.
  */
 public enum Level {
-    INFINITE(null),
+    INFINITE(R.raw.infinite_level),
     LEVEL1(R.raw.level1);
 
     public final Integer fileId;

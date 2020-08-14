@@ -16,15 +16,12 @@
 
 package com.google.droidjump.models;
 
-import android.content.res.Resources;
-import com.google.droidjump.R;
-
 /**
- * Represents obstacle Cactus.
+ * Represents the common behaviour of objects that must animate.
  */
-public class Cactus extends Obstacle {
+public interface TwoStepAnimative {
 
-    public Cactus(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.cactus, resources);
-    }
+    void useFirstStepBitmap();
+
+    void useSecondStepBitmap();
 }

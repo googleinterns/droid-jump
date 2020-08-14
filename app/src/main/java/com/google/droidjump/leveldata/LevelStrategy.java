@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.models;
-
-import android.content.res.Resources;
-import com.google.droidjump.R;
+package com.google.droidjump.leveldata;
 
 /**
- * Represents obstacle Cactus.
+ * Describes behavior for managing levels.
  */
-public class Cactus extends Obstacle {
+public interface LevelStrategy {
+    int getCurrentTimeInterval();
 
-    public Cactus(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.cactus, resources);
-    }
+    ObstacleType getNewObstacleType();
+
+    boolean isEmpty();
+
+    int getBaseSpeed();
 }

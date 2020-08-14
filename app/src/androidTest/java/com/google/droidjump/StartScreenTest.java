@@ -24,6 +24,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Intent;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -48,6 +50,8 @@ public class StartScreenTest {
     @Test
     public void navigateToGameScreen() {
         onView(withId(R.id.play_button)).perform(click());
+
+        onView(withId(R.id.game_layout)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -67,5 +71,12 @@ public class StartScreenTest {
 
         assertEquals(LevelManager.getCurrentLevel(), GameConstants.FIRST_LEVEL_ID);
         assertEquals(LevelManager.getLastLevel(), GameConstants.FIRST_LEVEL_ID);
+    }
+
+    @Test
+    public void navigateToHowToPlayScreen() {
+        onView(ViewMatchers.withId(R.id.how_to_play_button)).perform(ViewActions.click());
+
+        onView(ViewMatchers.withId(R.id.how_to_play_title)).check(matches(isDisplayed()));
     }
 }

@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.models;
-
-import android.content.res.Resources;
-import com.google.droidjump.R;
+package com.google.droidjump.leveldata;
 
 /**
- * Represents obstacle Cactus.
+ * Stores keys for level properties in JSON files.
  */
-public class Cactus extends Obstacle {
-
-    public Cactus(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.cactus, resources);
-    }
+public interface JSONKeys {
+    final static String BASE_SPEED_KEY = "baseSpeed";
+    final static String TIMELINE_KEY = "timeline";
+    final static String INTERVAL_KEY = "interval";
+    final static String TYPE_KEY = "type";
 }

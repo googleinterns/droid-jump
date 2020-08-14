@@ -33,11 +33,16 @@ public class LevelManager {
     public static void init(Context context) {
         gameData = context.getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         gameDataEditor = gameData.edit();
-        levelsCount = GAME_LEVELS_COUNT;
+        levelsCount = extractLevelsCount();
     }
 
     public static int getLevelsCount() {
         return levelsCount;
+    }
+
+    private static int extractLevelsCount() {
+        // TODO(dnikolskaia) Extract data from a real JSON file.
+        return GAME_LEVELS_COUNT;
     }
 
     public static void onCurrentLevelCompleted() {
@@ -46,7 +51,7 @@ public class LevelManager {
         if (currentLevel < levelsCount) {
             // Increasing the current level
             gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevel);
-            // Increasing the last level
+            gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevel);
             if (currentLevel > lastLevel) {
                 gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevel);
             }
