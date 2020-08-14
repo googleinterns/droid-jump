@@ -140,13 +140,13 @@ public class GameView extends SurfaceView implements Runnable {
             ObstacleType newObstacleType = level.getNewObstacleType();
             // Adding new obstacle to game.
             switch (newObstacleType){
-                case cactus:
+                case CACTUS:
                     obstacleList.add(new Cactus(screenX, screenY - groundHeight, getResources()));
                     break;
-                case palm:
+                case PALM:
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
                     break;
-                case bat:
+                case BAT:
                     // 700 - random value TODO(Max): calculate y coordinate for bat
                     obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
                     break;

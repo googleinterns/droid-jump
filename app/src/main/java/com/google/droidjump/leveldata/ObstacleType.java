@@ -21,7 +21,7 @@ package com.google.droidjump.leveldata;
  */
 public enum ObstacleType {
     // TODO(dnikolskaia): Create grouped obstacles
-    cactus,
-    palm,
-    bat
+    CACTUS,
+    PALM,
+    BAT
 }
