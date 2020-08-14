@@ -22,16 +22,15 @@ import android.graphics.BitmapFactory;
 import com.google.droidjump.GameConstants;
 import com.google.droidjump.R;
 
-public class Droid extends GameItem {
+/**
+ * Represents Droid character.
+ */
+public class Droid extends GameItem implements TwoStepAnimative {
     private boolean isJumping;
     private boolean isCrouching;
     private Bitmap[] droidTypes;
     private int initialY;
     private int jumpHeight;
-    // The variable is responsible for how much time ticks full animation of droid goes.
-    public static final int fullAnimationTicks = 4;
-    // The variable is responsible for how much time ticks must pass to change a bitmap so that animate droid smoothly.
-    public static final int animationStepTicks = 2;
     // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
     private static final int additionalHeight = 50;
 

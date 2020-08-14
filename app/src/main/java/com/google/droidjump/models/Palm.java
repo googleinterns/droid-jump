@@ -19,7 +19,11 @@ package com.google.droidjump.models;
 import android.content.res.Resources;
 import com.google.droidjump.R;
 
+/**
+ * Represents obstacle Palm.
+ */
 public class Palm extends Obstacle {
+
     public Palm(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.mipmap.palm, resources);
     }

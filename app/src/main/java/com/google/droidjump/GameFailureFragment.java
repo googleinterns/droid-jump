@@ -55,7 +55,7 @@ public class GameFailureFragment extends Fragment {
         // Redirecting on click to How To Play screen.
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
+            findNavController(view).navigate(R.id.action_game_failure_screen_to_how_to_play_screen);
         });
         return rootView;
     }
