@@ -28,7 +28,7 @@ import java.util.Random;
 public class LevelGenerator {
     static private final int MIN_INTERVAL_VALUE = 20; // Min value of interval between obstacles.
     static private final int MAX_INTERVAL_VALUE = 100; // Max value of interval between obstacles.
-    static private final ObstacleType[] OBSTACLE_OPTIONS = {cactus, cactus, cactus, palm, palm, bat};
+    static private final ObstacleType[] OBSTACLE_OPTIONS = {cactus, cactus, cactus, palm, palm, bat}; // Options of obstacle for generation.
 
     private static final Random random = new Random();
 
