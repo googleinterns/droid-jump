@@ -86,7 +86,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         int droidY = screenY - screenMargin;
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
-        obstacleList = new LinkedList<>();
     }
 
     @Override
@@ -94,6 +93,7 @@ public class GameView extends SurfaceView implements Runnable {
         while (isPlaying) {
             updateGameState();
             drawScene();
+            handleCollision();
             sleep();
             timePoint++;
             intervalTimePoint++;
@@ -162,8 +162,9 @@ public class GameView extends SurfaceView implements Runnable {
             // Moving obstacles to the left.
             obstacle.setX(obstacle.getX() - levelSpeed);
             // Removal of passed obstacles
-            if (obstacle.getX() + obstacle.getWidth() < 0)
+            if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
+            }
         }
     }
 
@@ -242,8 +243,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawPlatform(Canvas canvas) {
         int platformY = screenY - platform.getHeight();
-        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth())
+        for (int curPlatformX = platformX; curPlatformX < screenX; curPlatformX += platform.getWidth()) {
             canvas.drawBitmap(platform, curPlatformX, platformY, /* paint= */ null);
+        }
     }
 
     private void drawObstacles(Canvas canvas) {
@@ -256,7 +258,6 @@ public class GameView extends SurfaceView implements Runnable {
         // TODO(dnikolskaia): Serialize current level data and put it in some container.
         levelTimePoints = 200;
         levelSpeed = 50;
-        // TODO(dnikolskaia): Replace a hardcoded obstacleList with data from JSON (Assigned to Daria)
         obstacleList = new LinkedList<>();
         int batY = screenY - 700; // random hardcoded value
         obstacleList.add(new Bat(screenX, batY, getResources()));
@@ -269,5 +270,20 @@ public class GameView extends SurfaceView implements Runnable {
         float headerTextSize = getResources().getDimension(R.dimen.header_text_size);
         paint.setTextSize(headerTextSize);
         return paint;
+    }
+
+    public void handleCollision() {
+        for (Obstacle obstacle : obstacleList) {
+            if (checkIntersection(droid, obstacle)) {
+                failGame();
+            }
+        }
+    }
+
+    private boolean checkIntersection(Droid droid, Obstacle obstacle) {
+        return !(droid.getY() > obstacle.getY() + obstacle.getHeight()
+                || droid.getY() + droid.getHeight() < obstacle.getY()
+                || droid.getX() > obstacle.getX() + obstacle.getWidth()
+                || droid.getX() + droid.getWidth() < obstacle.getX());
     }
 }

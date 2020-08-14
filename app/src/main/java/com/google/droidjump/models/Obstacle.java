@@ -18,6 +18,9 @@ package com.google.droidjump.models;
 
 import android.content.res.Resources;
 
+/**
+ * Super class for all obstacles.
+ */
 public abstract class Obstacle extends GameItem {
     public Obstacle(int x, int yWithBitmapOffset, int pictureID, Resources resources) {
         super(x, yWithBitmapOffset, pictureID, resources);

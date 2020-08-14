@@ -20,6 +20,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * Super class for all game objects.
+ */
 abstract class GameItem {
 
     protected int x;

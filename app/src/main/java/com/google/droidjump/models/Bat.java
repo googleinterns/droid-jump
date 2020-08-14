@@ -30,8 +30,8 @@ public class Bat extends Obstacle implements TwoStepAnimative {
 
     private List<Bitmap> batTypes;
 
-    public Bat(int x, int y, Resources resources) {
-        super(x, y, R.mipmap.bat, resources);
+    public Bat(int x, int yWithBitmapOffset, Resources resources) {
+        super(x, yWithBitmapOffset, R.mipmap.bat, resources);
         // Extracting bat types from full bat picture.
         Bitmap fullBatPicture = BitmapFactory.decodeResource(resources, R.mipmap.bat);
         int halfWidth = fullBatPicture.getWidth() / 2;
