@@ -147,6 +147,8 @@ public class GameView extends SurfaceView implements Runnable {
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
                     break;
                 case bat:
+                    // 700 - random value TODO(Max): calculate y coordinate for bat
+                    obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
                     break;
             }
             intervalTimePoint = GameConstants.INTERVAL_START_TIME;
@@ -260,8 +262,6 @@ public class GameView extends SurfaceView implements Runnable {
     private void receiveLevelDetails() {
         levelSpeed = level.getBaseSpeed();
         obstacleList = new LinkedList<>();
-        int batY = screenY - 700; // random hardcoded value
-        obstacleList.add(new Bat(screenX, batY, getResources()));
     }
 
     private Paint createLevelPaint() {
