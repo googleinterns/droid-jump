@@ -72,11 +72,6 @@ public class MainActivity extends AppCompatActivity {
         gameDataEditor.apply();
     }
 
-    public void setLastLevelIndex(int lastLevel) {
-        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevel);
-        gameDataEditor.apply();
-    }
-
     public void resetGameData() {
         SharedPreferences.Editor editor = gameData.edit();
         editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
