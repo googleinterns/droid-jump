@@ -30,12 +30,10 @@ public class LevelsScreenTest {
                 .beginTransaction().replace(R.id.activity_wrapper, new LevelsFragment());
         onView(withId(R.id.level_button)).perform(click());
 
-        // Setting the game data.
-        int lastLevel = (int) (Math.random() * (LevelManager.getLevelsCount()
-                - GameConstants.FIRST_LEVEL_ID + 1) + GameConstants.FIRST_LEVEL_ID);
+        // Predetermined value.
+        int lastLevel = LevelManager.getLevelsCount() - 1;
         LevelManager.setLastLevel(lastLevel);
-        int currentLevel = (int) (Math.random() *
-                (lastLevel - GameConstants.FIRST_LEVEL_ID + 1) + GameConstants.FIRST_LEVEL_ID);
+        int currentLevel = Math.max(lastLevel - 1, GameConstants.FIRST_LEVEL_ID);
         LevelManager.setCurrentLevel(currentLevel);
     }
 
@@ -56,10 +54,8 @@ public class LevelsScreenTest {
 
     @Test
     public void chooseAvailableLevel() {
-        int lastLevel = LevelManager.getLastLevel();
         // Available level is the lever from range [firstLevel, lastLevel].
-        int availableLevel = (int) (Math.random() *
-                (lastLevel - GameConstants.FIRST_LEVEL_ID + 1) + GameConstants.FIRST_LEVEL_ID);
+        int availableLevel = LevelManager.getCurrentLevel();
 
         onView(withText(String.valueOf(availableLevel))).perform(click());
 
@@ -75,9 +71,7 @@ public class LevelsScreenTest {
                 LevelManager.resetGameData();
                 lastLevel = LevelManager.getLastLevel();
             }
-            int notAvailableLevelStartsFromLevel = lastLevel + 1;
-            int notAvailableLevel = (int) (Math.random() *
-                    (levelsCount - notAvailableLevelStartsFromLevel + 1) + notAvailableLevelStartsFromLevel);
+            int notAvailableLevel = lastLevel + 1;
 
             onView(withText(String.valueOf(notAvailableLevel))).perform(click());
 
