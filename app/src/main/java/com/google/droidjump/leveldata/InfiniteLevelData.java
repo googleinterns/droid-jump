@@ -17,6 +17,7 @@
 package com.google.droidjump.leveldata;
 
 import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
+
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONException;
@@ -31,7 +32,7 @@ public class InfiniteLevelData implements LevelStrategy {
 
     public InfiniteLevelData(int fileId, Resources resources) {
         getDataFromFile(fileId, resources);
-        currentObstacle = generateNextObstacle();
+        currentObstacle = LevelGenerator.generateNextObstacle();
     }
 
     private void getDataFromFile(int fileId, Resources resources) {
@@ -51,7 +52,7 @@ public class InfiniteLevelData implements LevelStrategy {
     @Override
     public ObstacleType getNewObstacleType() {
         ObstacleType newObstacleType = currentObstacle.getType();
-        currentObstacle = generateNextObstacle();
+        currentObstacle = LevelGenerator.generateNextObstacle();
         return newObstacleType;
     }
 
@@ -63,15 +64,5 @@ public class InfiniteLevelData implements LevelStrategy {
     @Override
     public int getBaseSpeed() {
         return baseSpeed;
-    }
-
-    private ObstacleData generateNextObstacle() {
-        // TODO(dnikolskaia): Generate obstacle type
-        // TODO(dnikolskaia): Generate interval
-
-        // So far returns same obstacles.
-        // interval = 40, because with this value Droid can easily pass every cactus.
-        // It will be removed when generation will be implemented.
-        return new ObstacleData(40, ObstacleType.cactus);
     }
 }
