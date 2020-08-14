@@ -31,11 +31,9 @@ public class JSONReader {
     public static JSONObject getJSONObjectFromResource(int fileId, Resources resources) {
         String jsonString = "";
         JSONObject jsonObject = null;
-        try {
-            InputStream is = resources.openRawResource(fileId);
+        try (InputStream is = resources.openRawResource(fileId)) {
             Scanner scanner = new Scanner(is);
             jsonString = scanner.useDelimiter("\\A").next();
-            is.close();
         } catch (Resources.NotFoundException | IOException e) {
             Log.e(JSONReader.class.getName(), "Failed to open resource: " + e.getMessage());
         }
