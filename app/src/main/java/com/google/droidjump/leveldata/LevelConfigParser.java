@@ -37,9 +37,11 @@ public class LevelConfigParser {
         ArrayList<LevelConfig> levelConfigs = new ArrayList<>();
         try {
             JSONArray levels = configsData.getJSONArray(LEVELS_KEY);
+            JSONObject level;
+            LevelType levelType;
             for (int i = 0; i < levels.length(); i++) {
-                JSONObject level = levels.getJSONObject(i);
-                LevelType levelType = Enum.valueOf(LevelType.class, level.getString(LEVEL_TYPE_KEY));
+                level = levels.getJSONObject(i);
+                levelType = Enum.valueOf(LevelType.class, level.getString(LEVEL_TYPE_KEY));
                 levelConfigs.add(new LevelConfig(level.getString(LEVEL_NAME_KEY), levelType, level.getString(RESOURCE_NAME_KEY), context));
             }
         } catch (JSONException e) {
