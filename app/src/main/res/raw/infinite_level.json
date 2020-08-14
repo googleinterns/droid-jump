@@ -1,7 +1,3 @@
 {
-  "baseSpeed": 30,
-  "firstObstacle": {
-    "interval": 3,
-    "type": "cactus"
-  }
+  "baseSpeed": 30
 }

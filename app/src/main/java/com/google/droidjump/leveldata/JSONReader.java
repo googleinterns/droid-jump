@@ -24,22 +24,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/**
+ * Reads JSON files and converts data to JSONObjects.
+ */
 public class JSONReader {
-    public static JSONObject getJSONObjectFromResource(int fileID, Resources resources) {
+    public static JSONObject getJSONObjectFromResource(int fileId, Resources resources) {
         String jsonString = "";
         JSONObject jsonObject = null;
-        try {
-            InputStream is = resources.openRawResource(fileID);
+        try (InputStream is = resources.openRawResource(fileId)) {
             Scanner scanner = new Scanner(is);
             jsonString = scanner.useDelimiter("\\A").next();
-            is.close();
         } catch (Resources.NotFoundException | IOException e) {
-            Log.e("JSONReader", "Failed to open resource: " + e.getMessage());
+            Log.e(JSONReader.class.getName(), "Failed to open resource: " + e.getMessage());
         }
         try {
             jsonObject = new JSONObject(jsonString);
         } catch (JSONException e) {
-            Log.e("JSONReader", "Failed to parse JSON: " + e.getMessage());
+            Log.e(JSONReader.class.getName(), "Failed to parse JSON: " + e.getMessage());
         }
         return jsonObject;
     }

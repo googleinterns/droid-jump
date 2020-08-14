@@ -17,14 +17,11 @@
 package com.google.droidjump.leveldata;
 
 /**
- * Describes behavior for managing levels.
+ * Stores keys for level properties in JSON files.
  */
-public interface LevelStrategy {
-    int getCurrentTimeInterval();
-
-    ObstacleType getNewObstacleType();
-
-    boolean isEmpty();
-
-    int getBaseSpeed();
+public interface JSONKeys {
+    String BASE_SPEED_KEY = "baseSpeed";
+    String TIMELINE_KEY = "timeline";
+    String INTERVAL_KEY = "interval";
+    String TYPE_KEY = "type";
 }

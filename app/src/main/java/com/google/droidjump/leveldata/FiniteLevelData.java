@@ -16,6 +16,10 @@
 
 package com.google.droidjump.leveldata;
 
+import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.INTERVAL_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.TIMELINE_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.TYPE_KEY;
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONArray;
@@ -23,33 +27,31 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.LinkedList;
 
+/**
+ * Manages finite level data.
+ */
 public class FiniteLevelData implements LevelStrategy {
-    final static String baseSpeedKey = "baseSpeed";
-    final static String timelineKey = "timeline";
-    final static String intervalKey = "interval";
-    final static String typeKey = "type";
-
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
-    public FiniteLevelData(int fileID, Resources resources) {
+    public FiniteLevelData(int fileId, Resources resources) {
         obstaclesData = new LinkedList<>();
-        getDataFromFile(fileID, resources);
+        getDataFromFile(fileId, resources);
     }
 
     private void getDataFromFile(int fileId, Resources resources) {
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
-            baseSpeed = leveldata.getInt(baseSpeedKey);
-            JSONArray timeline = leveldata.getJSONArray(timelineKey);
+            baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
+            JSONArray timeline = leveldata.getJSONArray(TIMELINE_KEY);
             for (int i = 0; i < timeline.length(); i++) {
                 JSONObject currentObject = timeline.getJSONObject(i);
-                int interval = currentObject.getInt(intervalKey);
-                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(typeKey));
+                int interval = currentObject.getInt(INTERVAL_KEY);
+                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-           Log.e("FiniteLevelData", "Failed to get data from JSONObject: " + e.getMessage());
+            Log.e(FiniteLevelData.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 
