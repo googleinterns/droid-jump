@@ -29,6 +29,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.leveldata.InfiniteLevel;
 import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelStrategy;
@@ -47,7 +48,7 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-    private MainActivity activity;
+    private FragmentActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Thread thread;
@@ -73,7 +74,7 @@ public class GameView extends SurfaceView implements Runnable {
         level = new InfiniteLevel(Level.INFINITE, getResources());
         receiveLevelDetails();
         timePoint = GameConstants.INTERVAL_START_TIME;
-        activity = (MainActivity) context;
+        activity = (FragmentActivity) context;
         surfaceHolder = getHolder();
         currentLevel = LevelManager.getCurrentLevel();
         this.screenX = screenX;
