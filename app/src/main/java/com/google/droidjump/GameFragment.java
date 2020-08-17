@@ -23,8 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.NavigationHelper;
@@ -35,6 +35,7 @@ import com.google.droidjump.models.NavigationHelper;
 public class GameFragment extends Fragment {
     private GameView gameView;
     private FragmentActivity activity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
-        ConstraintLayout layout = rootView.findViewById(R.id.game_layout);
+        LinearLayout layout = rootView.findViewById(R.id.game_layout);
         layout.addView(gameView);
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;

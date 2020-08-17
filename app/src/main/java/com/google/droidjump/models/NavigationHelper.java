@@ -51,9 +51,9 @@ public class NavigationHelper {
                 .commit();
     }
 
-    public static void clearBackStack(FragmentActivity activity){
+    public static void clearBackStack(FragmentActivity activity) {
         int count = activity.getSupportFragmentManager().getBackStackEntryCount();
-        while (count > 0){
+        while (count > 0) {
             count--;
             activity.getSupportFragmentManager().popBackStack();
         }
