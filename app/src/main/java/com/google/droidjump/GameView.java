@@ -30,15 +30,15 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import androidx.fragment.app.FragmentActivity;
-import com.google.droidjump.leveldata.InfiniteLevel;
-import com.google.droidjump.leveldata.Level;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
+import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.Obstacle;
+import com.google.droidjump.models.Palm;
 import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -54,41 +54,36 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private Paint levelPaint;
     private boolean isPlaying;
-    private int currentLevel;
     private int screenX;
     private int screenY;
     private int screenMargin;
     private int timePoint;
     private int intervalTimePoint;
-    private int levelTimePoints;
     private int levelSpeed;
     private List<Obstacle> obstacleList;
-    private LevelStrategy level;
     private int platformX = 0;
+    private int groundHeight;
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
+    private LevelStrategy level;
+
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
-        // TODO: Later, based on the type of level, implement the choice of the strategy
-        level = new InfiniteLevel(Level.INFINITE, getResources());
-        receiveLevelDetails();
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (FragmentActivity) context;
         surfaceHolder = getHolder();
-        currentLevel = LevelManager.getCurrentLevel();
+        level = LevelManager.getCurrentLevelStrategy();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-        receiveLevelDetails();
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
+        receiveLevelDetails();
 
-        // Handpicked value
         // Droid should be on a ground height, but platform includes grass.
-        int groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
+        groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
 
-        int droidY = screenY - screenMargin;
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
@@ -129,27 +124,38 @@ public class GameView extends SurfaceView implements Runnable {
         return super.onTouchEvent(event);
     }
 
-    private void checkTimePoint() {
-        if (level.isEmpty()) {
-            // When the obstacles end - the level is considered passed.
-            winGame();
-            return;
-        }
-
-        if (intervalTimePoint == level.getCurrentTimeInterval()) {
-            ObstacleType newObstacleType = level.getNewObstacleType();
-            intervalTimePoint = GameConstants.INTERVAL_START_TIME;
-        }
-    }
-
     private void updateGameState() {
         checkTimePoint();
         updateDroidCoordinates();
         updateObstaclesCoordinates();
         updatePlatformCoordinates();
-        // Level Finishing
-        if (timePoint == levelTimePoints) {
-            winGame();
+    }
+
+    private void checkTimePoint() {
+        if (level.isEmpty()) {
+            // When the obstacles end - the level is considered passed.
+            if (obstacleList.isEmpty()) {
+                winGame();
+            }
+            return;
+        }
+        if (intervalTimePoint == level.getCurrentTimeInterval()) {
+            ObstacleType newObstacleType = level.getNewObstacleType();
+            // Adding new obstacle to game.
+            switch (newObstacleType) {
+                case CACTUS:
+                    obstacleList.add(new Cactus(screenX, screenY - groundHeight, getResources()));
+                    break;
+                case PALM:
+                    obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
+                    break;
+                case BAT:
+                    // 700 - random value
+                    // TODO(Max): calculate y coordinate for bat
+                    obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
+                    break;
+            }
+            intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         }
     }
 
@@ -210,7 +216,7 @@ public class GameView extends SurfaceView implements Runnable {
             Canvas canvas = getHolder().lockCanvas();
             // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
-            String levelHeader = String.format("%s %d", GAME_LEVEL_HEADER, currentLevel);
+            String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, LevelManager.getCurrentLevelName());
             float levelPaintY = screenMargin + levelPaint.getTextSize();
             canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
             drawDroid(canvas);
@@ -258,12 +264,8 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void receiveLevelDetails() {
-        // TODO(dnikolskaia): Serialize current level data and put it in some container.
-        levelTimePoints = 200;
         levelSpeed = level.getBaseSpeed();
         obstacleList = new LinkedList<>();
-        int batY = screenY - 700; // random hardcoded value
-        obstacleList.add(new Bat(screenX, batY, getResources()));
     }
 
     private Paint createLevelPaint() {
