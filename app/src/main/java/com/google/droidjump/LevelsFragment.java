@@ -61,7 +61,7 @@ public class LevelsFragment extends Fragment {
 
         // Adding onClick events.
         gridView.setOnItemClickListener((adapterView, view, index, ignored) -> {
-            int levelIndex = (int) adapter.getItem(index);
+            int levelIndex = index;
             if (LevelManager.getLastLevelIndex() >= levelIndex) {
                 LevelManager.setCurrentLevelIndex(levelIndex);
                 findNavController(view).navigate(

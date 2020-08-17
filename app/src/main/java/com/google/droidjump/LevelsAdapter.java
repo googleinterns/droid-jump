@@ -51,8 +51,7 @@ public class LevelsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int index) {
-        // Receives index, returns index. So useful...
-        return index;
+        return null;
     }
 
     @Override
