@@ -16,8 +16,6 @@
 
 package com.google.droidjump;
 
-import static androidx.navigation.Navigation.findNavController;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Displays Game Success Screen.
@@ -54,7 +53,7 @@ public class GameSuccessFragment extends Fragment {
         if (level < LevelManager.getLevelsCount()) {
             LevelManager.onCurrentLevelCompleted();
             nextLevelButton.setOnClickListener(view -> {
-                findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
+                NavigationHelper.navigateToFragment(activity, new GameFragment());
             });
         } else {
             nextLevelButton.setVisibility(View.INVISIBLE);
@@ -63,7 +62,7 @@ public class GameSuccessFragment extends Fragment {
         // Redirecting on click to start screen.
         ImageButton menuButton = rootView.findViewById(R.id.menu_button);
         menuButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
+            NavigationHelper.navigateToFragment(activity, new StartFragment());
         });
 
         // Drawing droid.
@@ -73,7 +72,7 @@ public class GameSuccessFragment extends Fragment {
         // Redirecting on click to How To Play screen.
         FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
         howToPlayButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_game_success_screen_to_how_to_play_screen);
+            NavigationHelper.navigateToFragment(activity, new HowToPlayFragment());
         });
         return rootView;
     }
