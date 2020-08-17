@@ -46,11 +46,6 @@ public class LevelManager {
         return levelsLastIndex;
     }
 
-//    private static int extractLevelsCount() {
-//         TODO(dnikolskaia) Extract data from a real JSON file.
-//        return GAME_LEVELS_COUNT;
-//    }
-
     public static void onCurrentLevelCompleted() {
         int currentLevelIndex = getCurrentLevelIndex();
         int lastLevel = getLastLevelIndex();
