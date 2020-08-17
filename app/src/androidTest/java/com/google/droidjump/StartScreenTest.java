@@ -21,6 +21,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Intent;
@@ -63,14 +64,13 @@ public class StartScreenTest {
 
     @Test
     public void startNewGame() {
-        // Set the handpicked current level.
-        int testingCurrentLevel = GameConstants.GAME_LEVELS_COUNT / 2;
-        LevelManager.setCurrentLevel(testingCurrentLevel);
+        // Setting the random current level.
+        int testingCurrentLevelIndex = LevelManager.getLastLevelIndex() / 2;
+        LevelManager.setCurrentLevelIndex(testingCurrentLevelIndex);
         // Click on new game button.
-        onView(withId(R.id.new_game_button)).perform(click());
-
-        assertEquals(LevelManager.getCurrentLevel(), GameConstants.FIRST_LEVEL_ID);
-        assertEquals(LevelManager.getLastLevel(), GameConstants.FIRST_LEVEL_ID);
+        onView(ViewMatchers.withId(R.id.new_game_button)).perform(ViewActions.click());
+        assertEquals(LevelManager.getCurrentLevelIndex(), FIRST_LEVEL_ID);
+        assertEquals(LevelManager.getLastLevelIndex(), FIRST_LEVEL_ID);
     }
 
     @Test

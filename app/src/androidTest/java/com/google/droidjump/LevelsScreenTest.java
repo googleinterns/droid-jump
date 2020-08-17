@@ -6,6 +6,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -31,10 +32,10 @@ public class LevelsScreenTest {
         onView(withId(R.id.level_button)).perform(click());
 
         // Predetermined value.
-        int lastLevel = LevelManager.getLevelsCount() - 1;
-        LevelManager.setLastLevel(lastLevel);
-        int currentLevel = Math.max(lastLevel - 1, GameConstants.FIRST_LEVEL_ID);
-        LevelManager.setCurrentLevel(currentLevel);
+        int lastLevelIndex = LevelManager.getLevelsLastIndex();
+        LevelManager.setLastLevelIndex(lastLevelIndex);
+        int currentLevel = Math.max(lastLevelIndex - 1, FIRST_LEVEL_ID);
+        LevelManager.setCurrentLevelIndex(currentLevel);
     }
 
     @Test
@@ -44,38 +45,35 @@ public class LevelsScreenTest {
 
     @Test
     public void chooseLastLevel() {
-        int lastLevel = LevelManager.getLastLevel();
+        int lastLevelIndex = LevelManager.getLastLevelIndex();
+        String lastLevelName = LevelManager.getGameLevels().get(lastLevelIndex).getLevelName();
+        onView(withText(lastLevelName)).perform(ViewActions.click());
 
-        onView(withText(String.valueOf(lastLevel))).perform(ViewActions.click());
-
-        assertEquals(LevelManager.getCurrentLevel(), lastLevel);
-        assertEquals(LevelManager.getLastLevel(), lastLevel);
+        assertEquals(LevelManager.getCurrentLevelIndex(), lastLevelIndex);
+        assertEquals(LevelManager.getLastLevelIndex(), lastLevelIndex);
     }
 
     @Test
     public void chooseAvailableLevel() {
         // Available level is the lever from range [firstLevel, lastLevel].
-        int availableLevel = LevelManager.getCurrentLevel();
+        int availableLevelIndex = LevelManager.getCurrentLevelIndex();
+        String availableLevelName = LevelManager.getGameLevels().get(availableLevelIndex).getLevelName();
+        onView(withText(String.valueOf(availableLevelName))).perform(click());
 
-        onView(withText(String.valueOf(availableLevel))).perform(click());
-
-        assertEquals(LevelManager.getCurrentLevel(), availableLevel);
+        assertEquals(LevelManager.getCurrentLevelIndex(), availableLevelIndex);
     }
 
     @Test
     public void chooseNotAvailableLevel() {
-        int levelsCount = LevelManager.getLevelsCount();
+        int levelsCount = LevelManager.getLevelsLastIndex() + 1;
         if (levelsCount > 1) {
-            int lastLevel = LevelManager.getLastLevel();
-            if (lastLevel == levelsCount) {
-                LevelManager.resetGameData();
-                lastLevel = LevelManager.getLastLevel();
-            }
-            int notAvailableLevel = lastLevel + 1;
+            LevelManager.setLastLevelIndex(FIRST_LEVEL_ID);
+            int lastLevelIndex = LevelManager.getLastLevelIndex();
+            int notAvailableLevelIndex = lastLevelIndex + 1;
+            String notAvailableLevelName = LevelManager.getGameLevels().get(notAvailableLevelIndex).getLevelName();
+            onView(withText(notAvailableLevelName)).perform(click());
 
-            onView(withText(String.valueOf(notAvailableLevel))).perform(click());
-
-            assertNotEquals(LevelManager.getCurrentLevel(), notAvailableLevel);
+            assertNotEquals(LevelManager.getCurrentLevelIndex(), notAvailableLevelIndex);
         }
     }
 }

@@ -16,18 +16,11 @@
 
 package com.google.droidjump.leveldata;
 
-import com.google.droidjump.R;
-
 /**
- * Represents level configuration.
+ * Enumerates level types.
  */
-public enum Level {
-    INFINITE(R.raw.infinite_level),
-    LEVEL1(R.raw.level1);
-
-    public final Integer fileId;
-
-    Level(Integer fileId) {
-        this.fileId = fileId;
-    }
+public enum LevelType {
+    INFINITE,
+    FINITE,
+    FINITE_GENERATED;
 }

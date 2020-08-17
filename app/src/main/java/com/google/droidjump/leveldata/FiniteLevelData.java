@@ -30,28 +30,31 @@ import java.util.LinkedList;
 /**
  * Manages finite level data.
  */
-public class StaticFiniteLevel implements LevelStrategy {
+public class FiniteLevelData implements LevelStrategy {
     private int baseSpeed;
     private LinkedList<ObstacleData> obstaclesData;
 
-    public StaticFiniteLevel(Level level, Resources resources) {
+    public FiniteLevelData(int fileId, Resources resources) {
         obstaclesData = new LinkedList<>();
-        getDataFromFile(level, resources);
+        getDataFromFile(fileId, resources);
     }
 
-    private void getDataFromFile(Level level, Resources resources) {
-        JSONObject leveldata = JSONReader.getJSONObjectFromResource(level.fileId, resources);
+    private void getDataFromFile(int fileId, Resources resources) {
+        JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
             JSONArray timeline = leveldata.getJSONArray(TIMELINE_KEY);
+            JSONObject currentObject;
+            int interval;
+            ObstacleType type;
             for (int i = 0; i < timeline.length(); i++) {
-                JSONObject currentObject = timeline.getJSONObject(i);
-                int interval = currentObject.getInt(INTERVAL_KEY);
-                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
+                currentObject = timeline.getJSONObject(i);
+                interval = currentObject.getInt(INTERVAL_KEY);
+                type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {
-            Log.e(StaticFiniteLevel.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
+            Log.e(FiniteLevelData.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
     }
 
