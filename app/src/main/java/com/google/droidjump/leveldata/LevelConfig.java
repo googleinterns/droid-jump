@@ -49,13 +49,13 @@ public class LevelConfig {
 
     public LevelStrategy getLevelStrategy() {
         switch (levelType) {
-            case Infinite:
+            case INFINITE:
                 levelStrategy = new InfiniteLevelData(resourceId, context.getResources());
                 break;
-            case Finite:
+            case FINITE:
                 levelStrategy = new FiniteLevelData(resourceId, context.getResources());
                 break;
-            case FiniteGenerated:
+            case FINITE_GENERATED:
                 // TODO(dnikolskaia): create class for Finite Generated Level
                 break;
         }

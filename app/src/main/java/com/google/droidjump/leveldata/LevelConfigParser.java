@@ -37,12 +37,12 @@ public class LevelConfigParser {
         ArrayList<LevelConfig> levelConfigs = new ArrayList<>();
         try {
             JSONArray levels = configsData.getJSONArray(LEVELS_KEY);
+            JSONObject level;
+            LevelType levelType;
             for (int i = 0; i < levels.length(); i++) {
-                JSONObject level = levels.getJSONObject(i);
-                String levelName = level.getString(LEVEL_NAME_KEY);
-                String resourceName = level.getString(RESOURCE_NAME_KEY);
-                LevelType levelType = Enum.valueOf(LevelType.class, level.getString(LEVEL_TYPE_KEY));
-                levelConfigs.add(new LevelConfig(levelName, levelType, resourceName, context));
+                level = levels.getJSONObject(i);
+                levelType = Enum.valueOf(LevelType.class, level.getString(LEVEL_TYPE_KEY));
+                levelConfigs.add(new LevelConfig(level.getString(LEVEL_NAME_KEY), levelType, level.getString(RESOURCE_NAME_KEY), context));
             }
         } catch (JSONException e) {
             Log.e("LevelConfigParser", "Failed to parse JSON: " + e.getMessage());

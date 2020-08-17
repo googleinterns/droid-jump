@@ -16,91 +16,18 @@
 
 package com.google.droidjump;
 
-import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
-import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
-import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
-import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import com.google.droidjump.leveldata.LevelConfig;
-import com.google.droidjump.leveldata.LevelConfigParser;
-import com.google.droidjump.leveldata.LevelStrategy;
-import java.util.ArrayList;
+import androidx.fragment.app.FragmentActivity;
+import com.google.droidjump.models.LevelManager;
 
 /**
  * Represents main activity.
  */
-public class MainActivity extends AppCompatActivity {
-    private int levelsLastIndex;
-    private SharedPreferences gameData;
-    private SharedPreferences.Editor gameDataEditor;
-    private ArrayList<LevelConfig> gameLevels;
-
+public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameData = getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
-        gameDataEditor = gameData.edit();
-        gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, this);
-        levelsLastIndex = gameLevels.size() - 1;
+        LevelManager.init(this);
         setContentView(R.layout.main_activity);
-    }
-
-    public int getLevelsLastIndex() {
-        return levelsLastIndex;
-    }
-
-    public void onCurrentLevelCompleted() {
-        int currentLevelIndex = getCurrentLevelIndex();
-        int lastLevel = getLastLevelIndex();
-        if (currentLevelIndex < levelsLastIndex) {
-            // Increasing the current level
-            gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevelIndex);
-            // Increasing the last level
-            if (currentLevelIndex > lastLevel) {
-                gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevelIndex);
-            }
-            gameDataEditor.apply();
-        }
-    }
-
-    public void setCurrentLevelIndex(int currentLevel) {
-        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevel);
-        gameDataEditor.apply();
-    }
-
-    public void setLastLevelIndex(int lastLevel) {
-        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevel);
-        gameDataEditor.apply();
-    }
-
-    public void resetGameData() {
-        SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
-        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
-        editor.apply();
-    }
-
-    public int getCurrentLevelIndex() {
-        return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
-    }
-
-    public int getLastLevelIndex() {
-        return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
-    }
-
-    public LevelStrategy getCurrentLevelStrategy() {
-        return gameLevels.get(getCurrentLevelIndex()).getLevelStrategy();
-    }
-
-    public String getCurrentLevelName(){
-        return gameLevels.get(getCurrentLevelIndex()).getLevelName();
-    }
-
-    public ArrayList<LevelConfig> getGameLevels(){
-        return (ArrayList<LevelConfig>) gameLevels.clone();
     }
 }

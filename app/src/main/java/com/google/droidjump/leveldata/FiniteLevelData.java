@@ -44,10 +44,13 @@ public class FiniteLevelData implements LevelStrategy {
         try {
             baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
             JSONArray timeline = leveldata.getJSONArray(TIMELINE_KEY);
+            JSONObject currentObject;
+            int interval;
+            ObstacleType type;
             for (int i = 0; i < timeline.length(); i++) {
-                JSONObject currentObject = timeline.getJSONObject(i);
-                int interval = currentObject.getInt(INTERVAL_KEY);
-                ObstacleType type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
+                currentObject = timeline.getJSONObject(i);
+                interval = currentObject.getInt(INTERVAL_KEY);
+                type = Enum.valueOf(ObstacleType.class, currentObject.getString(TYPE_KEY));
                 obstaclesData.add(new ObstacleData(interval, type));
             }
         } catch (JSONException e) {

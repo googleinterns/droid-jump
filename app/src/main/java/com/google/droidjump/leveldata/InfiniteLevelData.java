@@ -17,7 +17,6 @@
 package com.google.droidjump.leveldata;
 
 import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
-
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONException;

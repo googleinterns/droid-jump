@@ -3,12 +3,12 @@
     {
       "levelName": "1",
       "resourceName": "level1",
-      "levelType": "Finite"
+      "levelType": "FINITE"
     },
     {
       "levelName": "infinite",
       "resourceName": "infinite_level",
-      "levelType": "Infinite"
+      "levelType": "INFINITE"
     }
   ]
 }

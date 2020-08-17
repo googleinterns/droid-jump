@@ -35,6 +35,7 @@ import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Droid;
+import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.Palm;
 import com.google.droidjump.models.TwoStepAnimative;
@@ -46,7 +47,6 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-    private MainActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Thread thread;
@@ -69,9 +69,8 @@ public class GameView extends SurfaceView implements Runnable {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         timePoint = GameConstants.INTERVAL_START_TIME;
-        activity = (MainActivity) context;
         surfaceHolder = getHolder();
-        level = activity.getCurrentLevelStrategy();
+        level = LevelManager.getCurrentLevelStrategy();
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
@@ -140,14 +139,15 @@ public class GameView extends SurfaceView implements Runnable {
             ObstacleType newObstacleType = level.getNewObstacleType();
             // Adding new obstacle to game.
             switch (newObstacleType){
-                case cactus:
+                case CACTUS:
                     obstacleList.add(new Cactus(screenX, screenY - groundHeight, getResources()));
                     break;
-                case palm:
+                case PALM:
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
                     break;
-                case bat:
-                    // 700 - random value TODO(Max): calculate y coordinate for bat
+                case BAT:
+                    // 700 - random value
+                    // TODO(Max): calculate y coordinate for bat
                     obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
                     break;
             }
@@ -212,7 +212,7 @@ public class GameView extends SurfaceView implements Runnable {
             Canvas canvas = getHolder().lockCanvas();
             // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
-            String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, activity.getCurrentLevelName());
+            String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, LevelManager.getCurrentLevelName());
             float levelPaintY = screenMargin + levelPaint.getTextSize();
             canvas.drawText(/* text= */ levelHeader, /* x= */ screenMargin, levelPaintY, levelPaint);
             drawDroid(canvas);

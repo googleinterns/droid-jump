@@ -16,9 +16,9 @@
 
 package com.google.droidjump.leveldata;
 
-import static com.google.droidjump.leveldata.ObstacleType.bat;
-import static com.google.droidjump.leveldata.ObstacleType.cactus;
-import static com.google.droidjump.leveldata.ObstacleType.palm;
+import static com.google.droidjump.leveldata.ObstacleType.BAT;
+import static com.google.droidjump.leveldata.ObstacleType.CACTUS;
+import static com.google.droidjump.leveldata.ObstacleType.PALM;
 import java.util.Random;
 
 /**
@@ -28,7 +28,7 @@ import java.util.Random;
 public class LevelGenerator {
     static private final int MIN_INTERVAL_VALUE = 20; // Min value of interval between obstacles.
     static private final int MAX_INTERVAL_VALUE = 100; // Max value of interval between obstacles.
-    static private final ObstacleType[] OBSTACLE_OPTIONS = {cactus, cactus, cactus, palm, palm, bat}; // Options of obstacle for generation.
+    static private final ObstacleType[] OBSTACLE_OPTIONS = {CACTUS, CACTUS, CACTUS, PALM, PALM, BAT}; // Options of obstacles for generation.
 
     private static final Random random = new Random();
 

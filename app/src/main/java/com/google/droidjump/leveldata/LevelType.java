@@ -20,7 +20,7 @@ package com.google.droidjump.leveldata;
  * Enumerates level types.
  */
 public enum LevelType {
-    Infinite,
-    Finite,
-    FiniteGenerated;
+    INFINITE,
+    FINITE,
+    FINITE_GENERATED;
 }
