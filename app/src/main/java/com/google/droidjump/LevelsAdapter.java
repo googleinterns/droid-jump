@@ -26,6 +26,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.google.droidjump.leveldata.LevelConfig;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents LevelsAdapter.
@@ -33,10 +34,10 @@ import java.util.ArrayList;
 public class LevelsAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<LevelConfig> levels;
+    private List<LevelConfig> levels;
     private int lastLevelIndex;
 
-    public LevelsAdapter(Context context, ArrayList<LevelConfig> levels, int lastLevelIndex) {
+    public LevelsAdapter(Context context, List<LevelConfig> levels, int lastLevelIndex) {
         this.context = context;
         this.levels = levels;
         this.lastLevelIndex = lastLevelIndex;
@@ -50,7 +51,7 @@ public class LevelsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int index) {
-        // Receives index, returns level.
+        // Receives index, returns index. So useful...
         return index;
     }
 
