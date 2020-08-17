@@ -47,6 +47,7 @@ public class LevelsScreenTest {
     public void chooseLastLevel() {
         int lastLevelIndex = LevelManager.getLastLevelIndex();
         String lastLevelName = LevelManager.getGameLevels().get(lastLevelIndex).getLevelName();
+
         onView(withText(lastLevelName)).perform(ViewActions.click());
 
         assertEquals(LevelManager.getCurrentLevelIndex(), lastLevelIndex);
@@ -58,6 +59,7 @@ public class LevelsScreenTest {
         // Available level is the lever from range [firstLevel, lastLevel].
         int availableLevelIndex = LevelManager.getCurrentLevelIndex();
         String availableLevelName = LevelManager.getGameLevels().get(availableLevelIndex).getLevelName();
+
         onView(withText(String.valueOf(availableLevelName))).perform(click());
 
         assertEquals(LevelManager.getCurrentLevelIndex(), availableLevelIndex);
@@ -71,6 +73,7 @@ public class LevelsScreenTest {
             int lastLevelIndex = LevelManager.getLastLevelIndex();
             int notAvailableLevelIndex = lastLevelIndex + 1;
             String notAvailableLevelName = LevelManager.getGameLevels().get(notAvailableLevelIndex).getLevelName();
+
             onView(withText(notAvailableLevelName)).perform(click());
 
             assertNotEquals(LevelManager.getCurrentLevelIndex(), notAvailableLevelIndex);
