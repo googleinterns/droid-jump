@@ -55,7 +55,7 @@ public class LevelsScreenTest {
     }
 
     @Test
-    public void chooseAvailableLevel() {
+    public void checkIfUserCanAccessAvailableLevel() {
         // Available level is the lever from range [firstLevel, lastLevel].
         int availableLevelIndex = LevelManager.getCurrentLevelIndex();
         String availableLevelName = LevelManager.getGameLevels().get(availableLevelIndex).getLevelName();
@@ -66,7 +66,7 @@ public class LevelsScreenTest {
     }
 
     @Test
-    public void chooseNotAvailableLevel() {
+    public void checkIfUserCanAccessNotAvailableLevel() {
         int levelsCount = LevelManager.getLevelsLastIndex() + 1;
         if (levelsCount > 1) {
             LevelManager.setLastLevelIndex(FIRST_LEVEL_ID);
