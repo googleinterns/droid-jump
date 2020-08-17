@@ -46,8 +46,6 @@ public class LevelsFragment extends Fragment {
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), loadLevels(),
                 LevelManager.getLastLevel());
-
-        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @SuppressLint("SetTextI18n")
@@ -75,6 +73,7 @@ public class LevelsFragment extends Fragment {
         menuButton.setOnClickListener(view -> {
             activity.onBackPressed();
         });
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;
     }
 

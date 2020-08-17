@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
@@ -33,12 +34,12 @@ import com.google.droidjump.models.NavigationHelper;
  * Displays Game Success Screen.
  */
 public class GameSuccessFragment extends Fragment {
-    private MainActivity activity;
+    private FragmentActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
+        activity = getActivity();
     }
 
     @SuppressLint("RestrictedApi")
@@ -74,6 +75,7 @@ public class GameSuccessFragment extends Fragment {
         howToPlayButton.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new HowToPlayFragment());
         });
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;
     }
 }

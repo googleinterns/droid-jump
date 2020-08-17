@@ -28,27 +28,24 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.NavigationHelper;
-import java.util.Objects;
 
 /**
  * Displays Game Screen.
  */
 public class GameFragment extends Fragment {
     private GameView gameView;
-
+    private FragmentActivity activity;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
-        FragmentActivity activity = getActivity();
-        WindowManager windowManager = Objects.requireNonNull(activity).getWindowManager();
+        activity = getActivity();
+        WindowManager windowManager = requireActivity().getWindowManager();
         Display defaultDisplay = windowManager.getDefaultDisplay();
 
         // Writing size to the screen variable.
         defaultDisplay.getSize(screen);
         gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
-
-        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @Override
@@ -57,6 +54,7 @@ public class GameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
         ConstraintLayout layout = rootView.findViewById(R.id.game_layout);
         layout.addView(gameView);
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;
     }
 

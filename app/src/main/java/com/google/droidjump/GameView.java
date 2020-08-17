@@ -89,6 +89,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         int droidY = screenY - screenMargin;
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @Override

@@ -65,6 +65,7 @@ public class GameFailureFragment extends Fragment {
         howToPlayButton.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new HowToPlayFragment());
         });
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;
     }
 }

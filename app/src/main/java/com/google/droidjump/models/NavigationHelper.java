@@ -20,16 +20,26 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.R;
-import com.google.droidjump.StartFragment;
 
 public class NavigationHelper {
     public static void addOnBackPressedEventListener(FragmentActivity activity, Fragment fragmentToNavigate) {
+        // Navigates to the specific fragment.
         activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.activity_wrapper, new StartFragment())
+                        .replace(R.id.activity_wrapper, fragmentToNavigate)
                         .commit();
+            }
+        });
+    }
+
+    public static void addOnBackPressedEventListener(FragmentActivity activity) {
+        // Navigates to the last fragment from a BackStack.
+        activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                activity.getSupportFragmentManager().popBackStack();
             }
         });
     }
@@ -37,6 +47,15 @@ public class NavigationHelper {
     public static void navigateToFragment(FragmentActivity activity, Fragment fragmentToNavigate) {
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.activity_wrapper, fragmentToNavigate)
+                .addToBackStack(null)
                 .commit();
+    }
+
+    public static void clearBackStack(FragmentActivity activity){
+        int count = activity.getSupportFragmentManager().getBackStackEntryCount();
+        while (count > 0){
+            count--;
+            activity.getSupportFragmentManager().popBackStack();
+        }
     }
 }
