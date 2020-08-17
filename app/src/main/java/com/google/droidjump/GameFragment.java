@@ -23,8 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.NavigationHelper;
@@ -35,6 +39,8 @@ import com.google.droidjump.models.NavigationHelper;
 public class GameFragment extends Fragment {
     private GameView gameView;
     private FragmentActivity activity;
+    private ConstraintLayout pauseLayout;
+    private ImageButton menuButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +61,30 @@ public class GameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
         LinearLayout layout = rootView.findViewById(R.id.game_layout);
         layout.addView(gameView);
-        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
+        menuButton = rootView.findViewById(R.id.menu_button);
+        pauseLayout = rootView.findViewById(R.id.pause_layout);
+        menuButton.setOnClickListener(ignored -> {
+            onPause();
+        });
+        // Pause buttons events.
+        Button pausePlayButton = rootView.findViewById(R.id.play_button);
+        pausePlayButton.setOnClickListener(ignored -> {
+            onResume();
+        });
+        Button pauseRestartButton = rootView.findViewById(R.id.restart_button);
+        pauseRestartButton.setOnClickListener(ignored -> {
+            NavigationHelper.navigateToFragment(activity, new GameFragment());
+        });
+        Button pauseMenuButton = rootView.findViewById(R.id.go_to_menu_button);
+        pauseMenuButton.setOnClickListener(ignored -> {
+            NavigationHelper.navigateToFragment(activity, new StartFragment());
+        });
+        activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                onPause();
+            }
+        });
         return rootView;
     }
 
@@ -63,11 +92,20 @@ public class GameFragment extends Fragment {
     public void onPause() {
         super.onPause();
         gameView.pause();
+        menuButton.setVisibility(View.GONE);
+        pauseLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        menuButton.setVisibility(View.VISIBLE);
+        pauseLayout.setVisibility(View.GONE);
         gameView.resume();
     }
 }

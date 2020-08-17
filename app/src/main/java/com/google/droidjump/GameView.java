@@ -85,7 +85,6 @@ public class GameView extends SurfaceView implements Runnable {
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
 
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
-        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @Override
@@ -118,7 +117,7 @@ public class GameView extends SurfaceView implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+        if (isPlaying && !droid.isJumping() && droid.getY() == droid.getInitialY()) {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);
