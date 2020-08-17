@@ -61,13 +61,13 @@ public class StartScreenTest {
     @Test
     public void startNewGame() {
         // Setting the random current level.
-        int testingCurrentLevel = (int) (Math.random() * (LevelManager.getLevelsCount() - FIRST_LEVEL_ID + 1)
+        int testingCurrentLevelIndex = (int) (Math.random() * (LevelManager.getLevelsLastIndex() - FIRST_LEVEL_ID)
                 + FIRST_LEVEL_ID);
-        LevelManager.setCurrentLevel(testingCurrentLevel);
+        LevelManager.setCurrentLevelIndex(testingCurrentLevelIndex);
         // Click on new game button.
         onView(ViewMatchers.withId(R.id.new_game_button)).perform(ViewActions.click());
-        assertEquals(LevelManager.getCurrentLevel(), FIRST_LEVEL_ID);
-        assertEquals(LevelManager.getLastLevel(), FIRST_LEVEL_ID);
+        assertEquals(LevelManager.getCurrentLevelIndex(), FIRST_LEVEL_ID);
+        assertEquals(LevelManager.getLastLevelIndex(), FIRST_LEVEL_ID);
     }
 
     @Test

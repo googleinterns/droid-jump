@@ -46,12 +46,12 @@ public class GameSuccessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int level = LevelManager.getCurrentLevel();
+        int level = LevelManager.getCurrentLevelIndex();
         View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
 
         // Redirecting on click to game screen.
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
-        if (level < LevelManager.getLevelsCount()) {
+        if (level < LevelManager.getLevelsLastIndex()) {
             LevelManager.onCurrentLevelCompleted();
             nextLevelButton.setOnClickListener(view -> {
                 findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);

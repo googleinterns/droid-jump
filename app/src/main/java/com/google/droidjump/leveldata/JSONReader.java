@@ -34,12 +34,12 @@ public class JSONReader {
         try (InputStream is = resources.openRawResource(fileId)) {
             Scanner scanner = new Scanner(is);
             jsonString = scanner.useDelimiter("\\A").next();
-        } catch (Resources.NotFoundException | IOException e) {
+            jsonObject = new JSONObject(jsonString);
+        }
+        catch (Resources.NotFoundException | IOException e) {
             Log.e(JSONReader.class.getName(), "Failed to open resource: " + e.getMessage());
         }
-        try {
-            jsonObject = new JSONObject(jsonString);
-        } catch (JSONException e) {
+        catch (JSONException e) {
             Log.e(JSONReader.class.getName(), "Failed to parse JSON: " + e.getMessage());
         }
         return jsonObject;
