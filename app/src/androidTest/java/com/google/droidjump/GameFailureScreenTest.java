@@ -17,25 +17,27 @@
 package com.google.droidjump;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
-import static org.junit.Assert.assertEquals;
 
 import android.content.Intent;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class StartScreenTest {
+@LargeTest
+public class GameFailureScreenTest {
     private static final Intent MAIN_ACTIVITY_INTENT =
             new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), MainActivity.class);
     @Rule
@@ -44,39 +46,37 @@ public class StartScreenTest {
     @Before
     public void setUp() throws Exception {
         activityTestRule.launchActivity(MAIN_ACTIVITY_INTENT);
+        LevelManager.init(activityTestRule.getActivity());
+        LevelManager.setCurrentLevelIndex(FIRST_LEVEL_ID);
+        LevelManager.setLastLevelIndex(FIRST_LEVEL_ID);
+        NavigationHelper.navigateToFragment(activityTestRule.getActivity(), new GameFailureFragment());
     }
 
     @Test
-    public void navigateToGameScreen() {
-        onView(ViewMatchers.withId(R.id.play_button)).perform(ViewActions.click());
-
-        onView(ViewMatchers.withId(R.id.game_layout)).check(matches(isDisplayed()));
+    public void checkIfFailTextDisplayed() {
+        onView(withId(R.id.fail_text)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void navigateToLevelsScreen() {
-        onView(ViewMatchers.withId(R.id.level_button)).perform(ViewActions.click());
-
-        onView(ViewMatchers.withId(R.id.choose_level_header)).check(matches(isDisplayed()));
+    public void checkIfRetryButtonIsDisplayed() {
+        onView(withId(R.id.retry_button)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void startNewGame() {
-        // Setting the random current level.
-        int testingCurrentLevelIndex = (int) (Math.random() * (LevelManager.getLevelsLastIndex() - FIRST_LEVEL_ID)
-                + FIRST_LEVEL_ID);
-        LevelManager.setCurrentLevelIndex(testingCurrentLevelIndex);
-        // Click on new game button.
-        onView(ViewMatchers.withId(R.id.new_game_button)).perform(ViewActions.click());
+    public void checkOnClickMenuButton() {
+        onView(withId(R.id.menu_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_button)).perform(click());
 
-        assertEquals(LevelManager.getCurrentLevelIndex(), FIRST_LEVEL_ID);
-        assertEquals(LevelManager.getLastLevelIndex(), FIRST_LEVEL_ID);
+        onView(withId(R.id.play_button)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void navigateToHowToPlayScreen() {
-        onView(ViewMatchers.withId(R.id.how_to_play_button)).perform(ViewActions.click());
+    public void checkOnClickReplayButton() {
+        LevelManager.init(activityTestRule.getActivity());
 
-        onView(ViewMatchers.withId(R.id.how_to_play_title)).check(matches(isDisplayed()));
+        onView(withId(R.id.retry_button))
+                .perform(click());
+
+        onView(withId(R.id.game_layout)).check(matches(isDisplayed()));
     }
 }

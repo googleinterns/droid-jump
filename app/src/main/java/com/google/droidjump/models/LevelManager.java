@@ -91,4 +91,9 @@ public class LevelManager {
     public static ArrayList<LevelConfig> getGameLevels() {
         return (ArrayList<LevelConfig>) gameLevels.clone();
     }
+
+    public static void setLastLevelIndex(int lastLevelIndex) {
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndex);
+        gameDataEditor.apply();
+    }
 }
