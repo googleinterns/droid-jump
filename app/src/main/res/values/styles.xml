@@ -70,12 +70,16 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="MenuButton" parent="@style/Widget.AppCompat.ImageButton">
+    <style name="BackButton" parent="@style/Widget.AppCompat.ImageButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/button_bg_round</item>
         <item name="android:layout_marginRight">@dimen/fab_margin</item>
         <item name="android:layout_marginTop">@dimen/fab_margin</item>
+        <item name="android:src">@drawable/left_arrow</item>
+    </style>
+
+    <style name="MenuButton" parent="BackButton">
         <item name="android:src">@drawable/ic_menu</item>
     </style>
 

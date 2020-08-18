@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.droidjump.drawable.DroidStartView;
 import com.google.droidjump.models.LevelManager;
 
 /**

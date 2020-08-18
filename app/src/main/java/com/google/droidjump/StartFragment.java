@@ -18,14 +18,20 @@ package com.google.droidjump;
 
 import static androidx.navigation.Navigation.findNavController;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.droidjump.drawable.DroidStartView;
 import com.google.droidjump.models.LevelManager;
 
 /**
@@ -34,6 +40,7 @@ import com.google.droidjump.models.LevelManager;
 public class StartFragment extends Fragment {
     private MainActivity activity;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +58,13 @@ public class StartFragment extends Fragment {
         // Drawing droid.
         LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
         drawLayout.addView(new DroidStartView(getActivity()));
+
+        // Navigation Drawer.
+        DrawerLayout drawerLayout = rootView.findViewById(R.id.drawer_layout);
+        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
+        menuButton.setOnClickListener(view -> {
+            drawerLayout.openDrawer(GravityCompat.START);
+        });
         return rootView;
     }
 
