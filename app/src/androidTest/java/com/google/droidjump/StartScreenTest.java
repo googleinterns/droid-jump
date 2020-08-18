@@ -65,7 +65,7 @@ public class StartScreenTest {
     @Test
     public void startNewGame() {
         // Setting the random current level.
-        int testingCurrentLevelIndex = LevelManager.getLastLevelIndex() / 2;
+        int testingCurrentLevelIndex = LevelManager.getLastLevelIndex();
         LevelManager.setCurrentLevelIndex(testingCurrentLevelIndex);
         // Click on new game button.
         onView(ViewMatchers.withId(R.id.new_game_button)).perform(ViewActions.click());
