@@ -30,8 +30,8 @@ import java.util.Map;
  */
 public class InfiniteLevelData implements LevelStrategy {
     private static final ObstacleType[] OBSTACLE_TYPES = ObstacleType.values();
-    ObstacleData currentObstacle;
-    int baseSpeed;
+    private ObstacleData currentObstacle;
+    private int baseSpeed;
     private LevelGenerator levelGenerator;
 
     public InfiniteLevelData(int fileId, Resources resources) {
