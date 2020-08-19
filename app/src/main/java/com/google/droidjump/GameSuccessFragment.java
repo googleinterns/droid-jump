@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -46,12 +45,11 @@ public class GameSuccessFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int level = LevelManager.getCurrentLevelIndex();
         View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
 
         // Redirecting on click to game screen.
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
-        if (level < LevelManager.getLevelsLastIndex()) {
+        if (LevelManager.getCurrentLevelIndex() < LevelManager.getLevelsLastIndex()) {
             LevelManager.onCurrentLevelCompleted();
             nextLevelButton.setOnClickListener(view -> {
                 findNavController(view).navigate(R.id.action_game_success_screen_to_game_screen);
@@ -61,18 +59,13 @@ public class GameSuccessFragment extends Fragment {
         }
 
         // Redirecting on click to start screen.
-        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
-        menuButton.setOnClickListener(view -> {
+        rootView.findViewById(R.id.menu_button).setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_start_screen);
         });
-
         // Drawing droid.
-        LinearLayout drawLayout = rootView.findViewById(R.id.droid_draw_view);
-        drawLayout.addView(new DroidStartView(getActivity()));
-
+        ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(getActivity()));
         // Redirecting on click to How To Play screen.
-        FloatingActionButton howToPlayButton = rootView.findViewById(R.id.how_to_play_button);
-        howToPlayButton.setOnClickListener(view -> {
+        rootView.findViewById(R.id.how_to_play_button).setOnClickListener(view -> {
             findNavController(view).navigate(R.id.action_game_success_screen_to_how_to_play_screen);
         });
         return rootView;
