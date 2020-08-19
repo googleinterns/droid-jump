@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.droidjump.models.LevelManager;
@@ -70,8 +69,7 @@ public class LevelsFragment extends Fragment {
         });
 
         // Redirecting on click to a start screen.
-        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
-        menuButton.setOnClickListener(view -> {
+        rootView.findViewById(R.id.menu_button).setOnClickListener(view -> {
             activity.onBackPressed();
         });
         return rootView;
