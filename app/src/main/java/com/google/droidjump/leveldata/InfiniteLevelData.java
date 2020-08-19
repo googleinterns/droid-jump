@@ -17,27 +17,39 @@
 package com.google.droidjump.leveldata;
 
 import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
+import static com.google.droidjump.leveldata.JSONKeys.GENERATION_FREQUENCIES_KEY;
 import android.content.res.Resources;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages infinite level data.
  */
 public class InfiniteLevelData implements LevelStrategy {
+    private static final ObstacleType[] OBSTACLE_TYPES = ObstacleType.values();
     ObstacleData currentObstacle;
     int baseSpeed;
+    private Map<ObstacleType, Integer> frequencies;
+    private LevelGenerator levelGenerator;
 
     public InfiniteLevelData(int fileId, Resources resources) {
+        frequencies = new HashMap<>();
         getDataFromFile(fileId, resources);
-        currentObstacle = LevelGenerator.generateNextObstacle();
+        levelGenerator = new LevelGenerator(frequencies);
+        currentObstacle = levelGenerator.generateNextObstacle();
     }
 
     private void getDataFromFile(int fileId, Resources resources) {
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
+            JSONObject generationFrequencies = leveldata.getJSONObject(GENERATION_FREQUENCIES_KEY);
+            for (ObstacleType obstacleType : OBSTACLE_TYPES) {
+                frequencies.put(obstacleType, generationFrequencies.getInt(obstacleType.name()));
+            }
         } catch (JSONException e) {
             Log.e(InfiniteLevelData.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
@@ -51,7 +63,7 @@ public class InfiniteLevelData implements LevelStrategy {
     @Override
     public ObstacleType getNewObstacleType() {
         ObstacleType newObstacleType = currentObstacle.getType();
-        currentObstacle = LevelGenerator.generateNextObstacle();
+        currentObstacle = levelGenerator.generateNextObstacle();
         return newObstacleType;
     }
 
