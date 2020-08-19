@@ -52,18 +52,21 @@ public class LevelManager {
         int currentLevelIndex = getCurrentLevelIndex();
         int lastLevel = getLastLevelIndex();
         if (currentLevelIndex < levelsLastIndex) {
-            // Increasing the current level
-            gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, ++currentLevelIndex);
-            // Increasing the last level
+            setCurrentLevelIndex(++currentLevelIndex);
             if (currentLevelIndex > lastLevel) {
-                gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, currentLevelIndex);
+                setLastLevelIndex(currentLevelIndex);
             }
             gameDataEditor.apply();
         }
     }
 
-    public static void setCurrentLevelIndex(int currentLevel) {
-        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevel);
+    public static void setCurrentLevelIndex(int currentLevelIndex) {
+        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevelIndex);
+        gameDataEditor.apply();
+    }
+
+    public static void setLastLevelIndex(int lastLevelIndexLevel) {
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndexLevel);
         gameDataEditor.apply();
     }
 
@@ -86,12 +89,11 @@ public class LevelManager {
         return gameLevels.get(getCurrentLevelIndex()).getLevelStrategy();
     }
 
-    public static String getCurrentLevelName(){
+    public static String getCurrentLevelName() {
         return gameLevels.get(getCurrentLevelIndex()).getLevelName();
     }
 
     public static List<LevelConfig> getGameLevels(){
         return Collections.unmodifiableList(gameLevels);
     }
-
 }
