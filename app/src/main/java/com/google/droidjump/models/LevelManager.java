@@ -28,6 +28,8 @@ import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.LevelConfigParser;
 import com.google.droidjump.leveldata.LevelStrategy;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class LevelManager {
     private static int levelsLastIndex;
@@ -91,7 +93,7 @@ public class LevelManager {
         return gameLevels.get(getCurrentLevelIndex()).getLevelName();
     }
 
-    public static ArrayList<LevelConfig> getGameLevels() {
-        return (ArrayList<LevelConfig>) gameLevels.clone();
+    public static List<LevelConfig> getGameLevels(){
+        return Collections.unmodifiableList(gameLevels);
     }
 }
