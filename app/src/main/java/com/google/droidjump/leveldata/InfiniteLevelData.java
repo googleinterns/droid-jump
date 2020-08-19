@@ -32,17 +32,15 @@ public class InfiniteLevelData implements LevelStrategy {
     private static final ObstacleType[] OBSTACLE_TYPES = ObstacleType.values();
     ObstacleData currentObstacle;
     int baseSpeed;
-    private Map<ObstacleType, Integer> frequencies;
     private LevelGenerator levelGenerator;
 
     public InfiniteLevelData(int fileId, Resources resources) {
-        frequencies = new HashMap<>();
         getDataFromFile(fileId, resources);
-        levelGenerator = new LevelGenerator(frequencies);
         currentObstacle = levelGenerator.generateNextObstacle();
     }
 
     private void getDataFromFile(int fileId, Resources resources) {
+        Map<ObstacleType, Integer> frequencies = new HashMap<>();
         JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
         try {
             baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
@@ -53,6 +51,7 @@ public class InfiniteLevelData implements LevelStrategy {
         } catch (JSONException e) {
             Log.e(InfiniteLevelData.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
         }
+        levelGenerator = new LevelGenerator(frequencies);
     }
 
     @Override
