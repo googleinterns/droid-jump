@@ -25,7 +25,7 @@ import org.json.JSONObject;
 /**
  * Manages finite generated level data.
  */
-public class FiniteGeneratedLevelData extends GeneratedLevelData{
+public class FiniteGeneratedLevelData extends GeneratedLevelData {
     private int obstaclesLimit;
     private int obstaclesCount;
 

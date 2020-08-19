@@ -28,14 +28,14 @@ import java.util.Map;
 /**
  * Super class for generated levels.
  **/
-abstract public class GeneratedLevelData implements LevelStrategy{
+abstract public class GeneratedLevelData implements LevelStrategy {
     protected static final ObstacleType[] OBSTACLE_TYPES = ObstacleType.values();
     protected ObstacleData currentObstacle;
     protected int baseSpeed;
     protected LevelGenerator levelGenerator;
     protected JSONObject leveldata;
 
-    GeneratedLevelData(int fileId, Resources resources){
+    GeneratedLevelData(int fileId, Resources resources) {
         getDataFromFile(fileId, resources);
         currentObstacle = levelGenerator.generateNextObstacle();
     }
@@ -55,7 +55,7 @@ abstract public class GeneratedLevelData implements LevelStrategy{
         levelGenerator = new LevelGenerator(frequencies);
     }
 
-    protected JSONObject getJSONObject(){
+    protected JSONObject getJSONObject() {
         return leveldata;
     }
 
