@@ -27,6 +27,9 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 
+/**
+ * Draws an image inside a circle.
+ */
 public class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
     private Bitmap bitmap;
     private Paint paint;
@@ -70,8 +73,8 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
         updateCircleBounds(bounds);
     }
 
@@ -91,8 +94,8 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
                 drawable.getIntrinsicHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas();
-        canvas.drawBitmap(bitmap, 0, 0, paint);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        canvas.drawBitmap(bitmap, /* left= */ 0, /* top= */ 0, paint);
+        drawable.setBounds(/* left= */ 0, /* top= */ 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
     }
@@ -103,15 +106,17 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
         float left = getPaddingLeft();
         float top = getPaddingTop();
 
-        // Centering bounds to make circle always in the center of view.
+        // Centering bounds to make image always in the center of circle.
         if (contentWidth > contentHeight) {
             left += (contentWidth - contentHeight) / 2f;
         } else {
             top += (contentHeight - contentWidth) / 2f;
         }
 
-        // Make bounds a square (aspect ratio of 1:1).
+        // Making aspect ratio of 1:1.
         float diameter = Math.min(contentWidth, contentHeight);
-        bounds.set(left, top, left + diameter, top + diameter);
+        float right = left + diameter;
+        float bottom = top + diameter;
+        bounds.set(left, top, right, bottom);
     }
 }
