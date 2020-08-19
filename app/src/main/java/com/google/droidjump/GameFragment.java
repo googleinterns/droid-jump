@@ -18,11 +18,9 @@ package com.google.droidjump;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,11 +39,7 @@ public class GameFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
         activity = getActivity();
-        WindowManager windowManager = requireActivity().getWindowManager();
-        Display defaultDisplay = windowManager.getDefaultDisplay();
-
-        // Writing size to the screen variable.
-        defaultDisplay.getSize(screen);
+        activity.getWindowManager().getDefaultDisplay().getSize(screen);
         gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
@@ -53,8 +47,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
-        LinearLayout layout = rootView.findViewById(R.id.game_layout);
-        layout.addView(gameView);
+        ((LinearLayout) rootView.findViewById(R.id.game_layout)).addView(gameView);
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;
     }
