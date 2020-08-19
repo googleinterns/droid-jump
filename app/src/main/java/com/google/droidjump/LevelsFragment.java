@@ -35,13 +35,11 @@ import java.util.Objects;
  * Displays Levels Screen.
  */
 public class LevelsFragment extends Fragment {
-    private MainActivity activity;
     private LevelsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = Objects.requireNonNull((MainActivity) getActivity());
         Context context = getContext();
         adapter = new LevelsAdapter(Objects.requireNonNull(context), LevelManager.getGameLevels(),
                 LevelManager.getLastLevelIndex());
@@ -70,7 +68,7 @@ public class LevelsFragment extends Fragment {
 
         // Redirecting on click to a start screen.
         rootView.findViewById(R.id.menu_button).setOnClickListener(view -> {
-            activity.onBackPressed();
+            getActivity().onBackPressed();
         });
         return rootView;
     }
