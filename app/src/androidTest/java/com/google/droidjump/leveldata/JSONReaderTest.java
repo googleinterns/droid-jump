@@ -44,19 +44,19 @@ public class JSONReaderTest {
         Resources resources = activityTestRule.getActivity().getResources();
         int testfileId = R.raw.test;
 
-        // Create test JSON object R.raw.test content.
-        JSONObject testJSONObject = new JSONObject();
-        testJSONObject.put(BASE_SPEED_KEY, 50);
+        // Create test JSON object based on R.raw.test content.
+        JSONObject expectedJSONObject = new JSONObject();
+        expectedJSONObject.put(BASE_SPEED_KEY, 50);
         JSONArray timelineArray = new JSONArray();
         timelineArray.put(new JSONObject().put(INTERVAL_KEY, 50).put(TYPE_KEY, CACTUS.toString()));
         timelineArray.put(new JSONObject().put(INTERVAL_KEY, 60).put(TYPE_KEY, PALM.toString()));
         timelineArray.put(new JSONObject().put(INTERVAL_KEY, 40).put(TYPE_KEY, BAT.toString()));
-        testJSONObject.put(TIMELINE_KEY, timelineArray);
+        expectedJSONObject.put(TIMELINE_KEY, timelineArray);
 
         // Get JSON object using tested method.
         JSONObject resultJSONObject = JSONReader.getJSONObjectFromResource(testfileId, resources);
 
-        Assert.assertArrayEquals(new JSONObject[]{testJSONObject}, new JSONObject[]{resultJSONObject});
+        Assert.assertEquals(expectedJSONObject.toString(), resultJSONObject.toString());
     }
 
 }
