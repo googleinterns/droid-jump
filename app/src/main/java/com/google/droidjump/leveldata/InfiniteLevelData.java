@@ -16,63 +16,18 @@
 
 package com.google.droidjump.leveldata;
 
-import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
-import static com.google.droidjump.leveldata.JSONKeys.GENERATION_FREQUENCIES_KEY;
 import android.content.res.Resources;
-import android.util.Log;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Manages infinite level data.
  */
-public class InfiniteLevelData implements LevelStrategy {
-    private static final ObstacleType[] OBSTACLE_TYPES = ObstacleType.values();
-    ObstacleData currentObstacle;
-    int baseSpeed;
-    private LevelGenerator levelGenerator;
-
+public class InfiniteLevelData extends GeneratedLevelData {
     public InfiniteLevelData(int fileId, Resources resources) {
-        getDataFromFile(fileId, resources);
-        currentObstacle = levelGenerator.generateNextObstacle();
-    }
-
-    private void getDataFromFile(int fileId, Resources resources) {
-        Map<ObstacleType, Integer> frequencies = new HashMap<>();
-        JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
-        try {
-            baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
-            JSONObject generationFrequencies = leveldata.getJSONObject(GENERATION_FREQUENCIES_KEY);
-            for (ObstacleType obstacleType : OBSTACLE_TYPES) {
-                frequencies.put(obstacleType, generationFrequencies.getInt(obstacleType.name()));
-            }
-        } catch (JSONException e) {
-            Log.e(InfiniteLevelData.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
-        }
-        levelGenerator = new LevelGenerator(frequencies);
-    }
-
-    @Override
-    public int getCurrentTimeInterval() {
-        return currentObstacle.getInterval();
-    }
-
-    @Override
-    public ObstacleType getNewObstacleType() {
-        ObstacleType newObstacleType = currentObstacle.getType();
-        currentObstacle = levelGenerator.generateNextObstacle();
-        return newObstacleType;
+        super(fileId, resources);
     }
 
     @Override
     public boolean isEmpty() {
         return false;
-    }
-
-    @Override
-    public int getBaseSpeed() {
-        return baseSpeed;
     }
 }
