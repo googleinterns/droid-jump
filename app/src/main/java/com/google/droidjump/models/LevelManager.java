@@ -29,6 +29,9 @@ import com.google.droidjump.leveldata.LevelConfigParser;
 import com.google.droidjump.leveldata.LevelStrategy;
 import java.util.ArrayList;
 
+/**
+ * Manages the game data.
+ */
 public class LevelManager {
     private static int levelsLastIndex;
     private static SharedPreferences gameData;

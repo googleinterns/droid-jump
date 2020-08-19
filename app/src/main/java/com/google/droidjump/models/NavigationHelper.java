@@ -21,6 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.R;
 
+/**
+ * Manages the navigation between screens.
+ */
 public class NavigationHelper {
     public static void addOnBackPressedEventListener(FragmentActivity activity, Fragment fragmentToNavigate) {
         // Navigates to the specific fragment.
