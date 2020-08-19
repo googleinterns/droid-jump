@@ -50,7 +50,7 @@ public class LevelsAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int index) {
+    public Object getItem(int i) {
         return null;
     }
 

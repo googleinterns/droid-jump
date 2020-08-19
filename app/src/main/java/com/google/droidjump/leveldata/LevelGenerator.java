@@ -19,6 +19,7 @@ package com.google.droidjump.leveldata;
 import static com.google.droidjump.leveldata.ObstacleType.BAT;
 import static com.google.droidjump.leveldata.ObstacleType.CACTUS;
 import static com.google.droidjump.leveldata.ObstacleType.PALM;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -29,19 +30,39 @@ public class LevelGenerator {
     static private final int MIN_INTERVAL_VALUE = 20; // Min value of interval between obstacles.
     static private final int MAX_INTERVAL_VALUE = 80; // Max value of interval between obstacles.
     // Options of obstacles for generation.
-    static private final ObstacleType[] OBSTACLE_OPTIONS = {CACTUS, CACTUS, CACTUS, PALM, PALM, BAT};
+    static private final ObstacleType[] OBSTACLE_OPTIONS = ObstacleType.values();
+    static private final Random random = new Random();
+    private int[] frequencies = new int[OBSTACLE_OPTIONS.length];
+    private int frequencySum = 0;
 
-    private static final Random random = new Random();
+    LevelGenerator(Map<ObstacleType, Integer> frequencyShares) {
+        // Fill frequencies array and calculate sum.
+        for (int i = 0; i < OBSTACLE_OPTIONS.length; i++) {
+            frequencies[i] = frequencyShares.get(OBSTACLE_OPTIONS[i]);
+            frequencySum += frequencies[i];
+        }
+    }
 
-    public static ObstacleData generateNextObstacle() {
+    public ObstacleData generateNextObstacle() {
         return new ObstacleData(generateInterval(), generateObstacleType());
     }
 
-    private static ObstacleType generateObstacleType() {
-        return OBSTACLE_OPTIONS[random.nextInt(OBSTACLE_OPTIONS.length)];
+    private ObstacleType generateObstacleType() {
+        ObstacleType generatedObstacleType = null;
+        // Random value from frequency range.
+        int generatedFrequencyValue = random.nextInt(frequencySum);
+        int currentPrefSum = 0;
+        for (int i = 0; i < frequencies.length; i++) {
+            currentPrefSum += frequencies[i];
+            if (generatedFrequencyValue < currentPrefSum) {
+                generatedObstacleType = OBSTACLE_OPTIONS[i];
+                break;
+            }
+        }
+        return generatedObstacleType;
     }
 
-    private static int generateInterval() {
+    private int generateInterval() {
         return MIN_INTERVAL_VALUE + random.nextInt(MAX_INTERVAL_VALUE - MIN_INTERVAL_VALUE + 1);
     }
 }
