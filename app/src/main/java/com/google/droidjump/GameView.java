@@ -150,8 +150,8 @@ public class GameView extends SurfaceView implements Runnable {
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
                     break;
                 case BAT:
-                    // 700 - random value
-                    // TODO(Max): calculate y coordinate for bat
+                    // 700 - random value.
+                    // TODO(Max): calculate y coordinate for bat.
                     obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
                     break;
             }
@@ -170,7 +170,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
             // Moving obstacles to the left.
             obstacle.setX(obstacle.getX() - levelSpeed);
-            // Removal of passed obstacles
+            // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
             }
