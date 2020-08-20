@@ -19,6 +19,7 @@ package com.google.droidjump;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.auth.api.Auth;
@@ -27,20 +28,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.droidjump.models.LevelManager;
-
 
 /**
  * Represents main activity.
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     private GoogleSignInClient mGoogleSignInClient = null;
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
+    private String mPlayerId;
 
 
     @Override
@@ -50,8 +55,9 @@ public class MainActivity extends FragmentActivity {
         // Create the client used to sign in.
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
-        LevelManager.init(this);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_sign_in);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.sign_out_button).setOnClickListener(this);
     }
 
     @Override
@@ -82,6 +88,10 @@ public class MainActivity extends FragmentActivity {
                                         GoogleSignInAccount signedInAccount = task.getResult();
                                         onConnected(signedInAccount);
                                     } else {
+                                        // Player will need to sign-in explicitly using via UI.
+                                        // See [sign-in best practices](http://developers.google.com/games/services/checklist) for guidance on how and when to implement Interactive Sign-in,
+                                        // and [Performing Interactive Sign-in](http://developers.google.com/games/services/android/signin#performing_interactive_sign-in) for details on how to implement
+                                        // Interactive Sign-in.
                                         onDisconnected();
                                     }
                                 }
@@ -100,6 +110,17 @@ public class MainActivity extends FragmentActivity {
             mSignedInAccount = googleSignInAccount;
 
             // Get the playerId from the PlayersClient
+            PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
+            playersClient.getCurrentPlayer()
+                    .addOnSuccessListener(new OnSuccessListener<Player>() {
+                        @Override
+                        public void onSuccess(Player player) {
+                            mPlayerId = player.getPlayerId();
+
+//                            switchToMainScreen();
+                        }
+                    });
+//                    .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
             // Switch to main screen.
         }
     }
@@ -107,9 +128,7 @@ public class MainActivity extends FragmentActivity {
     
 
     private void startSignInIntent() {
-        GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
-                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
-        Intent intent = signInClient.getSignInIntent();
+        Intent intent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
@@ -121,14 +140,46 @@ public class MainActivity extends FragmentActivity {
             if (result.isSuccess()) {
                 // The signed in account is stored in the result.
                 GoogleSignInAccount signedInAccount = result.getSignInAccount();
+                switchToGameScreen();
             } else {
                 String message = result.getStatus().getStatusMessage();
                 if (message == null || message.isEmpty()) {
-                    message = "error";
+                    message = "Unknown error";
                 }
                 new AlertDialog.Builder(this).setMessage(message)
                         .setNeutralButton(android.R.string.ok, null).show();
             }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.sign_in_button) {
+            // start the asynchronous sign in flow
+            startSignInIntent();
+        } else if (view.getId() == R.id.sign_out_button) {
+            // sign out.
+            signOut();
+            // show sign-in button, hide the sign-out button
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+        }
+    }
+
+    private void signOut() {
+        GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
+                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
+        signInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // at this point, the user is signed out.
+                    }
+                });
+    }
+
+    void switchToGameScreen() {
+        LevelManager.init(this);
+        setContentView(R.layout.main_activity);
     }
 }
