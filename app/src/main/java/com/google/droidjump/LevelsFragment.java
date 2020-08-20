@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 
@@ -32,13 +31,13 @@ import com.google.droidjump.models.NavigationHelper;
  * Displays Levels Screen.
  */
 public class LevelsFragment extends Fragment {
-    private FragmentActivity activity;
+    private MainActivity activity;
     private LevelsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = getActivity();
+        activity = (MainActivity) getActivity();
         adapter = new LevelsAdapter(activity, LevelManager.getGameLevels(), LevelManager.getLastLevelIndex());
     }
 
