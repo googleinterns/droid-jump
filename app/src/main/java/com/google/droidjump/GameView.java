@@ -85,6 +85,7 @@ public class GameView extends SurfaceView implements Runnable {
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
 
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @Override
@@ -149,8 +150,8 @@ public class GameView extends SurfaceView implements Runnable {
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
                     break;
                 case BAT:
-                    // 700 - random value
-                    // TODO(Max): calculate y coordinate for bat
+                    // 700 - random value.
+                    // TODO(Max): calculate y coordinate for bat.
                     obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
                     break;
             }
@@ -169,7 +170,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
             // Moving obstacles to the left.
             obstacle.setX(obstacle.getX() - levelSpeed);
-            // Removal of passed obstacles
+            // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
             }
@@ -187,7 +188,6 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Droid Animation.
             animateGameItem(droid);
         }
         if (droid.getY() != droid.getInitialY()) {
@@ -213,7 +213,6 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-            // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
             String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, LevelManager.getCurrentLevelName());
             float levelPaintY = screenMargin + levelPaint.getTextSize();

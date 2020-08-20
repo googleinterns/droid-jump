@@ -18,11 +18,9 @@ package com.google.droidjump;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -47,11 +45,7 @@ public class GameFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
         activity = getActivity();
-        WindowManager windowManager = requireActivity().getWindowManager();
-        Display defaultDisplay = windowManager.getDefaultDisplay();
-
-        // Writing size to the screen variable.
-        defaultDisplay.getSize(screen);
+        activity.getWindowManager().getDefaultDisplay().getSize(screen);
         gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
@@ -59,8 +53,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
-        LinearLayout layout = rootView.findViewById(R.id.game_layout);
-        layout.addView(gameView);
+        ((LinearLayout) rootView.findViewById(R.id.game_layout)).addView(gameView);
         menuButton = rootView.findViewById(R.id.menu_button);
         pauseLayout = rootView.findViewById(R.id.pause_layout);
         menuButton.setOnClickListener(ignored -> {

@@ -6,7 +6,12 @@
       "levelType": "FINITE"
     },
     {
-      "levelName": "infinite",
+      "levelName": "2",
+      "resourceName": "finite_generated_level",
+      "levelType": "FINITE_GENERATED"
+    },
+    {
+      "levelName": "3",
       "resourceName": "infinite_level",
       "levelType": "INFINITE"
     }
