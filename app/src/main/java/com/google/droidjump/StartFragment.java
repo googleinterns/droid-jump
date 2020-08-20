@@ -60,7 +60,7 @@ public class StartFragment extends Fragment {
             GoogleSignInClient signInClient = GoogleSignIn.getClient(activity,
                     GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
             Intent intent = signInClient.getSignInIntent();
-            getActivity().startActivityForResult(intent, 200);
+            activity.startActivityForResult(intent, 200);
         });
         return rootView;
     }
