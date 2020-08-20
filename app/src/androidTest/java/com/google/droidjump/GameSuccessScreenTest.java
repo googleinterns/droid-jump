@@ -53,6 +53,7 @@ public class GameSuccessScreenTest {
     @Test
     public void checkIfSuccessTextIsDisplayed() {
         NavigationHelper.navigateToFragment(activityTestRule.getActivity(), new GameSuccessFragment());
+
         onView(withId(R.id.success_text)).check(matches(isDisplayed()));
     }
 
@@ -60,7 +61,6 @@ public class GameSuccessScreenTest {
     public void checkOnClickMenuButton() {
         NavigationHelper.navigateToFragment(activityTestRule.getActivity(), new GameSuccessFragment());
 
-        onView(withId(R.id.menu_button)).check(matches(isDisplayed()));
         onView(withId(R.id.menu_button)).perform(click());
 
         onView(withId(R.id.play_button)).check(matches(isDisplayed()));
@@ -72,9 +72,7 @@ public class GameSuccessScreenTest {
         LevelManager.setLastLevelIndex(FIRST_LEVEL_ID);
         NavigationHelper.navigateToFragment(activityTestRule.getActivity(), new GameSuccessFragment());
 
-        onView(withId(R.id.next_button)).check(matches(isDisplayed()));
-        onView(withId(R.id.next_button))
-                .perform(click());
+        onView(withId(R.id.next_button)).perform(click());
 
         onView(withId(R.id.game_layout)).check(matches(isDisplayed()));
     }
