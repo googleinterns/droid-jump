@@ -21,6 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.R;
 
+/**
+ * Manages the navigation between screens.
+ */
 public class NavigationHelper {
     public static void addOnBackPressedEventListener(FragmentActivity activity, Fragment fragmentToNavigate) {
         // Navigates to the specific fragment.
@@ -53,8 +56,7 @@ public class NavigationHelper {
 
     public static void clearBackStack(FragmentActivity activity) {
         int count = activity.getSupportFragmentManager().getBackStackEntryCount();
-        while (count > 0) {
-            count--;
+        for (int i = 0; i < count; i++) {
             activity.getSupportFragmentManager().popBackStack();
         }
     }
