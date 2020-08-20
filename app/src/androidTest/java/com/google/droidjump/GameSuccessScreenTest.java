@@ -78,7 +78,7 @@ public class GameSuccessScreenTest {
     }
 
     @Test
-    public void checkNextButtonIsDisplayedIfNextLevelIsAvailableInCaseWeHaveOnlyOneLevel() {
+    public void checkNextButtonExists_nextLevelIsAvailable_oneLevel() {
         LevelManager.setCurrentLevelIndex(FIRST_LEVEL_ID);
         LevelManager.setLastLevelIndex(FIRST_LEVEL_ID);
         LevelManager.setLevelsLastIndex(FIRST_LEVEL_ID);
@@ -88,7 +88,7 @@ public class GameSuccessScreenTest {
     }
 
     @Test
-    public void checkNextButtonIsDisplayedIfNextLevelIsAvailableInCaseWeHaveMoreThanOneLevel() {
+    public void checkNextButtonExists_nextLevelIsAvailable_manyLevels() {
         LevelManager.setCurrentLevelIndex(FIRST_LEVEL_ID);
         int lastLevelIndex = 2; // A handpicked value.
         LevelManager.setLevelsLastIndex(lastLevelIndex);
