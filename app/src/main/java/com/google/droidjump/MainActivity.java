@@ -16,8 +16,14 @@
 
 package com.google.droidjump;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.droidjump.models.LevelManager;
 
 /**
@@ -29,5 +35,24 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         LevelManager.init(this);
         setContentView(R.layout.main_activity);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // The signed in account is stored in the result.
+                GoogleSignInAccount signedInAccount = result.getSignInAccount();
+            } else {
+                String message = result.getStatus().getStatusMessage();
+                if (message == null || message.isEmpty()) {
+                    message = "Error";
+                }
+                new AlertDialog.Builder(this).setMessage(message)
+                        .setNeutralButton(android.R.string.ok, null).show();
+            }
+        }
     }
 }
