@@ -36,15 +36,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.2.0'
 
-    // Junit
+    // Testing.
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-
-    // Set this dependency to use JUnit 4 rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation('androidx.test:rules:1.2.0') {
         exclude module: 'support-annotations'
     }
-
-    // Espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
