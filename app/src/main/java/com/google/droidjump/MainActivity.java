@@ -22,7 +22,10 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.droidjump.models.LevelManager;
 
@@ -30,10 +33,15 @@ import com.google.droidjump.models.LevelManager;
  * Represents main activity.
  */
 public class MainActivity extends FragmentActivity {
+    private GoogleSignInClient signInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LevelManager.init(this);
+        signInClient = GoogleSignIn.getClient(this,
+                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
+
         setContentView(R.layout.main_activity);
     }
 
@@ -54,5 +62,10 @@ public class MainActivity extends FragmentActivity {
                         .setNeutralButton(android.R.string.ok, null).show();
             }
         }
+    }
+
+    public void signIn() {
+        Intent intent = signInClient.getSignInIntent();
+        startActivityForResult(intent, 200);
     }
 }
