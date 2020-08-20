@@ -50,28 +50,16 @@ public class StartScreenTest {
 
     @Test
     public void navigateToGameScreen() {
-<<<<<<< HEAD
-        onView(ViewMatchers.withId(R.id.play_button)).perform(ViewActions.click());
-
-        onView(ViewMatchers.withId(R.id.game_layout)).check(matches(isDisplayed()));
-=======
         onView(withId(R.id.play_button)).perform(click());
 
         onView(withId(R.id.game_layout)).check(matches(isDisplayed()));
->>>>>>> master
     }
 
     @Test
     public void navigateToLevelsScreen() {
-<<<<<<< HEAD
-        onView(ViewMatchers.withId(R.id.level_button)).perform(ViewActions.click());
-
-        onView(ViewMatchers.withId(R.id.choose_level_header)).check(matches(isDisplayed()));
-=======
         onView(withId(R.id.level_button)).perform(click());
 
         onView(withId(R.id.choose_level_header)).check(matches(isDisplayed()));
->>>>>>> master
     }
 
     @Test

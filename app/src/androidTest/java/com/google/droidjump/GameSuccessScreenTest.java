@@ -78,14 +78,23 @@ public class GameSuccessScreenTest {
     }
 
     @Test
-    public void checkNextButtonIsDisplayedIfNextLevelIsAvailable() {
+    public void checkNextButtonIsDisplayedIfNextLevelIsAvailableInCaseWeHaveOnlyOneLevel() {
         LevelManager.setCurrentLevelIndex(FIRST_LEVEL_ID);
         LevelManager.setLastLevelIndex(FIRST_LEVEL_ID);
+        LevelManager.setLevelsLastIndex(FIRST_LEVEL_ID);
         NavigationHelper.navigateToFragment(activityTestRule.getActivity(), new GameSuccessFragment());
 
-        if (LevelManager.getLevelsLastIndex() > 0) {
-            onView(withId(R.id.next_button)).check(matches(isDisplayed()));
-        }
+        onView(withId(R.id.next_button)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void checkNextButtonIsDisplayedIfNextLevelIsAvailableInCaseWeHaveMoreThanOneLevel() {
+        LevelManager.setCurrentLevelIndex(FIRST_LEVEL_ID);
+        int lastLevelIndex = 2; // A handpicked value.
+        LevelManager.setLevelsLastIndex(lastLevelIndex);
+        NavigationHelper.navigateToFragment(activityTestRule.getActivity(), new GameSuccessFragment());
+
+        onView(withId(R.id.next_button)).check(matches(isDisplayed()));
     }
 
     @Test
