@@ -66,7 +66,6 @@ public class GameView extends SurfaceView implements Runnable {
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private LevelStrategy level;
 
-
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
