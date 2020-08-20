@@ -27,7 +27,6 @@ import java.util.List;
  * Represents obstacle Bat.
  */
 public class Bat extends Obstacle implements TwoStepAnimative {
-
     private List<Bitmap> batTypes;
 
     public Bat(int x, int yWithBitmapOffset, Resources resources) {

@@ -16,20 +16,29 @@
 
 package com.google.droidjump;
 
-import static androidx.navigation.Navigation.findNavController;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Displays Start Screen.
  */
 public class StartFragment extends Fragment {
+    private FragmentActivity activity;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = getActivity();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,23 +48,24 @@ public class StartFragment extends Fragment {
         rootView.findViewById(R.id.level_button).setOnClickListener(this::chooseLevel);
         rootView.findViewById(R.id.new_game_button).setOnClickListener(this::startNewGame);
         rootView.findViewById(R.id.how_to_play_button).setOnClickListener(this::goToHowToPlayScreen);
+        NavigationHelper.clearBackStack(activity);
         return rootView;
     }
 
     private void play(View view) {
-        findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
+        NavigationHelper.navigateToFragment(activity, new GameFragment());
     }
 
     private void chooseLevel(View view) {
-        findNavController(view).navigate(R.id.action_start_screen_to_levels_screen);
+        NavigationHelper.navigateToFragment(activity, new LevelsFragment());
     }
 
     private void startNewGame(View view) {
         LevelManager.resetGameData();
-        findNavController(view).navigate(R.id.action_start_screen_to_game_screen);
+        play(view);
     }
 
     private void goToHowToPlayScreen(View view) {
-        findNavController(view).navigate(R.id.action_start_screen_to_how_to_play_screen);
+        NavigationHelper.navigateToFragment(activity, new HowToPlayFragment());
     }
 }

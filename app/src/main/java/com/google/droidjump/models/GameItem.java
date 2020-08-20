@@ -24,7 +24,6 @@ import android.graphics.BitmapFactory;
  * Super class for all game objects.
  */
 abstract class GameItem {
-
     protected int x;
     protected int y;
     protected Bitmap picture;
