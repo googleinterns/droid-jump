@@ -16,7 +16,6 @@
 
 package com.google.droidjump;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
