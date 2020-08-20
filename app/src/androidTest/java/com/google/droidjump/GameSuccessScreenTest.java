@@ -98,7 +98,7 @@ public class GameSuccessScreenTest {
     }
 
     @Test
-    public void checkIfNextButtonIsHiddenWhenCurrentLevelIsTheLast() {
+    public void checkNextButtonHidden_currentLevelIsTheLast() {
         int lastLevelIndex = LevelManager.getLevelsLastIndex();
         LevelManager.setCurrentLevelIndex(lastLevelIndex);
         LevelManager.setLastLevelIndex(lastLevelIndex);
