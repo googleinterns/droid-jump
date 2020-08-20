@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import androidx.activity.OnBackPressedCallback;
@@ -41,6 +41,7 @@ public class GameFragment extends Fragment {
     private ImageButton menuButton;
 
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
@@ -57,17 +58,11 @@ public class GameFragment extends Fragment {
         menuButton = rootView.findViewById(R.id.menu_button);
         pauseLayout = rootView.findViewById(R.id.pause_layout);
         menuButton.setOnClickListener(ignored -> onPause());
-        // Pause buttons events.
-        Button pausePlayButton = rootView.findViewById(R.id.play_button);
-        pausePlayButton.setOnClickListener(ignored -> onResume());
-        Button pauseRestartButton = rootView.findViewById(R.id.restart_button);
-        pauseRestartButton.setOnClickListener(ignored ->
-                NavigationHelper.navigateToFragment(activity, new GameFragment())
-        );
-        Button pauseMenuButton = rootView.findViewById(R.id.go_to_menu_button);
-        pauseMenuButton.setOnClickListener(ignored ->
-                NavigationHelper.navigateToFragment(activity, new StartFragment())
-        );
+        rootView.findViewById(R.id.play_button).setOnClickListener(ignored -> onResume());
+        rootView.findViewById(R.id.restart_button).setOnClickListener(ignored ->
+                NavigationHelper.navigateToFragment(activity, new GameFragment()));
+        rootView.findViewById(R.id.go_to_menu_button).setOnClickListener(ignored ->
+                NavigationHelper.navigateToFragment(activity, new StartFragment()));
         activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(/* enabled= */ true) {
             @Override
             public void handleOnBackPressed() {

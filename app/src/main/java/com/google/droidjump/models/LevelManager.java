@@ -51,6 +51,10 @@ public class LevelManager {
         return levelsLastIndex;
     }
 
+    public static void setLevelsLastIndex(int levelsLastIndex) {
+        LevelManager.levelsLastIndex = levelsLastIndex;
+    }
+
     public static void onCurrentLevelCompleted() {
         int currentLevelIndex = getCurrentLevelIndex();
         int lastLevel = getLastLevelIndex();

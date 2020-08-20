@@ -40,9 +40,7 @@ public class HowToPlayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */ false);
-        rootView.findViewById(R.id.menu_button).setOnClickListener(view ->
-                NavigationHelper.navigateToFragment(activity, new StartFragment())
-        );
+        rootView.findViewById(R.id.menu_button).setOnClickListener(view -> activity.onBackPressed());
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
