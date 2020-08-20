@@ -24,4 +24,6 @@ public interface JSONKeys {
     String TIMELINE_KEY = "timeline";
     String INTERVAL_KEY = "interval";
     String TYPE_KEY = "type";
+    String OBSTACLES_LIMIT_KEY = "obstaclesLimit";
+    String GENERATION_FREQUENCIES_KEY = "generationFrequencies";
 }
