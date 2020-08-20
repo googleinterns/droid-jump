@@ -56,23 +56,19 @@ public class GameFragment extends Fragment {
         ((LinearLayout) rootView.findViewById(R.id.game_layout)).addView(gameView);
         menuButton = rootView.findViewById(R.id.menu_button);
         pauseLayout = rootView.findViewById(R.id.pause_layout);
-        menuButton.setOnClickListener(ignored -> {
-            onPause();
-        });
+        menuButton.setOnClickListener(ignored -> onPause());
         // Pause buttons events.
         Button pausePlayButton = rootView.findViewById(R.id.play_button);
-        pausePlayButton.setOnClickListener(ignored -> {
-            onResume();
-        });
+        pausePlayButton.setOnClickListener(ignored -> onResume());
         Button pauseRestartButton = rootView.findViewById(R.id.restart_button);
-        pauseRestartButton.setOnClickListener(ignored -> {
-            NavigationHelper.navigateToFragment(activity, new GameFragment());
-        });
+        pauseRestartButton.setOnClickListener(ignored ->
+                NavigationHelper.navigateToFragment(activity, new GameFragment())
+        );
         Button pauseMenuButton = rootView.findViewById(R.id.go_to_menu_button);
-        pauseMenuButton.setOnClickListener(ignored -> {
-            NavigationHelper.navigateToFragment(activity, new StartFragment());
-        });
-        activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(true) {
+        pauseMenuButton.setOnClickListener(ignored ->
+                NavigationHelper.navigateToFragment(activity, new StartFragment())
+        );
+        activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(/* enabled= */ true) {
             @Override
             public void handleOnBackPressed() {
                 onPause();
