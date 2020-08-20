@@ -16,35 +16,30 @@
 
 package com.google.droidjump;
 
-import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import java.util.Objects;
+import androidx.fragment.app.FragmentActivity;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Displays Game Screen.
  */
 public class GameFragment extends Fragment {
     private GameView gameView;
+    private FragmentActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
-        Activity activity = getActivity();
-        WindowManager windowManager = Objects.requireNonNull(activity).getWindowManager();
-        Display defaultDisplay = windowManager.getDefaultDisplay();
-
-        // Writing size to the screen variable.
-        defaultDisplay.getSize(screen);
+        activity = getActivity();
+        activity.getWindowManager().getDefaultDisplay().getSize(screen);
         gameView = new GameView(activity, screen.x, screen.y, /* isPlaying= */ true);
     }
 
@@ -52,8 +47,8 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.game_screen, container, /* attachToRoot= */ false);
-        ConstraintLayout layout = rootView.findViewById(R.id.game_layout);
-        layout.addView(gameView);
+        ((LinearLayout) rootView.findViewById(R.id.game_layout)).addView(gameView);
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         return rootView;
     }
 

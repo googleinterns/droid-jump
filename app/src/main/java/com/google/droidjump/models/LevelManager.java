@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Manages the game data.
+ */
 public class LevelManager {
     private static int levelsLastIndex;
     private static SharedPreferences gameData;
@@ -93,7 +96,7 @@ public class LevelManager {
         return gameLevels.get(getCurrentLevelIndex()).getLevelName();
     }
 
-    public static List<LevelConfig> getGameLevels(){
+    public static List<LevelConfig> getGameLevels() {
         return Collections.unmodifiableList(gameLevels);
     }
 }

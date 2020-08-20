@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.google.droidjump.leveldata.LevelConfig;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
