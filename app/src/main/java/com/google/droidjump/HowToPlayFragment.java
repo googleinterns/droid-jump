@@ -16,26 +16,32 @@
 
 package com.google.droidjump;
 
-import static androidx.navigation.Navigation.findNavController;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Displays How To Play Screen.
  */
 public class HowToPlayFragment extends Fragment {
+    private FragmentActivity activity;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = getActivity();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.how_to_play_screen, container, /* attachToRoot= */ false);
-        ImageButton menuButton = rootView.findViewById(R.id.menu_button);
-        menuButton.setOnClickListener(view -> {
-            findNavController(view).navigate(R.id.action_how_to_play_screen_to_start_screen);
-        });
+        rootView.findViewById(R.id.menu_button).setOnClickListener(view -> activity.onBackPressed());
+        NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
 }

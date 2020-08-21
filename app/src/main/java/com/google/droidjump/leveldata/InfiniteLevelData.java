@@ -16,62 +16,18 @@
 
 package com.google.droidjump.leveldata;
 
-import static com.google.droidjump.leveldata.JSONKeys.BASE_SPEED_KEY;
 import android.content.res.Resources;
-import android.util.Log;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Manages infinite level data.
  */
-public class InfiniteLevelData implements LevelStrategy {
-    ObstacleData currentObstacle;
-    int baseSpeed;
-
+public class InfiniteLevelData extends GeneratedLevelData {
     public InfiniteLevelData(int fileId, Resources resources) {
-        getDataFromFile(fileId, resources);
-        currentObstacle = generateNextObstacle();
-    }
-
-    private void getDataFromFile(int fileId, Resources resources) {
-        JSONObject leveldata = JSONReader.getJSONObjectFromResource(fileId, resources);
-        try {
-            baseSpeed = leveldata.getInt(BASE_SPEED_KEY);
-        } catch (JSONException e) {
-            Log.e(InfiniteLevelData.class.getName(), "Failed to get data from JSONObject: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public int getCurrentTimeInterval() {
-        return currentObstacle.getInterval();
-    }
-
-    @Override
-    public ObstacleType getNewObstacleType() {
-        ObstacleType newObstacleType = currentObstacle.getType();
-        currentObstacle = generateNextObstacle();
-        return newObstacleType;
+        super(fileId, resources);
     }
 
     @Override
     public boolean isEmpty() {
         return false;
-    }
-
-    @Override
-    public int getBaseSpeed() {
-        return baseSpeed;
-    }
-
-    private ObstacleData generateNextObstacle() {
-        // TODO(dnikolskaia): Generate obstacle type
-        // TODO(dnikolskaia): Generate interval
-
-        // So far returns same obstacles.
-        // interval = 40, because with this value Droid can easily pass every cactus.
-        // It will be removed when generation will be implemented.
-        return new ObstacleData(40, ObstacleType.CACTUS);
     }
 }

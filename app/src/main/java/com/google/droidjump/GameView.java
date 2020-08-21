@@ -16,7 +16,6 @@
 
 package com.google.droidjump;
 
-import static androidx.navigation.Navigation.findNavController;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 
@@ -30,12 +29,14 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
-import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Bat;
+import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Droid;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.Palm;
 import com.google.droidjump.models.TwoStepAnimative;
@@ -47,6 +48,7 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
+    private FragmentActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Thread thread;
@@ -64,11 +66,11 @@ public class GameView extends SurfaceView implements Runnable {
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private LevelStrategy level;
 
-
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         timePoint = GameConstants.INTERVAL_START_TIME;
+        activity = (FragmentActivity) context;
         surfaceHolder = getHolder();
         level = LevelManager.getCurrentLevelStrategy();
         this.screenX = screenX;
@@ -82,6 +84,7 @@ public class GameView extends SurfaceView implements Runnable {
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
 
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
+        NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
 
     @Override
@@ -114,7 +117,7 @@ public class GameView extends SurfaceView implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
+        if (isPlaying && !droid.isJumping() && droid.getY() == droid.getInitialY()) {
             droid.setJumping(true);
         }
         return super.onTouchEvent(event);
@@ -130,7 +133,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void checkTimePoint() {
         if (level.isEmpty()) {
             // When the obstacles end - the level is considered passed.
-            if (obstacleList.isEmpty()){
+            if (obstacleList.isEmpty()) {
                 winGame();
             }
             return;
@@ -138,7 +141,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
             ObstacleType newObstacleType = level.getNewObstacleType();
             // Adding new obstacle to game.
-            switch (newObstacleType){
+            switch (newObstacleType) {
                 case CACTUS:
                     obstacleList.add(new Cactus(screenX, screenY - groundHeight, getResources()));
                     break;
@@ -146,8 +149,8 @@ public class GameView extends SurfaceView implements Runnable {
                     obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
                     break;
                 case BAT:
-                    // 700 - random value
-                    // TODO(Max): calculate y coordinate for bat
+                    // 700 - random value.
+                    // TODO(Max): calculate y coordinate for bat.
                     obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
                     break;
             }
@@ -166,7 +169,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
             // Moving obstacles to the left.
             obstacle.setX(obstacle.getX() - levelSpeed);
-            // Removal of passed obstacles
+            // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
             }
@@ -184,7 +187,6 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         if (!droid.isJumping() && droid.getY() == droid.getInitialY()) {
-            // Droid Animation.
             animateGameItem(droid);
         }
         if (droid.getY() != droid.getInitialY()) {
@@ -210,7 +212,6 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawScene() {
         if (surfaceHolder.getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-            // Cleaning previous canvas
             canvas.drawColor(Color.WHITE);
             String levelHeader = String.format("%s %s", GAME_LEVEL_HEADER, LevelManager.getCurrentLevelName());
             float levelPaintY = screenMargin + levelPaint.getTextSize();
@@ -234,12 +235,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void failGame() {
         isPlaying = false;
-        findNavController(this).navigate(R.id.action_game_screen_to_game_failure_screen);
+        NavigationHelper.navigateToFragment(activity, new GameFailureFragment());
     }
 
     private void winGame() {
         isPlaying = false;
-        findNavController(this).navigate(R.id.action_game_screen_to_game_success_screen);
+        NavigationHelper.navigateToFragment(activity, new GameSuccessFragment());
     }
 
     private void drawDroid(Canvas canvas) {
