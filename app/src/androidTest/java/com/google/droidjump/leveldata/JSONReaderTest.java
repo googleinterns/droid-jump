@@ -23,7 +23,6 @@ import static com.google.droidjump.leveldata.JSONKeys.TYPE_KEY;
 import static com.google.droidjump.leveldata.ObstacleType.BAT;
 import static com.google.droidjump.leveldata.ObstacleType.CACTUS;
 import static com.google.droidjump.leveldata.ObstacleType.PALM;
-import static org.junit.Assert.*;
 import android.content.res.Resources;
 import androidx.test.rule.ActivityTestRule;
 import com.google.droidjump.MainActivity;
@@ -43,7 +42,6 @@ public class JSONReaderTest {
     public void getJSONObjectFromResource() throws JSONException {
         Resources resources = activityTestRule.getActivity().getResources();
         int testfileId = R.raw.test;
-
         // Create test JSON object based on R.raw.test content.
         JSONObject expectedJSONObject = new JSONObject();
         expectedJSONObject.put(BASE_SPEED_KEY, 50);
@@ -58,5 +56,6 @@ public class JSONReaderTest {
 
         Assert.assertEquals(expectedJSONObject.toString(), resultJSONObject.toString());
     }
+
 
 }
