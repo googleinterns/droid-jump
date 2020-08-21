@@ -32,12 +32,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/sign_out_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_out"
-            android:visibility="visible" />
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
