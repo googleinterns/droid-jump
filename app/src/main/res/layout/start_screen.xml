@@ -88,6 +88,7 @@
             android:id="@+id/menu_button"
             style="@style/MenuButton"
             android:contentDescription="@string/menu_button"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/game_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -98,6 +99,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="20dp" />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:text="@string/sign_in"
+            app:layout_constraintBottom_toBottomOf="@+id/game_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/game_header" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

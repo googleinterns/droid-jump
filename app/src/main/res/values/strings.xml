@@ -39,4 +39,6 @@
     <string name="username">Name Surname</string>
     <string name="restart_text">Restart</string>
     <string name="main_menu">Main menu</string>
+    <string name="signin_other_error">Oops! Something wrong happened. Please try again later.</string>
+    <string name="sign_in">Sign in</string>
 </resources>
