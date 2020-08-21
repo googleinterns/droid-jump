@@ -40,6 +40,7 @@ public class GameFragment extends Fragment {
     private ImageButton menuButton;
 
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Point screen = new Point();
@@ -58,11 +59,9 @@ public class GameFragment extends Fragment {
         menuButton.setOnClickListener(ignored -> onPause());
         rootView.findViewById(R.id.play_button).setOnClickListener(ignored -> onResume());
         rootView.findViewById(R.id.restart_button).setOnClickListener(ignored ->
-                NavigationHelper.navigateToFragment(activity, new GameFragment())
-        );
+                NavigationHelper.navigateToFragment(activity, new GameFragment()));
         rootView.findViewById(R.id.go_to_menu_button).setOnClickListener(ignored ->
-                NavigationHelper.navigateToFragment(activity, new StartFragment())
-        );
+                NavigationHelper.navigateToFragment(activity, new StartFragment()));
         activity.getOnBackPressedDispatcher().addCallback(activity, new OnBackPressedCallback(/* enabled= */ true) {
             @Override
             public void handleOnBackPressed() {
