@@ -47,7 +47,7 @@ public class StartFragment extends Fragment {
                              Bundle savedInstanceState) {
         activity = getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
-        ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(getActivity()));
+        ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(activity));
         rootView.findViewById(R.id.menu_button).setOnClickListener(ignored -> openUserMenu(rootView));
         rootView.findViewById(R.id.play_button).setOnClickListener(this::play);
         rootView.findViewById(R.id.level_button).setOnClickListener(this::chooseLevel);
