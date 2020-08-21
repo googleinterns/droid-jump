@@ -45,9 +45,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = MainActivity.class.getName();
     private String mPlayerId;
     private boolean isActiveConnection = false;
-
+    private GoogleSignInAccount mSignedInAccount = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     protected void onResume() {
-        Log.d(MainActivity.class.getName(), "Into onResume()");
+        Log.d(TAG, "Into onResume()");
         super.onResume();
-        if (!isActiveConnection){
+        if (!isActiveConnection) {
             signInSilently();
         }
     }
@@ -66,11 +67,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private void signInSilently() {
         GoogleSignInOptions signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN;
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        Log.d(MainActivity.class.getName(), "Into Silent Sign in");
+        Log.d(TAG, "Into Silent Sign in");
         if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
             // Already signed in.
             // The signed in account is stored in the 'account' variable.
-            Log.d(MainActivity.class.getName(), "Into Silent Sign in : already signed in");
+            Log.d(TAG, "Into Silent Sign in : already signed in");
             GoogleSignInAccount signedInAccount = account;
             onConnected(signedInAccount);
         } else {
@@ -86,11 +87,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                                     if (task.isSuccessful()) {
                                         // The signed in account is stored in the task's result.
                                         GoogleSignInAccount signedInAccount = task.getResult();
-                                        Log.d(MainActivity.class.getName(), " Silent sign in success");
+                                        Log.d(TAG, " Silent sign in success");
                                         onConnected(signedInAccount);
                                     } else {
                                         // Player will need to sign-in explicitly using via UI.
-                                        Log.d(MainActivity.class.getName(), " Silent sign in failed");
+                                        Log.d(TAG, " Silent sign in failed");
                                         onDisconnected();
                                     }
                                 }
@@ -104,11 +105,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 
-    private GoogleSignInAccount mSignedInAccount = null;
-
-    private void onConnected(GoogleSignInAccount googleSignInAccount){
-        Log.d(MainActivity.class.getName(), "Into on connected method");
-        if(mSignedInAccount != googleSignInAccount){
+    private void onConnected(GoogleSignInAccount googleSignInAccount) {
+        Log.d(TAG, "Into on connected method");
+        if (mSignedInAccount != googleSignInAccount) {
             mSignedInAccount = googleSignInAccount;
             // Get the playerId from the PlayersClient
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
@@ -117,9 +116,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         @Override
                         public void onSuccess(Player player) {
                             mPlayerId = player.getPlayerId();
-                            Log.d(MainActivity.class.getName(), "Player name : " + player.getDisplayName());
+                            Log.d(TAG, "Player name : " + player.getDisplayName());
                             switchToGameScreen();
-                            if(isActiveConnection)
+                            if (isActiveConnection)
                                 isActiveConnection = false;
                         }
                     })
@@ -131,13 +130,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         return new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(MainActivity.class.getName(), string);
+                Log.e(TAG, string);
                 onDisconnected();
             }
         };
     }
 
-    
 
     private void startSignInIntent() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
@@ -154,7 +152,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 // The signed in account is stored in the result.
                 GoogleSignInAccount signedInAccount = result.getSignInAccount();
                 onConnected(signedInAccount);
-                Log.d(MainActivity.class.getName(), " Active sign in success");
+                Log.d(TAG, " Active sign in success");
             } else {
                 String message = result.getStatus().getStatusMessage();
                 if (message == null || message.isEmpty()) {
