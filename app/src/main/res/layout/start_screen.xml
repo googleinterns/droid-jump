@@ -22,7 +22,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.google.droidjump.StartFragment"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    android:tag="start_screen_tag">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -88,7 +89,6 @@
             android:id="@+id/menu_button"
             style="@style/MenuButton"
             android:contentDescription="@string/menu_button"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/game_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -102,6 +102,7 @@
 
         <Button
             android:id="@+id/sign_in_button"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
