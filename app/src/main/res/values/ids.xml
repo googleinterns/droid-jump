@@ -16,5 +16,6 @@
   -->
 
 <resources>
-    <string name="app_id">"902201000711"</string>
+    <string name="app_id">902201000711</string>
+    <string name="achievement_my_first_achievement" translatable="false">CgkIh4b7-qAaEAIQAA</string>
 </resources>
