@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import com.google.droidjump.drawable.DroidStartView;
 import com.google.droidjump.models.NavigationHelper;
 
 /**
