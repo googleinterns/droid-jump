@@ -29,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
@@ -46,9 +47,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private String mPlayerId;
+    private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
+    private AchievementsClient achievementsClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,13 +138,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
+            achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             // Get the playerId from the PlayersClient
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(new OnSuccessListener<Player>() {
                         @Override
                         public void onSuccess(Player player) {
-                            mPlayerId = player.getPlayerId();
+                            playerId = player.getPlayerId();
                             Log.d(TAG, "Player name : " + player.getDisplayName());
                             switchToGameScreen();
                             if (isActiveConnection)
@@ -165,10 +168,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.sign_in_button) {
-            startSignInIntent();
-        } else if (view.getId() == R.id.sign_out_button) {
-            signOut();
+        switch (view.getId()){
+            case R.id.sign_in_button:
+                startSignInIntent();
+                break;
+            case R.id.sign_out_button:
+                signOut();
+                break;
+            case R.id.achievements_button:
+                showAchievements();
+                break;
+            case R.id.unlock_button:
+                achievementsClient.unlock(getString(R.string.achievement_my_first_achievement));
+                break;
         }
     }
 
@@ -189,5 +201,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
+    }
+
+    private static final int RC_ACHIEVEMENT_UI = 9003;
+
+    private void showAchievements() {
+        Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .getAchievementsIntent()
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_ACHIEVEMENT_UI);
+                    }
+                });
     }
 }

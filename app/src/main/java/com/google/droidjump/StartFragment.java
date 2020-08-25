@@ -51,6 +51,8 @@ public class StartFragment extends Fragment {
         rootView.findViewById(R.id.how_to_play_button).setOnClickListener(this::goToHowToPlayScreen);
         NavigationHelper.clearBackStack(activity);
         rootView.findViewById(R.id.sign_out_button).setOnClickListener((MainActivity) activity);
+        rootView.findViewById(R.id.achievements_button).setOnClickListener((MainActivity) activity);
+        rootView.findViewById(R.id.unlock_button).setOnClickListener((MainActivity) activity);
         return rootView;
     }
 
