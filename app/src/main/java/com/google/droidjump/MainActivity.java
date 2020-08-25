@@ -17,18 +17,50 @@
 package com.google.droidjump;
 
 import android.os.Bundle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Represents main activity.
  */
 public class MainActivity extends FragmentActivity {
+    public void openUserMenu() {
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
+        ((DrawerLayout) findViewById(R.id.drawer_layout))
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        setupDrawer();
+    }
+
+    private void setupDrawer() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            Fragment fragmentToNavigate = null;
+            switch (id) {
+                case R.id.nav_friends:
+                case R.id.nav_achievements:
+                    fragmentToNavigate = new StartFragment();
+                    break;
+                case R.id.nav_leaderboards:
+                    fragmentToNavigate = new LeaderboardsFragment();
+            }
+            NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
+            ((DrawerLayout) findViewById(R.id.drawer_layout))
+                    .closeDrawer(GravityCompat.START);
+            return true;
+        });
     }
 }
