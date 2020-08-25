@@ -22,12 +22,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.droidjump.LeaderboardsItemFragment;
 import com.google.droidjump.R;
+import com.google.droidjump.models.NavigationHelper;
 import java.util.List;
 
+/**
+ * Extracts a leaderboards data and styles it for showing in RecyclerView.
+ */
 public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapter.LeaderboardsHolder> {
     private List<Leaderboard> items;
+    private FragmentActivity activity;
+
+    public LeaderboardsAdapter(List<Leaderboard> items, FragmentActivity activity) {
+        this.items = items;
+        this.activity = activity;
+    }
 
     @NonNull
     @Override
@@ -42,6 +54,9 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
         Leaderboard leaderboard = items.get(position);
         holder.getAvatar().setImageResource(leaderboard.getAvatar());
         holder.getName().setText(leaderboard.getName());
+        holder.itemView.setOnClickListener(view -> {
+            NavigationHelper.navigateToFragment(activity, new LeaderboardsItemFragment(leaderboard));
+        });
     }
 
     @Override
@@ -55,6 +70,8 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
 
         public LeaderboardsHolder(View view) {
             super(view);
+            name = view.findViewById(R.id.leaderboard_item_name);
+            avatar = view.findViewById(R.id.leaderboard_item_avatar);
         }
 
         public TextView getName() {

@@ -70,7 +70,7 @@ public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<Leaderboard
         public PeopleHolder(View view) {
             super(view);
             username = view.findViewById(R.id.player_username);
-            avatar = view.findViewById(R.id.player_avatar);
+            avatar = view.findViewById(R.id.leaderboard_avatar);
             rank = view.findViewById(R.id.player_rank);
             score = view.findViewById(R.id.player_score);
         }

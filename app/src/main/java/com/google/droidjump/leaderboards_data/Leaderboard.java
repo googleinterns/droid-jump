@@ -16,13 +16,23 @@
 
 package com.google.droidjump.leaderboards_data;
 
+/**
+ * Represents a Leaderboard.
+ */
 public class Leaderboard {
     private String name;
     private int avatar;
+    private String leaderboardID;
 
     public Leaderboard(String name, int avatar) {
         this.name = name;
         this.avatar = avatar;
+    }
+
+    public Leaderboard(String name, int avatar, String leaderboardID) {
+        this.name = name;
+        this.avatar = avatar;
+        this.leaderboardID = leaderboardID;
     }
 
     public String getName() {
@@ -31,5 +41,9 @@ public class Leaderboard {
 
     public int getAvatar() {
         return avatar;
+    }
+
+    public String getLeaderboardID() {
+        return leaderboardID;
     }
 }

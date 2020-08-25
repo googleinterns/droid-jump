@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/player_avatar"
+            android:id="@+id/leaderboard_avatar"
             style="@style/MatchParent" />
     </androidx.cardview.widget.CardView>
 
