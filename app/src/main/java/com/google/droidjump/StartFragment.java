@@ -43,7 +43,6 @@ public class StartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity = (MainActivity) getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(activity));
         rootView.findViewById(R.id.play_button).setOnClickListener(this::play);

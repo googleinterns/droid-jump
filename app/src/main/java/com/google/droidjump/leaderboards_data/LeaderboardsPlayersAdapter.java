@@ -58,6 +58,9 @@ public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<Leaderboard
         return items.size();
     }
 
+    /**
+     * Holds people data.
+     */
     public class PeopleHolder extends RecyclerView.ViewHolder {
         private TextView username;
         private TextView rank;
