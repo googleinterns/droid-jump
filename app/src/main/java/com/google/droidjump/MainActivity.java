@@ -17,7 +17,6 @@
 package com.google.droidjump;
 
 import android.os.Bundle;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -30,7 +29,7 @@ import com.google.droidjump.models.NavigationHelper;
  */
 public class MainActivity extends FragmentActivity {
     public void openUserMenu() {
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.DRAWER_POSITION);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class MainActivity extends FragmentActivity {
             }
             NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
             ((DrawerLayout) findViewById(R.id.drawer_layout))
-                    .closeDrawer(GravityCompat.START);
+                    .closeDrawer(GameConstants.DRAWER_POSITION);
             return true;
         });
     }

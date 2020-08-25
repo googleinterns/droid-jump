@@ -16,6 +16,9 @@
 
 package com.google.droidjump.leaderboards_data;
 
+/**
+ * Stores a player data to put it in the leaderboard.
+ */
 public class LeaderboardsPlayer {
     private String username;
     private int score;

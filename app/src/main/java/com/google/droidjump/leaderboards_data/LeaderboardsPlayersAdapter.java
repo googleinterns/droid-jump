@@ -26,6 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.droidjump.R;
 import java.util.List;
 
+/**
+ * Extracts a player data and styles it for showing in RecyclerView.
+ */
 public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<LeaderboardsPlayersAdapter.PeopleHolder> {
     private List<LeaderboardsPlayer> items;
 

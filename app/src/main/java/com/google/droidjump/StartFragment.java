@@ -51,7 +51,6 @@ public class StartFragment extends Fragment {
         rootView.findViewById(R.id.new_game_button).setOnClickListener(this::startNewGame);
         rootView.findViewById(R.id.how_to_play_button).setOnClickListener(this::goToHowToPlayScreen);
         NavigationHelper.clearBackStack(activity);
-//        ((DrawerLayout) rootView.findViewById(R.id.drawer_layout)).setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         return rootView;
     }
 

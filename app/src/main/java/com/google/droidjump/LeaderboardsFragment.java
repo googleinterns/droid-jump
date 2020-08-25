@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Displays How To Play Screen.
+ * Displays Leaderboards Screen.
  */
 public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
@@ -51,10 +51,9 @@ public class LeaderboardsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.leaderboards_screen, container, /* attachToRoot= */ false);
         RecyclerView peopleView = rootView.findViewById(R.id.people_view);
         peopleView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
-
         adapter = new LeaderboardsPlayersAdapter(people);
-        populatePeople();
         peopleView.setAdapter(adapter);
+        populatePeople();
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
