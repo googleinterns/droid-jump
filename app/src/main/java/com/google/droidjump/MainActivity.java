@@ -45,10 +45,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-    private static final String TAG = MainActivity.class.getName();
+    private static final String TAG = "MainActivity";
     private String mPlayerId;
     private boolean isActiveConnection = false;
-    private GoogleSignInAccount mSignedInAccount = null;
+    private GoogleSignInAccount savedSignedInAccount = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,44 +99,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-    private void onDisconnected() {
-        isActiveConnection = true;
-        setContentView(R.layout.activity_sign_in);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-    }
-
-    private void onConnected(GoogleSignInAccount googleSignInAccount) {
-        Log.d(TAG, "Into on connected method");
-        if (mSignedInAccount != googleSignInAccount) {
-            mSignedInAccount = googleSignInAccount;
-            // Get the playerId from the PlayersClient
-            PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
-            playersClient.getCurrentPlayer()
-                    .addOnSuccessListener(new OnSuccessListener<Player>() {
-                        @Override
-                        public void onSuccess(Player player) {
-                            mPlayerId = player.getPlayerId();
-                            Log.d(TAG, "Player name : " + player.getDisplayName());
-                            switchToGameScreen();
-                            if (isActiveConnection)
-                                isActiveConnection = false;
-                        }
-                    })
-                    .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
-        }
-    }
-
-    private OnFailureListener createFailureListener(final String string) {
-        return new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, string);
-                onDisconnected();
-            }
-        };
-    }
-
-
     private void startSignInIntent() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
         Intent intent = signInClient.getSignInIntent();
@@ -164,13 +126,48 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+    private void onDisconnected() {
+        isActiveConnection = true;
+        setContentView(R.layout.activity_sign_in);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+    }
+
+    private void onConnected(GoogleSignInAccount googleSignInAccount) {
+        Log.d(TAG, "Into on connected method");
+        if (savedSignedInAccount != googleSignInAccount) {
+            savedSignedInAccount = googleSignInAccount;
+            // Get the playerId from the PlayersClient
+            PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
+            playersClient.getCurrentPlayer()
+                    .addOnSuccessListener(new OnSuccessListener<Player>() {
+                        @Override
+                        public void onSuccess(Player player) {
+                            mPlayerId = player.getPlayerId();
+                            Log.d(TAG, "Player name : " + player.getDisplayName());
+                            switchToGameScreen();
+                            if (isActiveConnection)
+                                isActiveConnection = false;
+                        }
+                    })
+                    .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
+        }
+    }
+
+    private OnFailureListener createFailureListener(final String string) {
+        return new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, string);
+                onDisconnected();
+            }
+        };
+    }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.sign_in_button) {
-            // start the asynchronous sign in flow
             startSignInIntent();
         } else if (view.getId() == R.id.sign_out_button) {
-            // sign out.
             signOut();
         }
     }
@@ -192,6 +189,5 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
     }
 }
