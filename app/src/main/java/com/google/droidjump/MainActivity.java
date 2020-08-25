@@ -189,6 +189,5 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
     }
 }
