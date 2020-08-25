@@ -59,7 +59,7 @@ public class LeaderboardsFragment extends Fragment {
     }
 
     private void populatePeople() {
-        // TODO: Receive data from PGS
+        // TODO(maksme): Receive data from PGS
         people.add(new LeaderboardsPlayer("username1", 100, 1, R.mipmap.droid));
         people.add(new LeaderboardsPlayer("username2", 98, 2, R.mipmap.bat));
         people.add(new LeaderboardsPlayer("username3", 88, 3, R.mipmap.cactus));
