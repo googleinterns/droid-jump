@@ -61,6 +61,15 @@
         app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
+        <Button
+            android:id="@+id/sign_out_button"
+            style="@style/StartScreenButton"
+            android:layout_marginTop="50dp"
+            android:text="@string/sign_out"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_game_button" />
+
     <TextView
         android:id="@+id/game_header"
         style="@style/ScreenHeader"
