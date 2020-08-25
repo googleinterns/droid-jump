@@ -43,7 +43,7 @@
 
         <ImageButton
             android:id="@+id/menu_button"
-            style="@style/MenuButton"
+            style="@style/BackButton"
             android:layout_marginTop="0dp"
             android:contentDescription="@string/menu_button"
             app:layout_constraintBottom_toTopOf="@+id/levels_grid_view"

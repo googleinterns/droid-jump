@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.drawable;
 
 import static android.graphics.Bitmap.createBitmap;
 import static android.graphics.BitmapFactory.decodeResource;
@@ -22,6 +22,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.View;
+import com.google.droidjump.GameConstants;
+import com.google.droidjump.R;
 
 /**
  * Draws droid character on different screens.

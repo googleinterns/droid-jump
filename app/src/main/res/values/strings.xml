@@ -32,6 +32,11 @@
         The purpose of the game is to avoid obstacles, pass levels, earn achievements and have fun!
         \nTo make droid jump, tap on the left side of the screen.
         \nTo make droid crouch, tap and hold on the right side of the screen</string>
+    <string name="sign_out">Sign out</string>
+    <string name="leaderboards">Leaderboards</string>
+    <string name="achievements">Achievements</string>
+    <string name="friends">Friends</string>
+    <string name="username">Name Surname</string>
     <string name="restart_text">Restart</string>
     <string name="main_menu">Main menu</string>
     <string name="sign_out">Sign out</string>
