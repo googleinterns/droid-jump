@@ -39,6 +39,4 @@
     <string name="username">Name Surname</string>
     <string name="restart_text">Restart</string>
     <string name="main_menu">Main menu</string>
-    <string name="sign_out">Sign out</string>
-    <string name="achievements">achievements</string>
 </resources>
