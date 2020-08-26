@@ -47,15 +47,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/level_button" />
 
-    <Button
-        android:id="@+id/sign_out_button"
-        style="@style/StartScreenButton"
-        android:layout_marginTop="50dp"
-        android:text="@string/sign_out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_game_button" />
-
     <LinearLayout
         android:id="@+id/droid_draw_view"
         style="@style/DroidDrawFrame"
@@ -88,16 +79,16 @@
 
     <ImageButton
         android:id="@+id/menu_button"
-        style="@style/MenuButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/menu_button"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pgs_icon"
         app:layout_constraintBottom_toBottomOf="@+id/game_header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/game_header" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

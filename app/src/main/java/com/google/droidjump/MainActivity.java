@@ -181,6 +181,7 @@ public class MainActivity extends FragmentActivity {
 
     private void setupDrawer(boolean isEnabled) {
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
         navigationView.getMenu().setGroupEnabled(R.id.nav_items, isEnabled);
         navigationView.getMenu().setGroupCheckable(R.id.nav_items, isEnabled, isEnabled);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
