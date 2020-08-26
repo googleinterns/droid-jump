@@ -79,6 +79,9 @@
         <ImageButton
             android:id="@+id/menu_button"
             style="@style/BackButton"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
             android:contentDescription="@string/menu_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
