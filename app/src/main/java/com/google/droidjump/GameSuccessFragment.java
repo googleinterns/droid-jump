@@ -69,9 +69,7 @@ public class GameSuccessFragment extends Fragment {
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(getActivity()));
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
         TextView textView = rootView.findViewById(R.id.score_text_view);
-        String scoreInfo = "score: " + ((Integer) currentLevelScore).toString() +
-                "\nyour best score: " + ((Integer) currentLevelMaxScore).toString();
-        textView.setText(scoreInfo);
+        textView.setText(String.format("score: %d \nbest score: %d", currentLevelScore, currentLevelMaxScore));
         return rootView;
     }
 }
