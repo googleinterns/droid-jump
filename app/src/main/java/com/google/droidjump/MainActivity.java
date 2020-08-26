@@ -140,14 +140,14 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
-            // Get the playerId from the PlayersClient
+            // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         playerId = player.getPlayerId();
-                        Log.d(TAG, "Player name : " + player.getDisplayName());
-                        if (isActiveConnection)
+                        if (isActiveConnection) {
                             isActiveConnection = false;
+                        }
                         replacePlaceholderWithPlayerData(player);
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
@@ -166,7 +166,7 @@ public class MainActivity extends FragmentActivity {
                 GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
         signInClient.signOut().addOnCompleteListener(this,
                 task -> {
-                    // at this point, the user is signed out.
+                    // At this point, the user is signed out.
                     onDisconnected();
                 });
     }
