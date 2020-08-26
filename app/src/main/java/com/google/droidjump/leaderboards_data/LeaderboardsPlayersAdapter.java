@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Extracts a player data and styles it for showing in RecyclerView.
  */
-public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<LeaderboardsPlayersAdapter.PeopleHolder> {
+public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<LeaderboardsPlayersAdapter.PlayersHolder> {
     private List<LeaderboardsPlayer> items;
 
     public LeaderboardsPlayersAdapter(List<LeaderboardsPlayer> items) {
@@ -38,14 +38,14 @@ public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<Leaderboard
 
     @NonNull
     @Override
-    public PeopleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PlayersHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.leaderboards_player_item, parent, /* attachToRoot = */ false);
-        return new PeopleHolder(view);
+        return new PlayersHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PeopleHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlayersHolder holder, int position) {
         LeaderboardsPlayer leaderboardsPlayer = items.get(position);
         holder.getUsername().setText(leaderboardsPlayer.getUsername());
         holder.getAvatar().setImageResource(leaderboardsPlayer.getAvatar());
@@ -59,18 +59,19 @@ public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<Leaderboard
     }
 
     /**
-     * Holds people data.
+     * Holds players data.
      */
-    public class PeopleHolder extends RecyclerView.ViewHolder {
+    public class PlayersHolder extends RecyclerView.ViewHolder {
         private TextView username;
         private TextView rank;
         private TextView score;
         private ImageView avatar;
 
-        public PeopleHolder(View view) {
+        public PlayersHolder(View view) {
             super(view);
             username = view.findViewById(R.id.player_username);
-            avatar = view.findViewById(R.id.leaderboard_avatar);
+            avatar = view.findViewById(R.id.player_avatar);
+
             rank = view.findViewById(R.id.player_rank);
             score = view.findViewById(R.id.player_score);
         }

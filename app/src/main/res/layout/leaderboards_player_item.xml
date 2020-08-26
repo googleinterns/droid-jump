@@ -18,7 +18,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/person_linear_layout"
+    android:id="@+id/player_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/leaderboard_avatar"
+            android:id="@+id/player_avatar"
             style="@style/MatchParent" />
     </androidx.cardview.widget.CardView>
 
@@ -58,7 +58,7 @@
             style="@style/WrapContent">
 
             <TextView
-                android:id="@+id/person_score_text"
+                android:id="@+id/player_score_text"
                 style="@style/ScoreText"
                 android:layout_marginStart="@dimen/fab_margin"
                 android:layout_marginLeft="@dimen/fab_margin"

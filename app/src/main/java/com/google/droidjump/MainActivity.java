@@ -44,12 +44,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private String mPlayerId;
+    private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
 
     public void openUserMenu() {
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.DRAWER_POSITION);
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
     }
 
     @Override
@@ -137,11 +137,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        mPlayerId = player.getPlayerId();
-                        Log.d(TAG, "Player name : " + player.getDisplayName());
+                        playerId = player.getPlayerId();
                         switchToGameScreen();
-                        if (isActiveConnection)
+                        if (isActiveConnection) {
                             isActiveConnection = false;
+                        }
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
@@ -197,7 +197,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
             NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
             ((DrawerLayout) findViewById(R.id.drawer_layout))
-                    .closeDrawer(GameConstants.DRAWER_POSITION);
+                    .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             return true;
         });
     }

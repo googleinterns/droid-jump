@@ -54,6 +54,7 @@ public class LeaderboardsFragment extends Fragment {
         adapter = new LeaderboardsAdapter(leaderboards, activity);
         leaderboardsView.setAdapter(adapter);
         populateLeaderboards();
+        rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         NavigationHelper.addOnBackPressedEventListener(activity);
 
         return rootView;
@@ -65,6 +66,5 @@ public class LeaderboardsFragment extends Fragment {
         leaderboards.add(new Leaderboard("leaderboard1", R.mipmap.droid));
         leaderboards.add(new Leaderboard("leaderboard2", R.mipmap.cactus));
         leaderboards.add(new Leaderboard("leaderboard3", R.mipmap.bat));
-        adapter.notifyDataSetChanged();
     }
 }

@@ -1,0 +1,17 @@
+{
+  "baseSpeed": 50,
+  "timeline": [
+    {
+      "interval": 50,
+      "type": "CACTUS"
+    },
+    {
+      "interval": 60,
+      "type": "PALM"
+    },
+    {
+      "interval": 40,
+      "type": "BAT"
+    }
+  ]
+}

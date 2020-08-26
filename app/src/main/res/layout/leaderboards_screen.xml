@@ -40,6 +40,8 @@
             <TextView
                 android:id="@+id/leaderboards_title"
                 style="@style/CenterHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
                 android:gravity="center_horizontal"
                 android:text="@string/leaderboards"
@@ -64,6 +66,11 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageButton
+            android:id="@+id/back_button"
+            style="@style/WhiteBackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

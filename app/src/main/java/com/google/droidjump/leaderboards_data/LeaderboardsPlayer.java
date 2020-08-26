@@ -19,6 +19,7 @@ package com.google.droidjump.leaderboards_data;
 /**
  * Stores a player data to put it in the leaderboard.
  */
+// TODO(maksme): Use the PGS player class instead of this one.
 public class LeaderboardsPlayer {
     private String username;
     private int score;
