@@ -42,4 +42,5 @@
     <string name="player_rank">"Rank "</string>
     <string name="score_text">"Score: "</string>
     <string name="sign_in">Sign in</string>
+    <string name="pgs">PGS</string>
 </resources>

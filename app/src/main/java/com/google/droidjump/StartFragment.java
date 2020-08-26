@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.droidjump.drawable.DroidStartView;
@@ -51,6 +52,11 @@ public class StartFragment extends Fragment {
         rootView.findViewById(R.id.how_to_play_button).setOnClickListener(this::goToHowToPlayScreen);
         NavigationHelper.clearBackStack(activity);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void play(View view) {

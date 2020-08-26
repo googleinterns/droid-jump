@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.auth.api.Auth;
@@ -54,13 +53,13 @@ public class MainActivity extends FragmentActivity {
     private GoogleSignInAccount savedSignedInAccount = null;
 
     public void openUserMenu() {
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switchToGameScreen();
+        init();
     }
 
     @Override
@@ -87,20 +86,18 @@ public class MainActivity extends FragmentActivity {
             GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
             signInClient
                     .silentSignIn()
-                    .addOnCompleteListener(
-                            this,
-                            task -> {
-                                if (task.isSuccessful()) {
-                                    // The signed in account is stored in the task's result.
-                                    GoogleSignInAccount signedInAccount = task.getResult();
-                                    Log.d(TAG, " Silent sign in success");
-                                    onConnected(signedInAccount);
-                                } else {
-                                    // Player will need to sign-in explicitly using via UI.
-                                    Log.d(TAG, " Silent sign in failed");
-                                    onDisconnected();
-                                }
-                            });
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // The signed in account is stored in the task's result.
+                            GoogleSignInAccount signedInAccount = task.getResult();
+                            Log.d(TAG, " Silent sign in success");
+                            onConnected(signedInAccount);
+                        } else {
+                            // Player will need to sign-in explicitly using via UI.
+                            Log.d(TAG, " Silent sign in failed");
+                            onDisconnected();
+                        }
+                    });
         }
     }
 
@@ -171,7 +168,7 @@ public class MainActivity extends FragmentActivity {
                 });
     }
 
-    void switchToGameScreen() {
+    private void init() {
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
@@ -195,9 +192,12 @@ public class MainActivity extends FragmentActivity {
                     case R.id.nav_auth:
                         startSignInIntent();
                         break;
+                    case R.id.nav_leaderboards:
+                        NavigationHelper.navigateToFragment(MainActivity.this, new LeaderboardsFragment());
+                        break;
                 }
                 ((DrawerLayout) findViewById(R.id.drawer_layout))
-                        .closeDrawer(GameConstants.DRAWER_POSITION);
+                        .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             }
             return true;
         });
@@ -217,7 +217,7 @@ public class MainActivity extends FragmentActivity {
         NavigationHelper.navigateToFragment(this, new StartFragment());
     }
 
-    public void replacePlaceholderWithPlayerData(Player player) {
+    private void replacePlaceholderWithPlayerData(Player player) {
         NavigationView navigationView = findViewById(R.id.nav_view);
         findViewById(R.id.drawer_header_placeholder).setVisibility(View.GONE);
         ImageManager manager = ImageManager.create(this);
