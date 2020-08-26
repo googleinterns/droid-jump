@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private String mPlayerId;
+    private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
 
@@ -137,11 +137,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        mPlayerId = player.getPlayerId();
+                        playerId = player.getPlayerId();
                         Log.d(TAG, "Player name : " + player.getDisplayName());
                         switchToGameScreen();
-                        if (isActiveConnection)
+                        if (isActiveConnection) {
                             isActiveConnection = false;
+                        }
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }

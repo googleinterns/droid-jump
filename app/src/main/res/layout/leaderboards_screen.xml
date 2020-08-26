@@ -73,21 +73,20 @@
 
             <Switch
                 android:id="@+id/friends_toggle"
-                android:theme="@style/MySwitch"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
                 android:color="@android:color/darker_gray"
                 android:text="@string/friends"
+                android:theme="@style/MySwitch"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/people_view"
+                android:id="@+id/players_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>

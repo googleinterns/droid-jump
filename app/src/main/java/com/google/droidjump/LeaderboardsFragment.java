@@ -36,36 +36,36 @@ import java.util.List;
  */
 public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
-    private List<LeaderboardsPlayer> people;
+    private List<LeaderboardsPlayer> players;
     private LeaderboardsPlayersAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
-        people = new ArrayList<>();
+        players = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboards_screen, container, /* attachToRoot= */ false);
-        RecyclerView peopleView = rootView.findViewById(R.id.people_view);
-        peopleView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
-        adapter = new LeaderboardsPlayersAdapter(people);
-        peopleView.setAdapter(adapter);
-        populatePeople();
+        RecyclerView playersView = rootView.findViewById(R.id.players_recycler_view);
+        playersView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
+        adapter = new LeaderboardsPlayersAdapter(players);
+        playersView.setAdapter(adapter);
+        populatePlayers();
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
 
-    private void populatePeople() {
+    private void populatePlayers() {
         // TODO(maksme): Receive data from PGS
-        people.add(new LeaderboardsPlayer("username1", 100, 1, R.mipmap.droid));
-        people.add(new LeaderboardsPlayer("username2", 98, 2, R.mipmap.bat));
-        people.add(new LeaderboardsPlayer("username3", 88, 3, R.mipmap.cactus));
-        people.add(new LeaderboardsPlayer("username4", 85, 4, R.mipmap.bat));
-        people.add(new LeaderboardsPlayer("username5", 72, 5, R.mipmap.cactus));
-        people.add(new LeaderboardsPlayer("username6", 56, 6, R.mipmap.bat));
+        players.add(new LeaderboardsPlayer("username1", 100, 1, R.mipmap.droid));
+        players.add(new LeaderboardsPlayer("username2", 98, 2, R.mipmap.bat));
+        players.add(new LeaderboardsPlayer("username3", 88, 3, R.mipmap.cactus));
+        players.add(new LeaderboardsPlayer("username4", 85, 4, R.mipmap.bat));
+        players.add(new LeaderboardsPlayer("username5", 72, 5, R.mipmap.cactus));
+        players.add(new LeaderboardsPlayer("username6", 56, 6, R.mipmap.bat));
         adapter.notifyDataSetChanged();
     }
 }
