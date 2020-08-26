@@ -20,6 +20,7 @@ import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
+import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.droidjump.R;
@@ -73,7 +74,7 @@ public class LevelManager {
         editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
         editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
         for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
-            editor.putInt(((Integer) levelIndex).toString(), 0);
+            editor.putInt(((Integer) levelIndex).toString(), SCORE_DEF_VALUE);
         }
         editor.apply();
     }
@@ -101,7 +102,7 @@ public class LevelManager {
     }
 
     public static int getLevelMaxScore(Integer index) {
-        return gameData.getInt(index.toString(), 0);
+        return gameData.getInt(index.toString(), SCORE_DEF_VALUE);
     }
 
     public static String getCurrentLevelName() {
