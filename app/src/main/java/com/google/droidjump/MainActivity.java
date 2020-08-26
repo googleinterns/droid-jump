@@ -130,7 +130,7 @@ public class MainActivity extends FragmentActivity {
 
     private void onDisconnected() {
         isActiveConnection = true;
-        replacePlayerDataWithPlaceholder();
+        disableNavigationMenu();
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
@@ -145,7 +145,7 @@ public class MainActivity extends FragmentActivity {
                         if (isActiveConnection) {
                             isActiveConnection = false;
                         }
-                        replacePlaceholderWithPlayerData(player);
+                        enableNavigationMenu(player);
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
@@ -203,7 +203,7 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
-    private void replacePlayerDataWithPlaceholder() {
+    private void disableNavigationMenu() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         findViewById(R.id.drawer_header_placeholder).setVisibility(View.VISIBLE);
         findViewById(R.id.menu_header).setVisibility(View.GONE);
@@ -217,7 +217,7 @@ public class MainActivity extends FragmentActivity {
         NavigationHelper.navigateToFragment(this, new StartFragment());
     }
 
-    private void replacePlaceholderWithPlayerData(Player player) {
+    private void enableNavigationMenu(Player player) {
         NavigationView navigationView = findViewById(R.id.nav_view);
         findViewById(R.id.drawer_header_placeholder).setVisibility(View.GONE);
         ImageManager manager = ImageManager.create(this);
