@@ -57,7 +57,7 @@ public class GameFailureFragment extends Fragment {
                 NavigationHelper.navigateToFragment(activity, new HowToPlayFragment()));
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(activity));
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
-        TextView textView = rootView.findViewById(R.id.failure_score_text_view);
+        TextView textView = rootView.findViewById(R.id.score_text_view);
         String scoreInfo = "score: " + ((Integer) currentLevelScore).toString() +
                 "\nyour best score: " + ((Integer) currentLevelMaxScore).toString();
         textView.setText(scoreInfo);
