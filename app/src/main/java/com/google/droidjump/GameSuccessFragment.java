@@ -43,16 +43,15 @@ public class GameSuccessFragment extends Fragment {
         activity = getActivity();
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "DefaultLocale"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         LevelManager.updateCurrentLevelMaxScore();
-        // Get info about score.
-        int currentLevelScore = LevelManager.getCurrentLevelScore();
-        int currentLevelMaxScore = LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex());
-
         View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
+        ((TextView) rootView.findViewById(R.id.score_text_view))
+                .setText(String.format("score: %d \nbest score: %d", LevelManager.getCurrentLevelScore(),
+                        LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex())));
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         if (LevelManager.getCurrentLevelIndex() < LevelManager.getLevelsLastIndex()) {
             LevelManager.onCurrentLevelCompleted();
@@ -68,8 +67,6 @@ public class GameSuccessFragment extends Fragment {
                 NavigationHelper.navigateToFragment(activity, new HowToPlayFragment()));
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(getActivity()));
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
-        TextView textView = rootView.findViewById(R.id.score_text_view);
-        textView.setText(String.format("score: %d \nbest score: %d", currentLevelScore, currentLevelMaxScore));
         return rootView;
     }
 }

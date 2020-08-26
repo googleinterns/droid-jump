@@ -16,6 +16,7 @@
 
 package com.google.droidjump;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,14 +42,15 @@ public class GameFailureFragment extends Fragment {
         activity = getActivity();
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LevelManager.updateCurrentLevelMaxScore();
-        // Get info about score.
-        int currentLevelScore = LevelManager.getCurrentLevelScore();
-        int currentLevelMaxScore = LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex());
         View rootView = inflater.inflate(R.layout.game_failure_screen,
                 container, /* attachToRoot= */ false);
+        ((TextView) rootView.findViewById(R.id.score_text_view))
+                .setText(String.format("score: %d \nbest score: %d", LevelManager.getCurrentLevelScore(),
+                        LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex())));
         rootView.findViewById(R.id.retry_button).setOnClickListener(ignored ->
                 NavigationHelper.navigateToFragment(activity, new GameFragment()));
         rootView.findViewById(R.id.menu_button).setOnClickListener(ignored ->
@@ -57,8 +59,6 @@ public class GameFailureFragment extends Fragment {
                 NavigationHelper.navigateToFragment(activity, new HowToPlayFragment()));
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(activity));
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
-        TextView textView = rootView.findViewById(R.id.score_text_view);
-        textView.setText(String.format("score: %d \nbest score: %d", currentLevelScore, currentLevelMaxScore));
         return rootView;
     }
 }
