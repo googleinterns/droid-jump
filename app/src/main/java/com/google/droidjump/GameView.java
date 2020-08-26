@@ -174,7 +174,7 @@ public class GameView extends SurfaceView implements Runnable {
             // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
-                score++;
+                score += 10;
             }
         }
     }
@@ -238,15 +238,13 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void failGame() {
         isPlaying = false;
-        // One passed obstacle = 10 score points.
-        LevelManager.setCurrentLevelScore(score * 10);
+        LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameFailureFragment());
     }
 
     private void winGame() {
         isPlaying = false;
-        // One passed obstacle = 10 score points.
-        LevelManager.setCurrentLevelScore(score * 10);
+        LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameSuccessFragment());
     }
 
