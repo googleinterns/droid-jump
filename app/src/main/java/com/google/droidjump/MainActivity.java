@@ -21,7 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import androidx.annotation.NonNull;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -30,25 +31,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Represents main activity.
  */
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
-
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private String mPlayerId;
+    private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
+
+    public void openUserMenu() {
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,23 +81,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
             signInClient
                     .silentSignIn()
-                    .addOnCompleteListener(
-                            this,
-                            new OnCompleteListener<GoogleSignInAccount>() {
-                                @Override
-                                public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                                    if (task.isSuccessful()) {
-                                        // The signed in account is stored in the task's result.
-                                        GoogleSignInAccount signedInAccount = task.getResult();
-                                        Log.d(TAG, " Silent sign in success");
-                                        onConnected(signedInAccount);
-                                    } else {
-                                        // Player will need to sign-in explicitly using via UI.
-                                        Log.d(TAG, " Silent sign in failed");
-                                        onDisconnected();
-                                    }
-                                }
-                            });
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // The signed in account is stored in the task's result.
+                            GoogleSignInAccount signedInAccount = task.getResult();
+                            Log.d(TAG, " Silent sign in success");
+                            onConnected(signedInAccount);
+                        } else {
+                            // Player will need to sign-in explicitly using via UI.
+                            Log.d(TAG, " Silent sign in failed");
+                            onDisconnected();
+                        }
+                    });
         }
     }
 
@@ -136,17 +133,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
-            // Get the playerId from the PlayersClient
+            // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
-                    .addOnSuccessListener(new OnSuccessListener<Player>() {
-                        @Override
-                        public void onSuccess(Player player) {
-                            mPlayerId = player.getPlayerId();
-                            Log.d(TAG, "Player name : " + player.getDisplayName());
-                            switchToGameScreen();
-                            if (isActiveConnection)
-                                isActiveConnection = false;
+                    .addOnSuccessListener(player -> {
+                        playerId = player.getPlayerId();
+                        switchToGameScreen();
+                        if (isActiveConnection) {
+                            isActiveConnection = false;
                         }
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
@@ -154,12 +148,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private OnFailureListener createFailureListener(final String string) {
-        return new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, string);
-                onDisconnected();
-            }
+        return e -> {
+            Log.e(TAG, string);
+            onDisconnected();
         };
     }
 
@@ -176,12 +167,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
                 GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
         signInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // at this point, the user is signed out.
-                        onDisconnected();
-                    }
+                task -> {
+                    // At this point, the user is signed out.
+                    onDisconnected();
                 });
     }
 
@@ -189,5 +177,28 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
+        ((DrawerLayout) findViewById(R.id.drawer_layout))
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        setupDrawer();
+    }
+
+    private void setupDrawer() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            int id = menuItem.getItemId();
+            Fragment fragmentToNavigate = null;
+            switch (id) {
+                case R.id.nav_friends:
+                case R.id.nav_achievements:
+                    fragmentToNavigate = new StartFragment();
+                    break;
+                case R.id.nav_leaderboards:
+                    fragmentToNavigate = new LeaderboardsFragment();
+            }
+            NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
+            ((DrawerLayout) findViewById(R.id.drawer_layout))
+                    .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
+            return true;
+        });
     }
 }

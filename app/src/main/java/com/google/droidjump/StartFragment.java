@@ -21,11 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.drawable.DroidStartView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
@@ -34,21 +32,19 @@ import com.google.droidjump.models.NavigationHelper;
  * Displays Start Screen.
  */
 public class StartFragment extends Fragment {
-    private FragmentActivity activity;
+    private MainActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = getActivity();
+        activity = (MainActivity) getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity = getActivity();
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(activity));
-        rootView.findViewById(R.id.menu_button).setOnClickListener(ignored -> openUserMenu(rootView));
         rootView.findViewById(R.id.play_button).setOnClickListener(this::play);
         rootView.findViewById(R.id.level_button).setOnClickListener(this::chooseLevel);
         rootView.findViewById(R.id.new_game_button).setOnClickListener(this::startNewGame);
@@ -56,6 +52,12 @@ public class StartFragment extends Fragment {
         NavigationHelper.clearBackStack(activity);
         rootView.findViewById(R.id.sign_out_button).setOnClickListener((MainActivity) activity);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getView().findViewById(R.id.menu_button).setOnClickListener(ignored -> activity.openUserMenu());
     }
 
     private void play(View view) {
@@ -73,9 +75,5 @@ public class StartFragment extends Fragment {
 
     private void goToHowToPlayScreen(View view) {
         NavigationHelper.navigateToFragment(activity, new HowToPlayFragment());
-    }
-
-    private void openUserMenu(View rootView) {
-        ((DrawerLayout) rootView.findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
     }
 }

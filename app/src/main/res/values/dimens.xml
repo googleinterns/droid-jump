@@ -24,4 +24,6 @@
     <dimen name="nav_header">18sp</dimen>
     <dimen name="user_avatar_size">100dp</dimen>
     <dimen name="nav_width">200dp</dimen>
+    <dimen name="player_avatar_size">50dp</dimen>
+    <dimen name="small_text">12sp</dimen>
 </resources>
