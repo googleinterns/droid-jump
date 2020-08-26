@@ -37,7 +37,7 @@
     </androidx.cardview.widget.CardView>
 
     <View
-        android:layout_width="150dp"
+        android:layout_width="@dimen/placeholder_menu_text_width"
         android:layout_height="@dimen/regular_text_size"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/skeleton" />

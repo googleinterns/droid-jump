@@ -220,7 +220,6 @@ public class MainActivity extends FragmentActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         findViewById(R.id.drawer_header_placeholder).setVisibility(View.GONE);
         ImageManager manager = ImageManager.create(this);
-
         ImageView userAvatar = findViewById(R.id.user_avatar);
         manager.loadImage(userAvatar, player.getIconImageUri());
         navigationView.findViewById(R.id.menu_header).setVisibility(View.VISIBLE);
