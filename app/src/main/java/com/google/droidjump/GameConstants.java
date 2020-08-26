@@ -33,7 +33,7 @@ public interface GameConstants {
     int ANIMATION_STEP_TICKS = 2;
     int FIRST_LEVEL_ID = 0; // Default value.
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles.
-    int DRAWER_POSITION = GravityCompat.START; // Position of navigation menu.
+    int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
     double GROUND_PROPORTION = 0.6; // Handpicked value of proportion in a platform picture.
 
     String GAME_LEVEL_HEADER = "Lvl."; // Used for displaying the current level in GameView.

@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private GoogleSignInAccount savedSignedInAccount = null;
 
     public void openUserMenu() {
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.DRAWER_POSITION);
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
     }
 
     @Override
@@ -138,7 +138,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         playerId = player.getPlayerId();
-                        Log.d(TAG, "Player name : " + player.getDisplayName());
                         switchToGameScreen();
                         if (isActiveConnection) {
                             isActiveConnection = false;
@@ -198,7 +197,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
             NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
             ((DrawerLayout) findViewById(R.id.drawer_layout))
-                    .closeDrawer(GameConstants.DRAWER_POSITION);
+                    .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             return true;
         });
     }
