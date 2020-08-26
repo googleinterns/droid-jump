@@ -20,7 +20,6 @@ import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.droidjump.R;
@@ -39,12 +38,14 @@ public class LevelManager {
     private static SharedPreferences gameData;
     private static SharedPreferences.Editor gameDataEditor;
     private static ArrayList<LevelConfig> gameLevels;
+    private static int currentLevelScore;
 
     public static void init(Context context) {
         gameData = context.getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         gameDataEditor = gameData.edit();
         gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, context);
         levelsLastIndex = gameLevels.size() - 1;
+        currentLevelScore = 0;
     }
 
     public static int getLevelsLastIndex() {
@@ -67,20 +68,13 @@ public class LevelManager {
         }
     }
 
-    public static void setCurrentLevelIndex(int currentLevelIndex) {
-        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevelIndex);
-        gameDataEditor.apply();
-    }
-
-    public static void setLastLevelIndex(int lastLevelIndexLevel) {
-        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndexLevel);
-        gameDataEditor.apply();
-    }
-
     public static void resetGameData() {
         SharedPreferences.Editor editor = gameData.edit();
         editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
         editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
+        for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
+            editor.putInt(((Integer) levelIndex).toString(), 0);
+        }
         editor.apply();
     }
 
@@ -88,12 +82,26 @@ public class LevelManager {
         return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
+    public static void setCurrentLevelIndex(int currentLevelIndex) {
+        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, currentLevelIndex);
+        gameDataEditor.apply();
+    }
+
     public static int getLastLevelIndex() {
         return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
+    public static void setLastLevelIndex(int lastLevelIndexLevel) {
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndexLevel);
+        gameDataEditor.apply();
+    }
+
     public static LevelStrategy getCurrentLevelStrategy() {
         return gameLevels.get(getCurrentLevelIndex()).getLevelStrategy();
+    }
+
+    public static int getLevelMaxScore(Integer index) {
+        return gameData.getInt(index.toString(), 0);
     }
 
     public static String getCurrentLevelName() {
@@ -102,5 +110,20 @@ public class LevelManager {
 
     public static List<LevelConfig> getGameLevels() {
         return Collections.unmodifiableList(gameLevels);
+    }
+
+    public static int getCurrentLevelScore() {
+        return currentLevelScore;
+    }
+
+    public static void setCurrentLevelScore(int score) {
+        currentLevelScore = score;
+    }
+
+    public static void updateCurrentLevelMaxScore() {
+        if (getLevelMaxScore(getCurrentLevelIndex()) < currentLevelScore) {
+            gameDataEditor.putInt(((Integer) getCurrentLevelIndex()).toString(), currentLevelScore);
+            gameDataEditor.apply();
+        }
     }
 }
