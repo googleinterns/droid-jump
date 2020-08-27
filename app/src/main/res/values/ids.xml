@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2020 Google LLC
   ~
@@ -15,15 +16,5 @@
   -->
 
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="double_fab_margin">32dp</dimen>
-    <dimen name="header_text_size">36sp</dimen>
-    <dimen name="header_margin">40dp</dimen>
-    <dimen name="start_menu_item_text_size">24sp</dimen>
-    <dimen name="regular_text_size">18sp</dimen>
-    <dimen name="nav_header">18sp</dimen>
-    <dimen name="user_avatar_size">100dp</dimen>
-    <dimen name="nav_width">200dp</dimen>
-    <dimen name="player_avatar_size">50dp</dimen>
-    <dimen name="small_text">12sp</dimen>
+    <string name="app_id">"902201000711"</string>
 </resources>
