@@ -75,7 +75,7 @@ public class LevelManager {
         editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
         editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
         for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
-            editor.putInt(((Integer) levelIndex).toString(), SCORE_DEF_VALUE);
+            editor.putInt(String.valueOf(levelIndex), SCORE_DEF_VALUE);
         }
         editor.apply();
     }
@@ -102,8 +102,8 @@ public class LevelManager {
         return gameLevels.get(getCurrentLevelIndex()).getLevelStrategy();
     }
 
-    public static int getLevelMaxScore(Integer index) {
-        return gameData.getInt(index.toString(), SCORE_DEF_VALUE);
+    public static int getLevelMaxScore(int index) {
+        return gameData.getInt(String.valueOf(index), SCORE_DEF_VALUE);
     }
 
     public static String getCurrentLevelName() {
@@ -124,7 +124,7 @@ public class LevelManager {
 
     public static void updateCurrentLevelMaxScore() {
         if (getLevelMaxScore(getCurrentLevelIndex()) < currentLevelScore) {
-            gameDataEditor.putInt(((Integer) getCurrentLevelIndex()).toString(), currentLevelScore);
+            gameDataEditor.putInt(String.valueOf(getCurrentLevelIndex()), currentLevelScore);
             gameDataEditor.apply();
         }
     }
