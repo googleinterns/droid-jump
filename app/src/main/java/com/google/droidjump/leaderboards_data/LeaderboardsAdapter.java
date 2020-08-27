@@ -26,7 +26,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.leaderboard.Leaderboard;
-import com.google.droidjump.LeaderboardsItemFragment;
+import com.google.droidjump.LeaderboardScoresFragment;
 import com.google.droidjump.R;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.List;
@@ -58,7 +58,7 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
         imageManager.loadImage(holder.getAvatar(), leaderboard.getIconImageUri());
         holder.getName().setText(leaderboard.getDisplayName());
         holder.itemView.setOnClickListener(view -> {
-            NavigationHelper.navigateToFragment(activity, new LeaderboardsItemFragment(leaderboard));
+            NavigationHelper.navigateToFragment(activity, new LeaderboardScoresFragment(leaderboard));
         });
     }
 
