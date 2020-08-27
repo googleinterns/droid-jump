@@ -33,6 +33,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
@@ -50,9 +51,10 @@ public class MainActivity extends FragmentActivity {
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
     private static final int RC_ACHIEVEMENT_UI = 9003;
-    private String playerId;
+    private Player player = null;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
+    private AchievementsClient achievementsClient = null;
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -139,11 +141,12 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
+            achievementsClient = Games.getAchievementsClient(this, googleSignInAccount);
             // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        playerId = player.getPlayerId();
+                        this.player = player;
                         Games.getGamesClient(this, googleSignInAccount)
                                 .setViewForPopups(findViewById(R.id.activity_wrapper));
                         if (isActiveConnection) {
@@ -191,7 +194,8 @@ public class MainActivity extends FragmentActivity {
                 switch (id) {
                     case R.id.nav_friends:
                     case R.id.nav_achievements:
-                        showAchievements();
+                        //showAchievements();
+                        NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
                         break;
                     case R.id.nav_auth:
                         startSignInIntent();
@@ -240,8 +244,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showAchievements() {
-        Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this))
-                .getAchievementsIntent()
+        achievementsClient.getAchievementsIntent()
                 .addOnSuccessListener(new OnSuccessListener<Intent>() {
                     @Override
                     public void onSuccess(Intent intent) {
@@ -250,4 +253,11 @@ public class MainActivity extends FragmentActivity {
                 });
     }
 
+    public Player getPlayer(){
+        return player;
+    }
+
+    public AchievementsClient getAchievementsClient(){
+        return achievementsClient;
+    }
 }
