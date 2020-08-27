@@ -45,10 +45,11 @@ import com.google.droidjump.models.NavigationHelper;
 /**
  * Represents main activity.
  */
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
+    private static final int RC_ACHIEVEMENT_UI = 9003;
     private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
@@ -190,7 +191,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 switch (id) {
                     case R.id.nav_friends:
                     case R.id.nav_achievements:
-                        NavigationHelper.navigateToFragment(MainActivity.this, new StartFragment());
+                        //NavigationHelper.navigateToFragment(MainActivity.this, new StartFragment());
+                        showAchievements();
                         break;
                     case R.id.nav_auth:
                         startSignInIntent();
@@ -238,8 +240,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         NavigationHelper.navigateToFragment(this, new StartFragment());
     }
 
-    private static final int RC_ACHIEVEMENT_UI = 9003;
-
     private void showAchievements() {
         Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this))
                 .getAchievementsIntent()
@@ -251,12 +251,4 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 });
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.achievements_button:
-                showAchievements();
-                break;
-        }
-    }
 }
