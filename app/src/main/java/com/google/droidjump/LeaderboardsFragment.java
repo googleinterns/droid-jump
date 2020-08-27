@@ -63,7 +63,6 @@ public class LeaderboardsFragment extends Fragment {
         return rootView;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void fetchLeaderboards() {
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(true)
                 .continueWithTask(task -> {
