@@ -35,6 +35,7 @@ import java.util.List;
 public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<LeaderboardsScoresAdapter.ScoresHolder> {
     private List<LeaderboardScore> items;
     private FragmentActivity activity;
+    private boolean isEmpty = false;
 
     public LeaderboardsScoresAdapter(List<LeaderboardScore> items, FragmentActivity activity) {
         this.items = items;

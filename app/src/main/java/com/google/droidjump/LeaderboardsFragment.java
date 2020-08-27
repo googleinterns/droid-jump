@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -57,23 +58,40 @@ public class LeaderboardsFragment extends Fragment {
         leaderboardsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         adapter = new LeaderboardsAdapter(leaderboards, activity);
         leaderboardsView.setAdapter(adapter);
-        fetchLeaderboards();
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchLeaderboards();
+    }
+
     private void fetchLeaderboards() {
+        onLoading();
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(true)
                 .continueWithTask(task -> {
                     LeaderboardBuffer leaderboardBuffer = task.getResult().get();
-                    leaderboards.clear();
                     for (Leaderboard leaderboard : leaderboardBuffer) {
                         leaderboards.add(leaderboard.freeze());
                     }
                     adapter.notifyDataSetChanged();
+                    onLoaded();
                     leaderboardBuffer.close();
                     return null;
                 });
+    }
+
+    private void onLoading() {
+        leaderboards.clear();
+        getView().findViewById(R.id.leaderboards_recycler_view).setVisibility(View.GONE);
+        getView().findViewById(R.id.loading_screen).setVisibility(View.VISIBLE);
+    }
+
+    private void onLoaded() {
+        getView().findViewById(R.id.leaderboards_recycler_view).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.loading_screen).setVisibility(View.GONE);
     }
 }
