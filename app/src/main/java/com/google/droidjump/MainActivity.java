@@ -142,6 +142,8 @@ public class MainActivity extends FragmentActivity {
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         playerId = player.getPlayerId();
+                        Games.getGamesClient(this, googleSignInAccount)
+                                .setViewForPopups(findViewById(R.id.activity_wrapper));
                         if (isActiveConnection) {
                             isActiveConnection = false;
                         }
