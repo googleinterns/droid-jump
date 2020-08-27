@@ -52,6 +52,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
     }
 
+    public GoogleSignInAccount getSavedSignedInAccount() {
+        return savedSignedInAccount;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

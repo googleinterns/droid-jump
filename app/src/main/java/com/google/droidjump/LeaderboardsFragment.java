@@ -16,27 +16,30 @@
 
 package com.google.droidjump;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.droidjump.leaderboards_data.Leaderboard;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.leaderboard.Leaderboard;
+import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
 import com.google.droidjump.leaderboards_data.LeaderboardsAdapter;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Displays Leaderboards Screen.
  */
 public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
-    private List<Leaderboard> leaderboards;
+    private ArrayList<Leaderboard> leaderboards;
     private LeaderboardsAdapter adapter;
 
     @Override
@@ -46,6 +49,7 @@ public class LeaderboardsFragment extends Fragment {
         leaderboards = new ArrayList<>();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboards_screen, container, /* attachToRoot= */ false);
@@ -53,18 +57,24 @@ public class LeaderboardsFragment extends Fragment {
         leaderboardsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         adapter = new LeaderboardsAdapter(leaderboards, activity);
         leaderboardsView.setAdapter(adapter);
-        populateLeaderboards();
+        fetchLeaderboards();
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         NavigationHelper.addOnBackPressedEventListener(activity);
-
         return rootView;
     }
 
-    private void populateLeaderboards() {
-        // TODO(maksme): Receive data from PGS
-        leaderboards.clear();
-        leaderboards.add(new Leaderboard("leaderboard1", R.mipmap.droid));
-        leaderboards.add(new Leaderboard("leaderboard2", R.mipmap.cactus));
-        leaderboards.add(new Leaderboard("leaderboard3", R.mipmap.bat));
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void fetchLeaderboards() {
+        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(true)
+                .continueWithTask(task -> {
+                    LeaderboardBuffer leaderboardBuffer = task.getResult().get();
+                    leaderboards.clear();
+                    for (Leaderboard leaderboard : leaderboardBuffer) {
+                        leaderboards.add(leaderboard.freeze());
+                    }
+                    adapter.notifyDataSetChanged();
+                    leaderboardBuffer.close();
+                    return null;
+                });
     }
 }

@@ -24,6 +24,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.droidjump.LeaderboardsItemFragment;
 import com.google.droidjump.R;
 import com.google.droidjump.models.NavigationHelper;
@@ -52,8 +54,9 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     @Override
     public void onBindViewHolder(@NonNull LeaderboardsHolder holder, int position) {
         Leaderboard leaderboard = items.get(position);
-        holder.getAvatar().setImageResource(leaderboard.getAvatar());
-        holder.getName().setText(leaderboard.getName());
+        ImageManager imageManager = ImageManager.create(activity);
+        imageManager.loadImage(holder.getAvatar(), leaderboard.getIconImageUri());
+        holder.getName().setText(leaderboard.getDisplayName());
         holder.itemView.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new LeaderboardsItemFragment(leaderboard));
         });

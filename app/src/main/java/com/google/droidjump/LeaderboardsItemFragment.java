@@ -28,7 +28,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.droidjump.leaderboards_data.Leaderboard;
+import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.leaderboard.Leaderboard;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.droidjump.leaderboards_data.LeaderboardsPlayer;
 import com.google.droidjump.leaderboards_data.LeaderboardsPlayersAdapter;
 import com.google.droidjump.models.NavigationHelper;
@@ -53,14 +57,14 @@ public class LeaderboardsItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         players = new ArrayList<>();
-        Log.d("MESSAGE", leaderboard.toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboards_item_screen, container, /* attachToRoot= */ false);
-        ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getName());
-        ((ImageView) rootView.findViewById(R.id.leaderboard_avatar)).setImageResource(leaderboard.getAvatar());
+        ImageManager imageManager = ImageManager.create(activity);
+        imageManager.loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
+        ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
         RecyclerView playersView = rootView.findViewById(R.id.players_view);
         playersView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         adapter = new LeaderboardsPlayersAdapter(players);
@@ -74,6 +78,18 @@ public class LeaderboardsItemFragment extends Fragment {
     private void populatePlayers() {
         // TODO(maksme): Receive data from PGS
         players.clear();
+
+        Task<Object> leaderboardMetadata =
+                Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(activity.getResources().getString(R.string.leaderboard_my_first_leaderboard), false)
+                        .continueWith(task -> {
+                            com.google.android.gms.games.leaderboard.Leaderboard leaderboard = task.getResult().get();
+                            Log.d(getClass().toString(), leaderboard.getDisplayName());
+                            return Tasks.forResult(leaderboard);
+                        });
+
+        Log.d(getClass().toString(), leaderboardMetadata.toString());
+        Log.d(getClass().toString(), "HEELLLO");
+
         players.add(new LeaderboardsPlayer("username1", 100, 1, R.mipmap.droid));
         players.add(new LeaderboardsPlayer("username2", 98, 2, R.mipmap.bat));
         players.add(new LeaderboardsPlayer("username3", 88, 3, R.mipmap.cactus));
