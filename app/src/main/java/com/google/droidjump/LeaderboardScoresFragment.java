@@ -21,9 +21,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -70,12 +73,11 @@ public class LeaderboardScoresFragment extends Fragment {
         ImageManager imageManager = ImageManager.create(activity);
         imageManager.loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
-        RecyclerView playersView = rootView.findViewById(R.id.players_view);
+        RecyclerView playersView = rootView.findViewById(R.id.players_scores_recycler_view);
         playersView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         adapter = new LeaderboardsScoresAdapter(scores, activity);
         playersView.setAdapter(adapter);
         Switch friendsToggle = rootView.findViewById(R.id.friends_toggle);
-        fetchScores(timeSpan, collection);
         friendsToggle.setOnClickListener(ignored -> {
             if (friendsToggle.isChecked()) {
                 collection = LeaderboardVariant.COLLECTION_FRIENDS;
@@ -90,7 +92,14 @@ public class LeaderboardScoresFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchScores(timeSpan, collection);
+    }
+
     private void fetchScores(int timeSpan, int collection) {
+        onLoading();
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                 .loadPlayerCenteredScores(
                         leaderboard.getLeaderboardId(), timeSpan,
@@ -102,8 +111,25 @@ public class LeaderboardScoresFragment extends Fragment {
                         scores.add(score.freeze());
                     }
                     adapter.notifyDataSetChanged();
+                    onLoaded();
                     scoreBuffer.close();
                     return null;
                 });
+    }
+
+    private void onLoading() {
+        scores.clear();
+        getView().findViewById(R.id.players_scores_recycler_view).setVisibility(View.GONE);
+        View loadingView = getView().findViewById(R.id.loading_layout);
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.placeholder);
+        loadingView.startAnimation(animation);
+        loadingView.setVisibility(View.VISIBLE);
+    }
+
+    private void onLoaded() {
+        getView().findViewById(R.id.players_scores_recycler_view).setVisibility(View.VISIBLE);
+        View loadingView = getView().findViewById(R.id.loading_layout);
+        loadingView.clearAnimation();
+        loadingView.setVisibility(View.GONE);
     }
 }

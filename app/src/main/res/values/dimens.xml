@@ -26,4 +26,6 @@
     <dimen name="nav_width">200dp</dimen>
     <dimen name="player_avatar_size">50dp</dimen>
     <dimen name="small_text">12sp</dimen>
+    <dimen name="very_small_margin">3dp</dimen>
+    <dimen name="placeholder_title_width">130dp</dimen>
 </resources>

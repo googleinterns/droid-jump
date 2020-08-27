@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -87,11 +89,16 @@ public class LeaderboardsFragment extends Fragment {
     private void onLoading() {
         leaderboards.clear();
         getView().findViewById(R.id.leaderboards_recycler_view).setVisibility(View.GONE);
-        getView().findViewById(R.id.loading_screen).setVisibility(View.VISIBLE);
+        View loadingView = getView().findViewById(R.id.loading_layout);
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.placeholder);
+        loadingView.startAnimation(animation);
+        loadingView.setVisibility(View.VISIBLE);
     }
 
     private void onLoaded() {
         getView().findViewById(R.id.leaderboards_recycler_view).setVisibility(View.VISIBLE);
-        getView().findViewById(R.id.loading_screen).setVisibility(View.GONE);
+        View loadingView = getView().findViewById(R.id.loading_layout);
+        loadingView.clearAnimation();
+        loadingView.setVisibility(View.GONE);
     }
 }
