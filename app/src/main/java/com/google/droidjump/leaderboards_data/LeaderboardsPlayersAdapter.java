@@ -71,7 +71,6 @@ public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<Leaderboard
             super(view);
             username = view.findViewById(R.id.player_username);
             avatar = view.findViewById(R.id.player_avatar);
-
             rank = view.findViewById(R.id.player_rank);
             score = view.findViewById(R.id.player_score);
         }
