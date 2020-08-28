@@ -16,15 +16,18 @@
 
 package com.google.droidjump;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.droidjump.drawable.DroidStartView;
+import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 
 /**
@@ -39,10 +42,15 @@ public class GameFailureFragment extends Fragment {
         activity = getActivity();
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LevelManager.updateCurrentLevelMaxScore();
         View rootView = inflater.inflate(R.layout.game_failure_screen,
                 container, /* attachToRoot= */ false);
+        ((TextView) rootView.findViewById(R.id.score_text_view))
+                .setText(String.format("score: %d \nbest score: %d", LevelManager.getCurrentLevelScore(),
+                        LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex())));
         rootView.findViewById(R.id.retry_button).setOnClickListener(ignored ->
                 NavigationHelper.navigateToFragment(activity, new GameFragment()));
         rootView.findViewById(R.id.menu_button).setOnClickListener(ignored ->
