@@ -83,6 +83,11 @@
         <item name="android:src">@drawable/ic_menu</item>
     </style>
 
+    <style name="WhiteBackButton" parent="BackButton">
+        <item name="android:tint">@android:color/black</item>
+        <item name="android:background">@drawable/white_round_button</item>
+    </style>
+
     <style name="DroidDrawFrame">
         <item name="android:layout_marginLeft">@dimen/fab_margin</item>
         <item name="android:layout_marginBottom">@dimen/fab_margin</item>
@@ -144,5 +149,12 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/small_text</item>
+    </style>
+
+    <style name="PGSIcon">
+        <item name="android:layout_width">@dimen/pgs_icon_width</item>
+        <item name="android:layout_height">@dimen/pgs_icon_width</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/pgs_icon</item>
     </style>
 </resources>

@@ -18,7 +18,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/player_linear_layout"
+    android:id="@+id/score_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -35,7 +35,8 @@
 
         <ImageView
             android:id="@+id/player_avatar"
-            style="@style/MatchParent" />
+            style="@style/MatchParent"
+            android:contentDescription="@string/player_avatar" />
     </androidx.cardview.widget.CardView>
 
     <LinearLayout

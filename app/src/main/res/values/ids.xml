@@ -16,5 +16,16 @@
   -->
 
 <resources>
+    <!--app_id-->
     <string name="app_id">"902201000711"</string>
+    <!--package_name-->
+    <string name="package_name" translatable="false" />
+    <!--achievement My First Achievement-->
+    <string name="achievement_my_first_achievement" translatable="false">CgkIh4b7-qAaEAIQAA</string>
+    <!--leaderboard My First Leaderboard-->
+    <string name="leaderboard_my_first_leaderboard" translatable="false">CgkIh4b7-qAaEAIQAQ</string>
+    <!--leaderboard Top scores are better-->
+    <string name="leaderboard_top_scores_are_better" translatable="false">CgkIh4b7-qAaEAIQBQ</string>
+    <!--leaderboard Smallest time is better-->
+    <string name="leaderboard_smallest_time_is_better" translatable="false">CgkIh4b7-qAaEAIQBg</string>
 </resources>

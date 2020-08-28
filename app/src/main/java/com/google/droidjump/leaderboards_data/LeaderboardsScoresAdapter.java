@@ -22,35 +22,41 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.droidjump.R;
 import java.util.List;
 
 /**
- * Extracts a player data and styles it for showing in RecyclerView.
+ * Extracts a scores data and styles it for showing in RecyclerView.
  */
-public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<LeaderboardsPlayersAdapter.PlayersHolder> {
-    private List<LeaderboardsPlayer> items;
+public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
+    private List<LeaderboardScore> items;
+    private FragmentActivity activity;
 
-    public LeaderboardsPlayersAdapter(List<LeaderboardsPlayer> items) {
+    public LeaderboardsScoresAdapter(List<LeaderboardScore> items, FragmentActivity activity) {
         this.items = items;
+        this.activity = activity;
     }
 
     @NonNull
     @Override
-    public PlayersHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ScoresHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.leaderboards_player_item, parent, /* attachToRoot = */ false);
-        return new PlayersHolder(view);
+                .inflate(R.layout.leaderboards_score_item, parent, /* attachToRoot = */ false);
+        return new ScoresHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlayersHolder holder, int position) {
-        LeaderboardsPlayer leaderboardsPlayer = items.get(position);
-        holder.getUsername().setText(leaderboardsPlayer.getUsername());
-        holder.getAvatar().setImageResource(leaderboardsPlayer.getAvatar());
-        holder.getRank().setText(String.valueOf(leaderboardsPlayer.getRank()));
-        holder.getScore().setText(String.valueOf(leaderboardsPlayer.getScore()));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder baseHolder, int position) {
+        LeaderboardScore score = items.get(position);
+        ScoresHolder holder = (ScoresHolder) baseHolder;
+        holder.getUsername().setText(score.getScoreHolderDisplayName());
+        ImageManager.create(activity).loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
+        holder.getRank().setText(score.getDisplayRank());
+        holder.getScore().setText(String.valueOf(score.getDisplayScore()));
     }
 
     @Override
@@ -59,15 +65,15 @@ public class LeaderboardsPlayersAdapter extends RecyclerView.Adapter<Leaderboard
     }
 
     /**
-     * Holds players data.
+     * Gives access to leaderboards_score_item layout and inserts scores data to it.
      */
-    public class PlayersHolder extends RecyclerView.ViewHolder {
+    private class ScoresHolder extends RecyclerView.ViewHolder {
         private TextView username;
         private TextView rank;
         private TextView score;
         private ImageView avatar;
 
-        public PlayersHolder(View view) {
+        public ScoresHolder(View view) {
             super(view);
             username = view.findViewById(R.id.player_username);
             avatar = view.findViewById(R.id.player_avatar);
