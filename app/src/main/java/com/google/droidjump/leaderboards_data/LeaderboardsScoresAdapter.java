@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Extracts a scores data and styles it for showing in RecyclerView.
  */
-public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<LeaderboardsScoresAdapter.ScoresHolder> {
+public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
     private List<LeaderboardScore> items;
     private FragmentActivity activity;
 
@@ -50,8 +50,9 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ScoresHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder baseHolder, int position) {
         LeaderboardScore score = items.get(position);
+        ScoresHolder holder = (ScoresHolder) baseHolder;
         holder.getUsername().setText(score.getScoreHolderDisplayName());
         ImageManager.create(activity).loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
         holder.getRank().setText(score.getDisplayRank());
@@ -66,7 +67,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     /**
      * Gives access to leaderboards_score_item layout and inserts scores data to it.
      */
-    public class ScoresHolder extends RecyclerView.ViewHolder {
+    private class ScoresHolder extends RecyclerView.ViewHolder {
         private TextView username;
         private TextView rank;
         private TextView score;
