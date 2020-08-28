@@ -77,7 +77,6 @@ public class AchievementsFragment extends Fragment {
             public int getItemCount() {
                 return 1;
             }
-
         };
 
         achievementsView.setAdapter(adapter);
