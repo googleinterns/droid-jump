@@ -65,6 +65,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int groundHeight;
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private LevelStrategy level;
+    private int score;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
@@ -78,6 +79,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.isPlaying = isPlaying;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
+        score = 0;
         receiveLevelDetails();
 
         // Droid should be on a ground height, but platform includes grass.
@@ -172,6 +174,7 @@ public class GameView extends SurfaceView implements Runnable {
             // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
+                score += 10;
             }
         }
     }
@@ -235,11 +238,13 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void failGame() {
         isPlaying = false;
+        LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameFailureFragment());
     }
 
     private void winGame() {
         isPlaying = false;
+        LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameSuccessFragment());
     }
 

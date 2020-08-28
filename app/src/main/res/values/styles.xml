@@ -150,4 +150,11 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/small_text</item>
     </style>
+
+    <style name="PGSIcon">
+        <item name="android:layout_width">@dimen/pgs_icon_width</item>
+        <item name="android:layout_height">@dimen/pgs_icon_width</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:src">@drawable/pgs_icon</item>
+    </style>
 </resources>

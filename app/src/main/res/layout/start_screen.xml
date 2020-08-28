@@ -61,15 +61,6 @@
         app:layout_constraintBottom_toTopOf="@+id/how_to_play_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/sign_out_button"
-            style="@style/StartScreenButton"
-            android:layout_marginTop="50dp"
-            android:text="@string/sign_out"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_game_button" />
-
     <TextView
         android:id="@+id/game_header"
         style="@style/ScreenHeader"
@@ -86,9 +77,12 @@
 
     <ImageButton
         android:id="@+id/menu_button"
-        style="@style/MenuButton"
-        android:contentDescription="@string/menu_button"
+        style="@style/PGSIcon"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/pgs"
         app:layout_constraintBottom_toBottomOf="@+id/game_header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/game_header" />
 </androidx.constraintlayout.widget.ConstraintLayout>
