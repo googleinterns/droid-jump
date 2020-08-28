@@ -91,7 +91,6 @@ public class LeaderboardScoresFragment extends Fragment {
         Switch friendsSwitch = rootView.findViewById(R.id.friends_switch);
         friendsSwitch.setOnClickListener(ignored -> {
             if (friendsSwitch.isChecked()) {
-
                 collection = LeaderboardVariant.COLLECTION_FRIENDS;
             } else {
                 collection = LeaderboardVariant.COLLECTION_PUBLIC;
