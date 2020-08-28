@@ -45,19 +45,18 @@ public class StartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.start_screen, container, /* attachToRoot= */ false);
         ((LinearLayout) rootView.findViewById(R.id.droid_draw_view)).addView(new DroidStartView(activity));
+        rootView.findViewById(R.id.menu_button).setOnClickListener(ignored -> activity.openUserMenu());
         rootView.findViewById(R.id.play_button).setOnClickListener(this::play);
         rootView.findViewById(R.id.level_button).setOnClickListener(this::chooseLevel);
         rootView.findViewById(R.id.new_game_button).setOnClickListener(this::startNewGame);
         rootView.findViewById(R.id.how_to_play_button).setOnClickListener(this::goToHowToPlayScreen);
         NavigationHelper.clearBackStack(activity);
-        rootView.findViewById(R.id.sign_out_button).setOnClickListener((MainActivity) activity);
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getView().findViewById(R.id.menu_button).setOnClickListener(ignored -> activity.openUserMenu());
     }
 
     private void play(View view) {

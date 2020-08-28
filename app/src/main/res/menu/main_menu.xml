@@ -21,17 +21,20 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_friends"
-            android:title="@string/friends" />
+            android:title="@string/friends"
+            android:icon="@drawable/pgs_icon"/>
         <item
             android:id="@+id/nav_achievements"
-            android:title="@string/achievements" />
+            android:title="@string/achievements"
+            android:icon="@drawable/achievements_icon"/>
         <item
             android:id="@+id/nav_leaderboards"
-            android:title="@string/leaderboards" />
+            android:title="@string/leaderboards"
+            android:icon="@drawable/leaderboards_icon"/>
     </group>
     <group android:id="@+id/nav_footer">
         <item
-            android:id="@+id/nav_sign_out"
-            android:title="@string/sign_out" />
+            android:id="@+id/nav_auth"
+            android:title="@string/sign_in" />
     </group>
 </menu>
