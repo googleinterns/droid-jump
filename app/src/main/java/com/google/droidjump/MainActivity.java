@@ -30,7 +30,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.navigation.NavigationView;
@@ -44,9 +46,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private String playerId;
+    private Player player = null;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
+    private AchievementsClient achievementsClient = null;
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -133,11 +136,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
+            achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        playerId = player.getPlayerId();
+                        this.player = player;
                         switchToGameScreen();
                         if (isActiveConnection) {
                             isActiveConnection = false;
@@ -190,7 +194,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             switch (id) {
                 case R.id.nav_friends:
                 case R.id.nav_achievements:
-                    fragmentToNavigate = new StartFragment();
+                    fragmentToNavigate = new AchievementsFragment();
                     break;
                 case R.id.nav_leaderboards:
                     fragmentToNavigate = new LeaderboardsFragment();
@@ -200,5 +204,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             return true;
         });
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public AchievementsClient getAchievementsClient() {
+        return achievementsClient;
     }
 }
