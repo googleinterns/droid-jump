@@ -56,6 +56,7 @@ public class AchievementsFragment extends Fragment {
         RecyclerView achievementsView = rootView.findViewById(R.id.achievements_recycler_view);
         achievementsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
 
+        // TODO(dnikolskaia): Extract data from Achievements client.
         RecyclerView.Adapter adapter = new RecyclerView.Adapter<AchievementViewHolder>() {
             @Override
             public AchievementViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -65,6 +66,7 @@ public class AchievementsFragment extends Fragment {
 
             @Override
             public void onBindViewHolder(AchievementViewHolder viewHolder, int i) {
+                // Example of achievement.
                 viewHolder.getDate().setText("Aug 24");
                 viewHolder.getDescription().setText("Overcome 1 obstacle");
                 viewHolder.getName().setText("MyAchievement");
@@ -79,7 +81,6 @@ public class AchievementsFragment extends Fragment {
         };
 
         achievementsView.setAdapter(adapter);
-
         return rootView;
     }
 
