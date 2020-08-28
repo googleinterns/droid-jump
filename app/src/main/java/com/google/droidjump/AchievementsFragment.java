@@ -31,6 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.droidjump.models.NavigationHelper;
 
+/**
+ * Displays Achievements Screen.
+ */
 public class AchievementsFragment extends Fragment {
     private MainActivity activity;
 
