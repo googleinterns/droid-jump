@@ -29,26 +29,21 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
-import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.achievements_data.AchievementsAdapter;
 import com.google.droidjump.models.NavigationHelper;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Displays Achievements Screen.
  */
 public class AchievementsFragment extends Fragment {
     private MainActivity activity;
-    private List<Achievement> achievements;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
-        achievements = new ArrayList<>();
     }
 
     @Nullable
@@ -62,19 +57,14 @@ public class AchievementsFragment extends Fragment {
                 NavigationHelper.navigateToFragment(activity, new StartFragment()));
         RecyclerView achievementsView = rootView.findViewById(R.id.achievements_recycler_view);
         achievementsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
-        // TODO(dnikolskaia): Extract data from Achievements client.
-        activity.getAchievementsClient().load(false).addOnCompleteListener(activity, task -> {
-            if(task.isSuccessful()){
+        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
+            if (task.isSuccessful()) {
                 AchievementBuffer achievementBuffer = task.getResult().get();
-                achievements.clear();
-                Log.d("AchievementsFragment", "into get method!");
                 if (achievementBuffer != null) {
-                    AchievementsAdapter adapter = new AchievementsAdapter(achievementBuffer);
+                    AchievementsAdapter adapter = new AchievementsAdapter(achievementBuffer, activity);
                     achievementsView.setAdapter(adapter);
                 }
-                else Log.d("AchievementsFragment", "NULL BUFFER");
-            }
-            else{
+            } else {
                 Log.e("AchievementsFragment", "Failed to load achievements from client");
             }
         });

@@ -16,23 +16,26 @@
 
 package com.google.droidjump.achievements_data;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.R;
 
-public class AchievementsAdapter extends  RecyclerView.Adapter<AchievementsAdapter.AchievementViewHolder> {
+public class AchievementsAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private AchievementBuffer achievementBuffer;
-    public AchievementsAdapter(AchievementBuffer achievementBuffer){
+    private FragmentActivity activity;
+
+    public AchievementsAdapter(AchievementBuffer achievementBuffer, FragmentActivity activity){
         this.achievementBuffer = achievementBuffer;
-        Log.d("AchievementsAdapter", "size :" + achievementBuffer.getCount());
+        this.activity = activity;
     }
 
     @NonNull
@@ -43,15 +46,25 @@ public class AchievementsAdapter extends  RecyclerView.Adapter<AchievementsAdapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AchievementViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder mholder, int position) {
         Achievement achievement = achievementBuffer.get(position);
         //holder.getDate().setText(String.valueOf(achievement.getLastUpdatedTimestamp()));
+        AchievementViewHolder holder = (AchievementViewHolder) mholder;
         holder.getDescription().setText(achievement.getDescription());
         holder.getName().setText(achievement.getName());
         ImageView icon = holder.getIcon();
-//        if (achievement.getState() == Achievement.STATE_UNLOCKED)
-//            manager.loadImage(icon, achievement.getUnlockedImageUri());
-//        else manager.loadImage(icon, achievement.getRevealedImageUri());
+        ImageManager manager = ImageManager.create(activity);
+        switch (achievement.getState()){
+            case Achievement.STATE_UNLOCKED:
+                manager.loadImage(icon, achievement.getUnlockedImageUri());
+                break;
+            case Achievement.STATE_REVEALED:
+                manager.loadImage(icon, achievement.getRevealedImageUri());
+                break;
+            case Achievement.STATE_HIDDEN:
+                break;
+
+        }
     }
 
 
@@ -90,6 +103,19 @@ public class AchievementsAdapter extends  RecyclerView.Adapter<AchievementsAdapt
 
         public ImageView getIcon() {
             return icon;
+        }
+    }
+
+    public class SectionViewHolder extends RecyclerView.ViewHolder{
+        private TextView sectionText;
+
+        public SectionViewHolder(@NonNull View itemView) {
+            super(itemView);
+            sectionText = itemView.findViewById(R.id.section_text);
+        }
+
+        public TextView getSectionText() {
+            return sectionText;
         }
     }
 

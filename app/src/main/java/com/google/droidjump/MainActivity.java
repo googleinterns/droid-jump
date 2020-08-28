@@ -35,6 +35,7 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
@@ -194,12 +195,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             switch (id) {
                 case R.id.nav_friends:
                 case R.id.nav_achievements:
-                    fragmentToNavigate = new AchievementsFragment();
+                    //NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
+                    showAchievements();
                     break;
                 case R.id.nav_leaderboards:
-                    fragmentToNavigate = new LeaderboardsFragment();
+                    NavigationHelper.navigateToFragment(MainActivity.this, new LeaderboardsFragment());
             }
-            NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
             ((DrawerLayout) findViewById(R.id.drawer_layout))
                     .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             return true;
@@ -212,5 +213,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     public AchievementsClient getAchievementsClient() {
         return achievementsClient;
+    }
+
+    private static final int RC_ACHIEVEMENT_UI = 9003;
+
+    private void showAchievements() {
+        Games.getAchievementsClient(this, savedSignedInAccount)
+                .getAchievementsIntent()
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_ACHIEVEMENT_UI);
+                    }
+                });
     }
 }
