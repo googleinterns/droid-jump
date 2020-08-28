@@ -16,8 +16,9 @@
 
 package com.google.droidjump;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.FriendsResolutionRequiredException;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
@@ -50,6 +52,7 @@ public class LeaderboardScoresFragment extends Fragment {
     private LeaderboardsScoresAdapter adapter;
     private int timeSpan;
     private int collection;
+    private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -62,6 +65,15 @@ public class LeaderboardScoresFragment extends Fragment {
         scores = new ArrayList<>();
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SHOW_SHARING_FRIENDS_CONSENT) {
+            collection = LeaderboardVariant.COLLECTION_FRIENDS;
+            fetchScores(timeSpan, collection);
+        }
     }
 
     @Override
@@ -81,7 +93,6 @@ public class LeaderboardScoresFragment extends Fragment {
             } else {
                 collection = LeaderboardVariant.COLLECTION_PUBLIC;
             }
-            Log.d(getClass().toString(), String.valueOf(collection));
             fetchScores(timeSpan, collection);
         });
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
@@ -93,15 +104,31 @@ public class LeaderboardScoresFragment extends Fragment {
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                 .loadPlayerCenteredScores(
                         leaderboard.getLeaderboardId(), timeSpan,
-                        collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
+                        collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ true)
                 .continueWithTask(task -> {
-                    LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
-                    scores.clear();
-                    for (LeaderboardScore score : scoreBuffer) {
-                        scores.add(score.freeze());
+                    if (task.isSuccessful()) {
+                        LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
+                        scores.clear();
+                        for (LeaderboardScore score : scoreBuffer) {
+                            scores.add(score.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
+                        scoreBuffer.close();
+                    } else {
+                        if (task.getException() instanceof FriendsResolutionRequiredException) {
+                            PendingIntent pendingIntent =
+                                    ((FriendsResolutionRequiredException) task.getException())
+                                            .getResolution();
+                            activity.startIntentSenderForResult(
+                                    pendingIntent.getIntentSender(),
+                                    /* requestCode */ SHOW_SHARING_FRIENDS_CONSENT,
+                                    /* fillInIntent */ null,
+                                    /* flagsMask */ 0,
+                                    /* flagsValues */ 0,
+                                    /* extraFlags */ 0,
+                                    /* options */ null);
+                        }
                     }
-                    adapter.notifyDataSetChanged();
-                    scoreBuffer.close();
                     return null;
                 });
     }
