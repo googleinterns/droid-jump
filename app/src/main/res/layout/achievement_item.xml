@@ -50,7 +50,7 @@
             style="@style/RegularText"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
-            android:text="Name"
+            android:text="@string/name"
             android:textColor="@android:color/black" />
 
         <TextView
@@ -59,8 +59,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
-            android:text="description" />
-
+            android:text="@string/description" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,7 +73,6 @@
         <TextView
             android:id="@+id/date"
             style="@style/WrapContent"
-            android:text="Date" />
-
+            android:text="@string/date" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
