@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -54,6 +55,10 @@ public class MainActivity extends FragmentActivity {
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
+    }
+
+    public GoogleSignInAccount getSavedSignedInAccount() {
+        return savedSignedInAccount;
     }
 
     @Override
@@ -125,6 +130,10 @@ public class MainActivity extends FragmentActivity {
                 new AlertDialog.Builder(this).setMessage(message)
                         .setNeutralButton(android.R.string.ok, null).show();
             }
+        }
+        // Making onActivityResult work in all fragments.
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 

@@ -18,6 +18,7 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black">
@@ -37,9 +38,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/user_avatar_size"
+                android:layout_height="@dimen/user_avatar_size"
+                app:cardCornerRadius="@dimen/user_avatar_size">
+
+                <ImageView
+                    android:id="@+id/leaderboard_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/leaderboards" />
+            </androidx.cardview.widget.CardView>
+
             <TextView
                 android:id="@+id/leaderboards_title"
-                style="@style/CenterHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
@@ -60,8 +72,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+            <Switch
+                android:id="@+id/friends_switch"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0"
+                android:color="@android:color/darker_gray"
+                android:text="@string/friends"
+                android:theme="@style/MySwitch"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/leaderboards_recycler_view"
+                android:id="@+id/scores_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
