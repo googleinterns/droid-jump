@@ -65,7 +65,9 @@ public class LeaderboardsFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void fetchLeaderboards() {
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(true)
+        Games.getLeaderboardsClient(activity,
+                activity.getSavedSignedInAccount())
+                .loadLeaderboardMetadata(/* forceReload= */ false)
                 .continueWithTask(task -> {
                     LeaderboardBuffer leaderboardBuffer = task.getResult().get();
                     leaderboards.clear();

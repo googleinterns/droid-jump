@@ -54,8 +54,7 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     @Override
     public void onBindViewHolder(@NonNull LeaderboardsHolder holder, int position) {
         Leaderboard leaderboard = items.get(position);
-        ImageManager imageManager = ImageManager.create(activity);
-        imageManager.loadImage(holder.getAvatar(), leaderboard.getIconImageUri());
+        ImageManager.create(activity).loadImage(holder.getAvatar(), leaderboard.getIconImageUri());
         holder.getName().setText(leaderboard.getDisplayName());
         holder.itemView.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new LeaderboardScoresFragment(leaderboard));

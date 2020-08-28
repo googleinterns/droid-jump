@@ -67,17 +67,16 @@ public class LeaderboardScoresFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboard_scores_screen, container, /* attachToRoot= */ false);
-        ImageManager imageManager = ImageManager.create(activity);
-        imageManager.loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
+        ImageManager.create(activity).loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
+        adapter = new LeaderboardsScoresAdapter(scores, activity);
         RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
         scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
-        adapter = new LeaderboardsScoresAdapter(scores, activity);
         scoresView.setAdapter(adapter);
-        Switch friendsToggle = rootView.findViewById(R.id.friends_toggle);
         fetchScores(timeSpan, collection);
-        friendsToggle.setOnClickListener(ignored -> {
-            if (friendsToggle.isChecked()) {
+        Switch friendsSwitch = rootView.findViewById(R.id.friends_switch);
+        friendsSwitch.setOnClickListener(ignored -> {
+            if (friendsSwitch.isChecked()) {
                 collection = LeaderboardVariant.COLLECTION_FRIENDS;
             } else {
                 collection = LeaderboardVariant.COLLECTION_PUBLIC;
@@ -94,10 +93,10 @@ public class LeaderboardScoresFragment extends Fragment {
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                 .loadPlayerCenteredScores(
                         leaderboard.getLeaderboardId(), timeSpan,
-                        collection, GameConstants.SCORES_PER_PAGE, true)
+                        collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
-                    scores.clear();
                     LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
+                    scores.clear();
                     for (LeaderboardScore score : scoreBuffer) {
                         scores.add(score.freeze());
                     }

@@ -53,8 +53,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     public void onBindViewHolder(@NonNull ScoresHolder holder, int position) {
         LeaderboardScore score = items.get(position);
         holder.getUsername().setText(score.getScoreHolderDisplayName());
-        ImageManager imageManager = ImageManager.create(activity);
-        imageManager.loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
+        ImageManager.create(activity).loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
         holder.getRank().setText(score.getDisplayRank());
         holder.getScore().setText(String.valueOf(score.getDisplayScore()));
     }
