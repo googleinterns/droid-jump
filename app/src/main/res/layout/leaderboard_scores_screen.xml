@@ -83,7 +83,7 @@
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/players_view"
+                android:id="@+id/scores_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

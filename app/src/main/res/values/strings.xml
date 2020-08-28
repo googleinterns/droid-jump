@@ -41,4 +41,5 @@
     <string name="main_menu">Main menu</string>
     <string name="player_rank">"Rank "</string>
     <string name="score_text">"Score: "</string>
+    <string name="player_avatar">Player avatar</string>
 </resources>

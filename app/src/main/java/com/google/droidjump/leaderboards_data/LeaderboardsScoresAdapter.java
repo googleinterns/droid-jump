@@ -45,7 +45,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     @Override
     public ScoresHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.leaderboards_player_item, parent, /* attachToRoot = */ false);
+                .inflate(R.layout.leaderboards_score_item, parent, /* attachToRoot = */ false);
         return new ScoresHolder(view);
     }
 
