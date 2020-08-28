@@ -67,6 +67,9 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
         return items.size();
     }
 
+    /**
+     * Gives access to leaderboards_item layout and inserts leaderboards data to it.
+     */
     public class LeaderboardsHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private ImageView avatar;

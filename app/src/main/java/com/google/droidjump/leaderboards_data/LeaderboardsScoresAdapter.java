@@ -65,7 +65,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     }
 
     /**
-     * Holds scores data.
+     * Gives access to leaderboards_score_item layout and inserts scores data to it.
      */
     public class ScoresHolder extends RecyclerView.ViewHolder {
         private TextView username;
