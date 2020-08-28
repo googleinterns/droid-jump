@@ -97,7 +97,6 @@ public class AchievementsFragment extends Fragment {
             date = view.findViewById(R.id.date);
         }
 
-
         public TextView getName() {
             return name;
         }
