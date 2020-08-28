@@ -20,7 +20,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -30,7 +33,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.navigation.NavigationView;
@@ -40,7 +45,7 @@ import com.google.droidjump.models.NavigationHelper;
 /**
  * Represents main activity.
  */
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
@@ -59,6 +64,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
     }
 
     @Override
@@ -125,12 +131,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         .setNeutralButton(android.R.string.ok, null).show();
             }
         }
+        // Making onActivityResult work in all fragments.
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void onDisconnected() {
         isActiveConnection = true;
-        setContentView(R.layout.activity_sign_in);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        disableNavigationMenu();
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
@@ -142,10 +151,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         playerId = player.getPlayerId();
-                        switchToGameScreen();
+                        // Showing a welcome popup.
+                        Games.getGamesClient(this, googleSignInAccount)
+                                .setViewForPopups(findViewById(R.id.activity_wrapper));
                         if (isActiveConnection) {
                             isActiveConnection = false;
                         }
+                        enableNavigationMenu(player);
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
@@ -158,15 +170,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         };
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.sign_in_button) {
-            startSignInIntent();
-        } else if (view.getId() == R.id.sign_out_button) {
-            signOut();
-        }
-    }
-
     private void signOut() {
         GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
                 GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
@@ -177,32 +180,70 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 });
     }
 
-    void switchToGameScreen() {
+    private void init() {
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        setupDrawer();
     }
 
-    private void setupDrawer() {
+    private void setupDrawer(boolean isEnabled) {
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
+        navigationView.getMenu().setGroupEnabled(R.id.nav_items, isEnabled);
+        navigationView.getMenu().setGroupCheckable(R.id.nav_items, isEnabled, isEnabled);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
-            Fragment fragmentToNavigate = null;
-            switch (id) {
-                case R.id.nav_friends:
-                case R.id.nav_achievements:
-                    fragmentToNavigate = new StartFragment();
-                    break;
-                case R.id.nav_leaderboards:
-                    fragmentToNavigate = new LeaderboardsFragment();
+            if (isEnabled) {
+                switch (id) {
+                    case R.id.nav_friends:
+                    case R.id.nav_achievements:
+                        NavigationHelper.navigateToFragment(MainActivity.this, new StartFragment());
+                        break;
+                    case R.id.nav_auth:
+                        startSignInIntent();
+                        break;
+                    case R.id.nav_leaderboards:
+                        NavigationHelper.navigateToFragment(MainActivity.this, new LeaderboardsFragment());
+                        break;
+                }
+                ((DrawerLayout) findViewById(R.id.drawer_layout))
+                        .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             }
-            NavigationHelper.navigateToFragment(MainActivity.this, fragmentToNavigate);
-            ((DrawerLayout) findViewById(R.id.drawer_layout))
-                    .closeDrawer(GameConstants.NAVIGATION_START_POSITION);
             return true;
         });
+    }
+
+    private void disableNavigationMenu() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        findViewById(R.id.drawer_header_placeholder).setVisibility(View.VISIBLE);
+        findViewById(R.id.menu_header).setVisibility(View.GONE);
+        MenuItem authButton = navigationView.getMenu().findItem(R.id.nav_auth);
+        authButton.setTitle(R.string.sign_in);
+        authButton.setOnMenuItemClickListener(ignored -> {
+            startSignInIntent();
+            return true;
+        });
+        setupDrawer(/* isEnabled= */ false);
+        NavigationHelper.navigateToFragment(this, new StartFragment());
+    }
+
+    private void enableNavigationMenu(Player player) {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        findViewById(R.id.drawer_header_placeholder).setVisibility(View.GONE);
+        ImageManager manager = ImageManager.create(this);
+        ImageView userAvatar = findViewById(R.id.user_avatar);
+        manager.loadImage(userAvatar, player.getIconImageUri());
+        navigationView.findViewById(R.id.menu_header).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.username)).setText(player.getDisplayName());
+        MenuItem authButton = navigationView.getMenu().findItem(R.id.nav_auth);
+        authButton.setTitle(R.string.sign_out);
+        authButton.setOnMenuItemClickListener(ignored -> {
+            signOut();
+            return true;
+        });
+        setupDrawer(/* isEnabled= */ true);
+        NavigationHelper.navigateToFragment(this, new StartFragment());
     }
 }

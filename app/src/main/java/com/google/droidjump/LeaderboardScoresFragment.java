@@ -16,8 +16,9 @@
 
 package com.google.droidjump;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.FriendsResolutionRequiredException;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
@@ -53,6 +55,7 @@ public class LeaderboardScoresFragment extends Fragment {
     private LeaderboardsScoresAdapter adapter;
     private int timeSpan;
     private int collection;
+    private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -68,23 +71,31 @@ public class LeaderboardScoresFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SHOW_SHARING_FRIENDS_CONSENT) {
+            collection = LeaderboardVariant.COLLECTION_FRIENDS;
+            fetchScores(timeSpan, collection);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboard_scores_screen, container, /* attachToRoot= */ false);
-        ImageManager imageManager = ImageManager.create(activity);
-        imageManager.loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
+        ImageManager.create(activity).loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
-        RecyclerView playersView = rootView.findViewById(R.id.players_scores_recycler_view);
-        playersView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         adapter = new LeaderboardsScoresAdapter(scores, activity);
-        playersView.setAdapter(adapter);
-        Switch friendsToggle = rootView.findViewById(R.id.friends_toggle);
-        friendsToggle.setOnClickListener(ignored -> {
-            if (friendsToggle.isChecked()) {
+        RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
+        scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
+        scoresView.setAdapter(adapter);
+        Switch friendsSwitch = rootView.findViewById(R.id.friends_switch);
+        friendsSwitch.setOnClickListener(ignored -> {
+            if (friendsSwitch.isChecked()) {
+
                 collection = LeaderboardVariant.COLLECTION_FRIENDS;
             } else {
                 collection = LeaderboardVariant.COLLECTION_PUBLIC;
             }
-            Log.d(getClass().toString(), String.valueOf(collection));
             fetchScores(timeSpan, collection);
         });
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
@@ -98,28 +109,9 @@ public class LeaderboardScoresFragment extends Fragment {
         fetchScores(timeSpan, collection);
     }
 
-    private void fetchScores(int timeSpan, int collection) {
-        onLoading();
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
-                .loadPlayerCenteredScores(
-                        leaderboard.getLeaderboardId(), timeSpan,
-                        collection, GameConstants.SCORES_PER_PAGE, true)
-                .continueWithTask(task -> {
-                    scores.clear();
-                    LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
-                    for (LeaderboardScore score : scoreBuffer) {
-                        scores.add(score.freeze());
-                    }
-                    adapter.notifyDataSetChanged();
-                    onLoaded();
-                    scoreBuffer.close();
-                    return null;
-                });
-    }
-
     private void onLoading() {
         scores.clear();
-        getView().findViewById(R.id.players_scores_recycler_view).setVisibility(View.GONE);
+        getView().findViewById(R.id.scores_recycler_view).setVisibility(View.GONE);
         View loadingView = getView().findViewById(R.id.loading_layout);
         Animation animation = AnimationUtils.loadAnimation(activity, R.anim.placeholder);
         loadingView.startAnimation(animation);
@@ -127,9 +119,44 @@ public class LeaderboardScoresFragment extends Fragment {
     }
 
     private void onLoaded() {
-        getView().findViewById(R.id.players_scores_recycler_view).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.scores_recycler_view).setVisibility(View.VISIBLE);
         View loadingView = getView().findViewById(R.id.loading_layout);
         loadingView.clearAnimation();
         loadingView.setVisibility(View.GONE);
+    }
+
+    private void fetchScores(int timeSpan, int collection) {
+        onLoading();
+        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
+                .loadPlayerCenteredScores(
+                        leaderboard.getLeaderboardId(), timeSpan,
+                        collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ true)
+                .continueWithTask(task -> {
+                    if (task.isSuccessful()) {
+                        LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
+                        scores.clear();
+                        for (LeaderboardScore score : scoreBuffer) {
+                            scores.add(score.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
+                        onLoaded();
+                        scoreBuffer.close();
+                    } else {
+                        if (task.getException() instanceof FriendsResolutionRequiredException) {
+                            PendingIntent pendingIntent =
+                                    ((FriendsResolutionRequiredException) task.getException())
+                                            .getResolution();
+                            activity.startIntentSenderForResult(
+                                    pendingIntent.getIntentSender(),
+                                    /* requestCode */ SHOW_SHARING_FRIENDS_CONSENT,
+                                    /* fillInIntent */ null,
+                                    /* flagsMask */ 0,
+                                    /* flagsValues */ 0,
+                                    /* extraFlags */ 0,
+                                    /* options */ null);
+                        }
+                    }
+                    return null;
+                });
     }
 }

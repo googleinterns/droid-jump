@@ -28,4 +28,7 @@
     <dimen name="small_text">12sp</dimen>
     <dimen name="very_small_margin">3dp</dimen>
     <dimen name="placeholder_title_width">130dp</dimen>
+    <dimen name="placeholder_menu_text_width">150dp</dimen>
+    <dimen name="menu_icon_padding">20dp</dimen>
+    <dimen name="pgs_icon_width">50dp</dimen>
 </resources>

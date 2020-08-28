@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright 2020 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector android:height="30dp" android:viewportHeight="512"
+    android:viewportWidth="512" android:width="30dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#b2cb39" android:name="ic leaderboards" android:pathData="m179.4 58.3c-15.4 0 -27.9 12.5 -27.9 27.9c0 14.3 10.9 25.6 24.7 27.3l-17.2 148.7l-80.8 -58.7c3.2 -4.5 5.5 -9.8 5.5 -15.7c0 -15.4 -12.5 -27.9 -27.9 -27.9c-15.4 0 -27.9 12.5 -27.9 27.9c0 15.4 12.5 27.9 27.9 27.9c2.3 0 4.4 -0.8 6.5 -1.3l44.2 152.7h297.8l44.2 -152.7c2.2 0.5 4.2 1.3 6.5 1.3c15.4 0 27.8 -12.5 27.8 -27.9c0 -15.4 -12.5 -27.9 -27.8 -27.9c-15.4 0 -27.9 12.5 -27.9 27.9c0 6 2.3 11.3 5.6 15.9l-80.9 59.4l-17.2 -149.5c13.9 -1.6 24.8 -13 24.8 -27.3c0 -15.4 -12.5 -27.9 -27.9 -27.9c-15.4 0 -27.9 12.5 -27.9 27.9c0 11.2 6.7 20.7 16.2 25.1l-64.4 135.8l-64.3 -135.9c9.5 -4.5 16.1 -13.9 16.1 -25.1c0 -15.4 -12.5 -27.9 -27.9 -27.9zm-72.8 328v32h297.8v-32z"/>
+</vector>

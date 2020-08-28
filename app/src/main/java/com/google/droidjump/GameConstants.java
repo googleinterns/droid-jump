@@ -32,7 +32,8 @@ public interface GameConstants {
     // The variable is responsible for how much time ticks must pass to change a bitmap so that animate the object smoothly.
     int ANIMATION_STEP_TICKS = 2;
     int FIRST_LEVEL_ID = 0; // Default value.
-    int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles.
+    int SCORE_DEF_VALUE = 0; // Default value.
+    int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
     int SCORES_PER_PAGE = 25; // Count of scores on one page.
 

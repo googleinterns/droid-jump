@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Extracts a leaderboards data and styles it for showing in RecyclerView.
  */
-public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapter.LeaderboardsHolder> {
+public class LeaderboardsAdapter extends RecyclerView.Adapter {
     private List<Leaderboard> items;
     private FragmentActivity activity;
 
@@ -52,10 +52,10 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LeaderboardsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder baseHolder, int position) {
         Leaderboard leaderboard = items.get(position);
-        ImageManager imageManager = ImageManager.create(activity);
-        imageManager.loadImage(holder.getAvatar(), leaderboard.getIconImageUri());
+        LeaderboardsHolder holder = (LeaderboardsHolder) baseHolder;
+        ImageManager.create(activity).loadImage(holder.getAvatar(), leaderboard.getIconImageUri());
         holder.getName().setText(leaderboard.getDisplayName());
         holder.itemView.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new LeaderboardScoresFragment(leaderboard));
@@ -67,7 +67,10 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
         return items.size();
     }
 
-    public class LeaderboardsHolder extends RecyclerView.ViewHolder {
+    /**
+     * Gives access to leaderboards_item layout and inserts leaderboards data to it.
+     */
+    private class LeaderboardsHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private ImageView avatar;
 

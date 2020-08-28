@@ -18,13 +18,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/fab_margin"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:padding="@dimen/fab_margin">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imageView"
@@ -37,19 +36,14 @@
         <ImageView
             android:id="@+id/leaderboard_item_avatar"
             style="@style/MatchParent"
-            android:contentDescription="@string/leaderboards"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:contentDescription="@string/leaderboards" />
     </androidx.cardview.widget.CardView>
-
 
     <TextView
         android:id="@+id/leaderboard_item_name"
         style="@style/RegularText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
         android:layout_marginLeft="@dimen/fab_margin"
-        android:text="@string/leaderboards"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/imageView"

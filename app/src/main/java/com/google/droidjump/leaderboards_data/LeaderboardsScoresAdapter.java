@@ -32,10 +32,9 @@ import java.util.List;
 /**
  * Extracts a scores data and styles it for showing in RecyclerView.
  */
-public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<LeaderboardsScoresAdapter.ScoresHolder> {
+public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
     private List<LeaderboardScore> items;
     private FragmentActivity activity;
-    private boolean isEmpty = false;
 
     public LeaderboardsScoresAdapter(List<LeaderboardScore> items, FragmentActivity activity) {
         this.items = items;
@@ -46,16 +45,16 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     @Override
     public ScoresHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.leaderboards_player_item, parent, /* attachToRoot = */ false);
+                .inflate(R.layout.leaderboards_score_item, parent, /* attachToRoot = */ false);
         return new ScoresHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ScoresHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder baseHolder, int position) {
         LeaderboardScore score = items.get(position);
+        ScoresHolder holder = (ScoresHolder) baseHolder;
         holder.getUsername().setText(score.getScoreHolderDisplayName());
-        ImageManager imageManager = ImageManager.create(activity);
-        imageManager.loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
+        ImageManager.create(activity).loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
         holder.getRank().setText(score.getDisplayRank());
         holder.getScore().setText(String.valueOf(score.getDisplayScore()));
     }
@@ -66,9 +65,9 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter<Leaderboards
     }
 
     /**
-     * Holds scores data.
+     * Gives access to leaderboards_score_item layout and inserts scores data to it.
      */
-    public class ScoresHolder extends RecyclerView.ViewHolder {
+    private class ScoresHolder extends RecyclerView.ViewHolder {
         private TextView username;
         private TextView rank;
         private TextView score;

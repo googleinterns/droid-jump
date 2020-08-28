@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -42,11 +43,15 @@ public class GameSuccessFragment extends Fragment {
         activity = getActivity();
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "DefaultLocale"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        LevelManager.updateCurrentLevelMaxScore();
         View rootView = inflater.inflate(R.layout.game_success_screen, container, /* attachToRoot= */ false);
+        ((TextView) rootView.findViewById(R.id.score_text_view))
+                .setText(String.format("score: %d \nbest score: %d", LevelManager.getCurrentLevelScore(),
+                        LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex())));
         FloatingActionButton nextLevelButton = rootView.findViewById(R.id.next_button);
         if (LevelManager.getCurrentLevelIndex() < LevelManager.getLevelsLastIndex()) {
             LevelManager.onCurrentLevelCompleted();

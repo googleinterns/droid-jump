@@ -73,7 +73,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <Switch
-                android:id="@+id/friends_toggle"
+                android:id="@+id/friends_switch"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0"
@@ -85,7 +85,7 @@
             <include layout="@layout/loading_layout" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/players_scores_recycler_view"
+                android:id="@+id/scores_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
