@@ -18,6 +18,7 @@ package com.google.droidjump;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
@@ -42,6 +44,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Represents main activity.
@@ -49,6 +53,7 @@ import com.google.droidjump.models.NavigationHelper;
 public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
+    private static final int MINUTE_IN_MILLISECONDS = 60000;
     private static final String TAG = "MainActivity";
     private String playerId;
     private boolean isActiveConnection = false;
@@ -60,6 +65,39 @@ public class MainActivity extends FragmentActivity {
 
     public GoogleSignInAccount getSavedSignedInAccount() {
         return savedSignedInAccount;
+    }
+
+    public void countTimeOfPlaying() {
+        String leaderboardId = getResources().getString(R.string.leaderboard_smallest_time_is_better);
+        if (savedSignedInAccount != null && LevelManager.getLastLevelIndex() != LevelManager.getLevelsLastIndex()) {
+            LeaderboardsClient client = Games.getLeaderboardsClient(MainActivity.this, savedSignedInAccount);
+            SharedPreferences gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
+            client.loadCurrentPlayerLeaderboardScore(
+                    leaderboardId,
+                    LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                    LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(
+                    result -> {
+                        Timer timer = new Timer();
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (savedSignedInAccount != null) {
+                                    long time = gameData.getLong(GameConstants.GAME_TIME, /* defValue = */ 0);
+                                    if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
+                                        client.submitScore(leaderboardId, time);
+                                        timer.cancel();
+                                    }
+                                    time += MINUTE_IN_MILLISECONDS;
+                                    gameData.edit().putLong(GameConstants.GAME_TIME, time).apply();
+                                }
+                            }
+                        };
+                        timer.scheduleAtFixedRate(
+                                /* task = */ task,
+                                /* delay = */ MINUTE_IN_MILLISECONDS,
+                                /* period = */ MINUTE_IN_MILLISECONDS);
+                    });
+        }
     }
 
     @Override
@@ -160,6 +198,7 @@ public class MainActivity extends FragmentActivity {
                         }
                         enableNavigationMenu(player);
                         setMaxScore(googleSignInAccount);
+                        countTimeOfPlaying();
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }

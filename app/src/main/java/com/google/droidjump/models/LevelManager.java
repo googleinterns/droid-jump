@@ -17,6 +17,7 @@
 package com.google.droidjump.models;
 
 import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
+import static com.google.droidjump.GameConstants.GAME_TIME;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
@@ -75,6 +76,7 @@ public class LevelManager {
         gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
         gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
         gameDataEditor.putInt(INFINITE_LEVEL_MAX_SCORE, SCORE_DEF_VALUE);
+        gameDataEditor.putInt(GAME_TIME, SCORE_DEF_VALUE);
         for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
             gameDataEditor.putInt(String.valueOf(levelIndex), SCORE_DEF_VALUE);
         }
