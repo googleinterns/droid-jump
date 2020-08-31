@@ -29,7 +29,7 @@
 
         <ImageButton
             android:id="@+id/menu_button"
-            style="@style/BackButton"
+            style="@style/WhiteBackButton"
             android:contentDescription="@string/menu_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,19 +44,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="@dimen/user_avatar_size"
-                android:layout_height="@dimen/user_avatar_size"
-                app:cardCornerRadius="@dimen/user_avatar_size">
-
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </androidx.cardview.widget.CardView>
-
             <TextView
                 android:id="@+id/achievements_title"
+                style="@style/CenterHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
