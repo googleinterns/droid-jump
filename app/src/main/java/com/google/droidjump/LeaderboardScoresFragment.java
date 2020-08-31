@@ -151,7 +151,7 @@ public class LeaderboardScoresFragment extends Fragment {
                         onLoaded();
                         if (leaderboard.getLeaderboardId().equals(maxScoresLeaderboardId)) {
                             gameData.edit()
-                                    .putBoolean(GameConstants.LEADERBOARD_MAX_SCORES_FORCE_RELOAD, false);
+                                    .putBoolean(GameConstants.LEADERBOARD_MAX_SCORES_FORCE_RELOAD, false).apply();
                         }
                         scoreBuffer.close();
                     } else {
