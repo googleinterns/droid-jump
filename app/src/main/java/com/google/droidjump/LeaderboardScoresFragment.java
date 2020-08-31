@@ -23,8 +23,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -42,6 +40,7 @@ import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.droidjump.leaderboards_data.LeaderboardsScoresAdapter;
+import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +55,7 @@ public class LeaderboardScoresFragment extends Fragment {
     private LeaderboardsScoresAdapter adapter;
     private int timeSpan;
     private int collection;
+    private int layoutId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
@@ -69,6 +69,7 @@ public class LeaderboardScoresFragment extends Fragment {
         scores = new ArrayList<>();
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
+        layoutId = R.id.scores_recycler_view;
     }
 
     @Override
@@ -109,25 +110,10 @@ public class LeaderboardScoresFragment extends Fragment {
         fetchScores(timeSpan, collection);
     }
 
-    private void onLoading() {
-        scores.clear();
-        getView().findViewById(R.id.scores_recycler_view).setVisibility(View.GONE);
-        View loadingView = getView().findViewById(R.id.loading_layout);
-        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.placeholder);
-        loadingView.startAnimation(animation);
-        loadingView.setVisibility(View.VISIBLE);
-    }
-
-    private void onLoaded() {
-        getView().findViewById(R.id.scores_recycler_view).setVisibility(View.VISIBLE);
-        View loadingView = getView().findViewById(R.id.loading_layout);
-        loadingView.clearAnimation();
-        loadingView.setVisibility(View.GONE);
-    }
-
     @SuppressLint("CommitPrefEdits")
     private void fetchScores(int timeSpan, int collection) {
-        onLoading();
+        scores.clear();
+        LoadingHelper.onLoading(activity, getView(), layoutId);
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                 .loadPlayerCenteredScores(
                         leaderboard.getLeaderboardId(), timeSpan,
@@ -140,7 +126,7 @@ public class LeaderboardScoresFragment extends Fragment {
                             scores.add(score.freeze());
                         }
                         adapter.notifyDataSetChanged();
-                        onLoaded();
+                        LoadingHelper.onLoaded(getView(), layoutId);
                         scoreBuffer.close();
                     } else {
                         if (task.getException() instanceof FriendsResolutionRequiredException) {

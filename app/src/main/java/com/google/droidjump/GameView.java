@@ -22,7 +22,6 @@ import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,7 +30,6 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
@@ -186,13 +184,14 @@ public class GameView extends SurfaceView implements Runnable {
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
                 score += 10;
-                GoogleSignInAccount signedInAccount = activity.getSavedSignedInAccount();
-                if (obstacle instanceof Cactus && signedInAccount != null) {
-                    cactusScore += 1;
-                } else if (obstacle instanceof Bat && signedInAccount != null) {
-                    batScore += 1;
-                } else if (obstacle instanceof Palm && signedInAccount != null) {
-                    palmScore += 1;
+                if (activity.getSavedSignedInAccount() != null) {
+                    if (obstacle instanceof Cactus) {
+                        cactusScore += 1;
+                    } else if (obstacle instanceof Bat) {
+                        batScore += 1;
+                    } else if (obstacle instanceof Palm) {
+                        palmScore += 1;
+                    }
                 }
             }
         }
@@ -203,8 +202,7 @@ public class GameView extends SurfaceView implements Runnable {
             return;
         }
         LeaderboardsClient client = Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount());
-        Resources resources = activity.getResources();
-        String leaderboardId = resources.getString(R.string.leaderboard_cactus_jumper);
+        String leaderboardId = activity.getResources().getString(R.string.leaderboard_cactus_jumper);
         client.loadCurrentPlayerLeaderboardScore(
                 leaderboardId,
                 LeaderboardVariant.TIME_SPAN_ALL_TIME,
