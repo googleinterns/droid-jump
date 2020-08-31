@@ -43,14 +43,14 @@ public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
     private ArrayList<Leaderboard> leaderboards;
     private LeaderboardsAdapter adapter;
-    private int layoutId;
+    private int recyclerViewId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         leaderboards = new ArrayList<>();
-        layoutId = R.id.leaderboards_recycler_view;
+        recyclerViewId = R.id.leaderboards_recycler_view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -74,7 +74,7 @@ public class LeaderboardsFragment extends Fragment {
 
     private void fetchLeaderboards() {
         leaderboards.clear();
-        LoadingHelper.onLoading(activity, getView(), layoutId);
+        LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
@@ -82,7 +82,7 @@ public class LeaderboardsFragment extends Fragment {
                         leaderboards.add(leaderboard.freeze());
                     }
                     adapter.notifyDataSetChanged();
-                    LoadingHelper.onLoaded(getView(), layoutId);
+                    LoadingHelper.onLoaded(getView(), recyclerViewId);
                     leaderboardBuffer.close();
                 });
     }

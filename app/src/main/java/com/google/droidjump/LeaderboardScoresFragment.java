@@ -54,7 +54,7 @@ public class LeaderboardScoresFragment extends Fragment {
     private LeaderboardsScoresAdapter adapter;
     private int timeSpan;
     private int collection;
-    private int layoutId;
+    private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
@@ -68,7 +68,7 @@ public class LeaderboardScoresFragment extends Fragment {
         scores = new ArrayList<>();
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
-        layoutId = R.id.scores_recycler_view;
+        recyclerViewId = R.id.scores_recycler_view;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class LeaderboardScoresFragment extends Fragment {
 
     private void fetchScores(int timeSpan, int collection) {
         scores.clear();
-        LoadingHelper.onLoading(activity, getView(), layoutId);
+        LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                 .loadPlayerCenteredScores(
                         leaderboard.getLeaderboardId(), timeSpan,
@@ -124,7 +124,7 @@ public class LeaderboardScoresFragment extends Fragment {
                             scores.add(score.freeze());
                         }
                         adapter.notifyDataSetChanged();
-                        LoadingHelper.onLoaded(getView(), layoutId);
+                        LoadingHelper.onLoaded(getView(), recyclerViewId);
                         scoreBuffer.close();
                     } else {
                         if (task.getException() instanceof FriendsResolutionRequiredException) {
