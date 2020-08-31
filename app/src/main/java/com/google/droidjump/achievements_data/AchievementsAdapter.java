@@ -42,25 +42,22 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.activity = activity;
         items = new ArrayList<>();
         sectionNames = new ArrayList<>();
-//        Log.d("AchievementsAdapter", "achievementBuffer count: " + achievementBuffer.getCount());
-        for (int i = 0; i < achievementBuffer.getCount(); i++){
-            if (i == 0 && achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED){
-                    items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
-                    sectionNames.add("unlocked");
-            }
-            else if (i == 0 || !(achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) && achievementBuffer.get(i - 1).getState() == Achievement.STATE_UNLOCKED){
-                    items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
-                    sectionNames.add("locked");
+        for (int i = 0; i < achievementBuffer.getCount(); i++) {
+            if (i == 0 && achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) {
+                items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
+                sectionNames.add("unlocked");
+            } else if (i == 0 || !(achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) && achievementBuffer.get(i - 1).getState() == Achievement.STATE_UNLOCKED) {
+                items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
+                sectionNames.add("locked");
             }
             items.add(new RecyclerViewItem(ItemType.ACHIEVEMENT, i));
         }
-//        Log.d("AchievementsAdapter", "items count: " + items.size());
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == 0){
+        if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section, parent, false);
             return new SectionViewHolder(view);
         }
@@ -70,17 +67,12 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder mholder, int position) {
-//        Log.d("AchievementsAdapter", "Into BindViewHolder position: " + position);
-        if (items.get(position).getType() == ItemType.SECTION_NAME){
+        if (items.get(position).getType() == ItemType.SECTION_NAME) {
             SectionViewHolder holder = (SectionViewHolder) mholder;
-//            Log.d("AchievementsAdapter", "section index: " + items.get(position).getListPosition());
             holder.getSectionText().setText(sectionNames.get(items.get(position).getListPosition()));
             return;
-        }
-        else {
-//            Log.d("AchievementsAdapter", "achievements index: " + items.get(position).getListPosition());
+        } else {
             Achievement achievement = achievementBuffer.get(items.get(position).getListPosition());
-            //holder.getDate().setText(String.valueOf(achievement.getLastUpdatedTimestamp()));
             AchievementViewHolder holder = (AchievementViewHolder) mholder;
             holder.getDescription().setText(achievement.getDescription());
             holder.getName().setText(achievement.getName());
@@ -102,7 +94,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType(int position) {
         super.getItemViewType(position);
-        if(items.get(position).getType() == ItemType.SECTION_NAME) {
+        if (items.get(position).getType() == ItemType.SECTION_NAME) {
             return 0;
         }
         return 1;
@@ -113,7 +105,12 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return items.size();
     }
 
-    public class AchievementViewHolder extends RecyclerView.ViewHolder {
+    public enum ItemType {
+        SECTION_NAME,
+        ACHIEVEMENT
+    }
+
+    private class AchievementViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
         private TextView description;
@@ -146,7 +143,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class SectionViewHolder extends RecyclerView.ViewHolder {
+    private static class SectionViewHolder extends RecyclerView.ViewHolder {
         private TextView sectionText;
 
         public SectionViewHolder(@NonNull View itemView) {
@@ -159,16 +156,11 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public enum ItemType{
-        SECTION_NAME,
-        ACHIEVEMENT
-    }
-
-    public class RecyclerViewItem{
+    private static class RecyclerViewItem {
         private ItemType type;
         private int listPosition;
 
-        RecyclerViewItem(ItemType type, int listPosition){
+        RecyclerViewItem(ItemType type, int listPosition) {
             this.type = type;
             this.listPosition = listPosition;
         }
