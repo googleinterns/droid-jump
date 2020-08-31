@@ -23,7 +23,7 @@
     <!--achievement My First Achievement-->
     <string name="achievement_my_first_achievement" translatable="false">CgkIh4b7-qAaEAIQAA</string>
     <!--leaderboard My First Leaderboard-->
-    <string name="leaderboard_my_first_leaderboard" translatable="false">CgkIh4b7-qAaEAIQAQ</string>
+    <string name="leaderboard_cactus_jumper" translatable="false">CgkIh4b7-qAaEAIQAQ</string>
     <!--leaderboard Top scores are better-->
     <string name="leaderboard_top_scores_are_better" translatable="false">CgkIh4b7-qAaEAIQBQ</string>
     <!--leaderboard Smallest time is better-->

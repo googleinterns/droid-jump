@@ -37,6 +37,7 @@ import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
@@ -158,6 +159,7 @@ public class MainActivity extends FragmentActivity {
                             isActiveConnection = false;
                         }
                         enableNavigationMenu(player);
+                        setMaxScore(googleSignInAccount);
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
@@ -245,5 +247,21 @@ public class MainActivity extends FragmentActivity {
         });
         setupDrawer(/* isEnabled= */ true);
         NavigationHelper.navigateToFragment(this, new StartFragment());
+    }
+
+    private void setMaxScore(GoogleSignInAccount signInAccount) {
+        Games.getLeaderboardsClient(this, signInAccount)
+                .loadCurrentPlayerLeaderboardScore(
+                        getResources().getString(R.string.leaderboard_top_scores_are_better),
+                        LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                        LeaderboardVariant.COLLECTION_PUBLIC)
+                .addOnSuccessListener(result -> {
+                    long score = result.get().getRawScore();
+                    // If account existed before.
+                    if (score != 0) {
+                        getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
+                                .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, score).apply();
+                    }
+                });
     }
 }

@@ -73,7 +73,7 @@ public class LeaderboardsFragment extends Fragment {
 
     private void fetchLeaderboards() {
         onLoading();
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(false)
+        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
                     for (Leaderboard leaderboard : leaderboardBuffer) {
