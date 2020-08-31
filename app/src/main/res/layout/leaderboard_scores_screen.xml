@@ -27,31 +27,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/menu_button"
-            style="@style/WhiteBackButton"
-            android:contentDescription="@string/menu_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/nav_width"
+            android:background="@android:color/black"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/user_avatar_size"
+                android:layout_height="@dimen/user_avatar_size"
+                app:cardCornerRadius="@dimen/user_avatar_size">
+
+                <ImageView
+                    android:id="@+id/leaderboard_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/leaderboards" />
+            </androidx.cardview.widget.CardView>
+
             <TextView
-                android:id="@+id/achievements_title"
-                style="@style/CenterHeader"
+                android:id="@+id/leaderboards_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
                 android:gravity="center_horizontal"
-                android:text="@string/achievements"
+                android:text="@string/leaderboards"
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
         </LinearLayout>
@@ -67,11 +72,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+            <Switch
+                android:id="@+id/friends_switch"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0"
+                android:color="@android:color/darker_gray"
+                android:text="@string/friends"
+                android:theme="@style/MySwitch"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/achievements_recycler_view"
+                android:id="@+id/scores_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/back_button"
+            style="@style/WhiteBackButton"
+            android:contentDescription="@string/menu_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

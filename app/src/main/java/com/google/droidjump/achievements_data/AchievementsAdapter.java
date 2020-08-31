@@ -160,7 +160,6 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             name = view.findViewById(R.id.achievement_name);
             icon = view.findViewById(R.id.icon);
             description = view.findViewById(R.id.description);
-            date = view.findViewById(R.id.date);
         }
 
 

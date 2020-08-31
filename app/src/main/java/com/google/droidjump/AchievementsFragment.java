@@ -21,14 +21,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.achievements_data.AchievementsAdapter;
 import com.google.droidjump.models.NavigationHelper;
@@ -42,7 +40,6 @@ public class AchievementsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
     }
 
@@ -50,9 +47,6 @@ public class AchievementsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.achievements_screen, container, /* attachToRoot= */ false);
-        ImageManager manager = ImageManager.create(activity);
-        ImageView userAvatar = rootView.findViewById(R.id.icon);
-        manager.loadImage(userAvatar, activity.getPlayer().getIconImageUri());
         rootView.findViewById(R.id.menu_button).setOnClickListener(ignored ->
                 NavigationHelper.navigateToFragment(activity, new StartFragment()));
         RecyclerView achievementsView = rootView.findViewById(R.id.achievements_recycler_view);
