@@ -27,7 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
+import com.google.droidjump.AchievementDetailsFragment;
 import com.google.droidjump.R;
+import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +97,9 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case Achievement.STATE_HIDDEN:
                 break;
         }
+        holder.itemView.setOnClickListener(view -> {
+            NavigationHelper.navigateToFragment(activity, new AchievementDetailsFragment(achievement));
+        });
 
     }
 
