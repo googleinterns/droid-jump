@@ -50,10 +50,10 @@ public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private Player player = null;
-    private boolean isActiveConnection = false;
-    private GoogleSignInAccount savedSignedInAccount = null;
-    private AchievementsClient achievementsClient = null;
+    private Player player;
+    private boolean isActiveConnection;
+    private GoogleSignInAccount savedSignedInAccount;
+    private AchievementsClient achievementsClient;
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -66,6 +66,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isActiveConnection = false;
         init();
     }
 

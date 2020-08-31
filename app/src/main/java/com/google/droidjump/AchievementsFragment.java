@@ -82,7 +82,6 @@ public class AchievementsFragment extends Fragment {
     }
 
     private class AchievementViewHolder extends RecyclerView.ViewHolder {
-
         private TextView name;
         private TextView description;
         private TextView date;
