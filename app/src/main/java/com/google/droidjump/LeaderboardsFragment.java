@@ -21,8 +21,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -34,6 +32,7 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
 import com.google.droidjump.leaderboards_data.LeaderboardsAdapter;
+import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
 
@@ -44,12 +43,14 @@ public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
     private ArrayList<Leaderboard> leaderboards;
     private LeaderboardsAdapter adapter;
+    private int layoutId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         leaderboards = new ArrayList<>();
+        layoutId = R.id.leaderboards_recycler_view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -72,32 +73,17 @@ public class LeaderboardsFragment extends Fragment {
     }
 
     private void fetchLeaderboards() {
-        onLoading();
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(true)
+        leaderboards.clear();
+        LoadingHelper.onLoading(activity, getView(), layoutId);
+        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
                     for (Leaderboard leaderboard : leaderboardBuffer) {
                         leaderboards.add(leaderboard.freeze());
                     }
                     adapter.notifyDataSetChanged();
-                    onLoaded();
+                    LoadingHelper.onLoaded(getView(), layoutId);
                     leaderboardBuffer.close();
                 });
-    }
-
-    private void onLoading() {
-        leaderboards.clear();
-        getView().findViewById(R.id.leaderboards_recycler_view).setVisibility(View.GONE);
-        View loadingView = getView().findViewById(R.id.loading_layout);
-        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.placeholder);
-        loadingView.startAnimation(animation);
-        loadingView.setVisibility(View.VISIBLE);
-    }
-
-    private void onLoaded() {
-        getView().findViewById(R.id.leaderboards_recycler_view).setVisibility(View.VISIBLE);
-        View loadingView = getView().findViewById(R.id.loading_layout);
-        loadingView.clearAnimation();
-        loadingView.setVisibility(View.GONE);
     }
 }
