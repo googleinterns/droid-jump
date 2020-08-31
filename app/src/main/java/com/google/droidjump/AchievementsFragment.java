@@ -35,12 +35,10 @@ import com.google.droidjump.models.NavigationHelper;
  * Displays Achievements Screen.
  */
 public class AchievementsFragment extends Fragment {
-    private MainActivity activity;
-
     private static final String date = "Aug 24";
     private static final String description = "Overcome 1 obstacle";
     private static final String name = "Achievement";
-
+    private MainActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
