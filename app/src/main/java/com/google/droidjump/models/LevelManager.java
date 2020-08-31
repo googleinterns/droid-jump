@@ -20,6 +20,7 @@ import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
+import static com.google.droidjump.GameConstants.INFINITE_LEVEL_MAX_SCORE;
 import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 
 import android.content.Context;
@@ -71,13 +72,13 @@ public class LevelManager {
     }
 
     public static void resetGameData() {
-        SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
-        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
+        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
+        gameDataEditor.putInt(INFINITE_LEVEL_MAX_SCORE, SCORE_DEF_VALUE);
         for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
-            editor.putInt(String.valueOf(levelIndex), SCORE_DEF_VALUE);
+            gameDataEditor.putInt(String.valueOf(levelIndex), SCORE_DEF_VALUE);
         }
-        editor.apply();
+        gameDataEditor.apply();
     }
 
     public static int getCurrentLevelIndex() {

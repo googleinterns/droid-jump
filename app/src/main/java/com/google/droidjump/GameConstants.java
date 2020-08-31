@@ -46,4 +46,7 @@ public interface GameConstants {
     String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
     // Used to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
+    String LEADERBOARD_MAX_SCORES_FORCE_RELOAD = "com.google.droidjump.LeaderboardMaxScoresForceReload";
+    // Used for reloading of leaderboards without a cache.
+    String INFINITE_LEVEL_MAX_SCORE = "com.google.droidjump.INFINITE_LEVEL_MAX_SCORE"; // Max score from all infinite levels of the game.
 }

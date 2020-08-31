@@ -21,6 +21,7 @@ import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,8 +30,10 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import androidx.fragment.app.FragmentActivity;
+import com.google.android.gms.games.Games;
+import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.LevelStrategy;
+import com.google.droidjump.leveldata.LevelType;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Cactus;
@@ -48,7 +51,7 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-    private FragmentActivity activity;
+    private MainActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Thread thread;
@@ -71,7 +74,7 @@ public class GameView extends SurfaceView implements Runnable {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         timePoint = GameConstants.INTERVAL_START_TIME;
-        activity = (FragmentActivity) context;
+        activity = (MainActivity) context;
         surfaceHolder = getHolder();
         level = LevelManager.getCurrentLevelStrategy();
         this.screenX = screenX;
@@ -240,6 +243,25 @@ public class GameView extends SurfaceView implements Runnable {
         isPlaying = false;
         LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameFailureFragment());
+        LevelConfig currentLevel = LevelManager.getGameLevels().get(LevelManager.getCurrentLevelIndex());
+        if (currentLevel.getLevelType() == LevelType.INFINITE) {
+            updateScoreInMaxScoreLeaderboard();
+        }
+    }
+
+    private void updateScoreInMaxScoreLeaderboard() {
+        SharedPreferences gameData
+                = activity.getSharedPreferences(GameConstants.GAME_VIEW_DATA, Context.MODE_PRIVATE);
+        int maxScore = gameData.getInt(GameConstants.INFINITE_LEVEL_MAX_SCORE, /* defValue= */ GameConstants.SCORE_DEF_VALUE);
+        if (maxScore < score && activity.getSavedSignedInAccount() != null) {
+            String leaderboardId = activity.getResources().getString(R.string.leaderboard_top_scores_are_better);
+            Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
+                    .submitScore(leaderboardId, score);
+            SharedPreferences.Editor editor = gameData.edit();
+            editor.putBoolean(GameConstants.LEADERBOARD_MAX_SCORES_FORCE_RELOAD, true);
+            editor.putInt(GameConstants.INFINITE_LEVEL_MAX_SCORE, score);
+            editor.apply();
+        }
     }
 
     private void winGame() {

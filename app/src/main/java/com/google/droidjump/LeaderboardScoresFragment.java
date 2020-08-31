@@ -16,8 +16,11 @@
 
 package com.google.droidjump;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,12 +127,19 @@ public class LeaderboardScoresFragment extends Fragment {
         loadingView.setVisibility(View.GONE);
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void fetchScores(int timeSpan, int collection) {
         onLoading();
+        SharedPreferences gameData = activity.getSharedPreferences(GameConstants.GAME_VIEW_DATA, Context.MODE_PRIVATE);
+        String maxScoresLeaderboardId = activity.getResources().getString(R.string.leaderboard_top_scores_are_better);
+        boolean isForceReload = false;
+        if (leaderboard.getLeaderboardId().equals(maxScoresLeaderboardId)) {
+            isForceReload = gameData.getBoolean(GameConstants.LEADERBOARD_MAX_SCORES_FORCE_RELOAD, false);
+        }
         Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                 .loadPlayerCenteredScores(
                         leaderboard.getLeaderboardId(), timeSpan,
-                        collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ true)
+                        collection, GameConstants.SCORES_PER_PAGE, isForceReload)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
@@ -139,6 +149,10 @@ public class LeaderboardScoresFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         onLoaded();
+                        if (leaderboard.getLeaderboardId().equals(maxScoresLeaderboardId)) {
+                            gameData.edit()
+                                    .putBoolean(GameConstants.LEADERBOARD_MAX_SCORES_FORCE_RELOAD, false);
+                        }
                         scoreBuffer.close();
                     } else {
                         if (task.getException() instanceof FriendsResolutionRequiredException) {
