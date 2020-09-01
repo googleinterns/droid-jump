@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
+import com.google.droidjump.models.NavigationHelper;
 
 /**
  * Displays achievement details.
@@ -35,34 +36,38 @@ public class AchievementDetailsFragment extends Fragment {
     private Achievement achievement;
     private MainActivity activity;
 
-    public AchievementDetailsFragment(Achievement achievement){
+    public AchievementDetailsFragment(Achievement achievement) {
         this.achievement = achievement;
-        activity = (MainActivity) getActivity();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (MainActivity) getActivity();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.achievement_details_screen, container, /* attachToRoot= */ false);
+        rootView.findViewById(R.id.back_button).setOnClickListener(ignored ->
+                NavigationHelper.navigateToFragment(activity, new AchievementsFragment()));
         ImageView icon = rootView.findViewById(R.id.achievement_icon);
         ImageManager manager = ImageManager.create(activity);
+        TextView titleTextView = rootView.findViewById(R.id.achievement_title);
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 manager.loadImage(icon, achievement.getUnlockedImageUri());
+                titleTextView.setText(achievement.getName());
                 break;
             case Achievement.STATE_REVEALED:
                 manager.loadImage(icon, achievement.getRevealedImageUri());
+                titleTextView.setText(achievement.getName());
                 break;
             case Achievement.STATE_HIDDEN:
+                titleTextView.setText(R.string.hidden_achievement_name);
                 break;
         }
-        TextView textView = rootView.findViewById(R.id.achievement_title);
-        textView.setText(achievement.getName());
         return rootView;
     }
 }

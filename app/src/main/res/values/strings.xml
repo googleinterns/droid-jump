@@ -45,7 +45,10 @@
     <string name="sign_in">Sign in</string>
     <string name="pgs">PGS</string>
     <string name="name">Name</string>
-    <string name="description">description</string>
+    <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="achievement_icon">achievement icon</string>
+    <string name="hidden_achievement_name">Secret</string>
+    <string name="hidden_achievement_description">Keep playing to learn more.</string>
+    <string name="experience_poins">Experience poins</string>
 </resources>

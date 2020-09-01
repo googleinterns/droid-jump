@@ -83,18 +83,22 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         Achievement achievement = achievementBuffer.get(items.get(position).getListPosition());
         AchievementViewHolder holder = (AchievementViewHolder) mholder;
-        holder.getDescription().setText(achievement.getDescription());
-        holder.getName().setText(achievement.getName());
         ImageView icon = holder.getIcon();
         ImageManager manager = ImageManager.create(activity);
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 manager.loadImage(icon, achievement.getUnlockedImageUri());
+                holder.getDescription().setText(achievement.getDescription());
+                holder.getName().setText(achievement.getName());
                 break;
             case Achievement.STATE_REVEALED:
                 manager.loadImage(icon, achievement.getRevealedImageUri());
+                holder.getDescription().setText(achievement.getDescription());
+                holder.getName().setText(achievement.getName());
                 break;
             case Achievement.STATE_HIDDEN:
+                holder.getDescription().setText(R.string.hidden_achievement_description);
+                holder.getName().setText(R.string.hidden_achievement_name);
                 break;
         }
         holder.itemView.setOnClickListener(view -> {
