@@ -28,6 +28,9 @@ import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Player;
 import java.util.List;
 
+/**
+ * Extracts a friends data and styles it for showing in RecyclerView.
+ */
 public class FriendsAdapter extends RecyclerView.Adapter {
     private List<Player> items;
     private MainActivity activity;
