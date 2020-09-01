@@ -16,8 +16,11 @@
 
 package com.google.droidjump;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +28,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.games.FriendsResolutionRequiredException;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.PlayersClient;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +72,49 @@ public class FriendsFragment extends Fragment {
         return view;
     }
 
-    private void fetchFriends() {}
+    private void fetchFriends() {
+        players.clear();
+        client.loadFriends(GameConstants.ITEMS_PER_PAGE, /* forceReload = */ false)
+                .addOnSuccessListener(data -> {
+                    PlayerBuffer playerBuffer = data.get();
+                    for (Player player : playerBuffer) {
+                        players.add(player.freeze());
+                    }
+                    adapter.notifyDataSetChanged();
+                    playerBuffer.close();
+                })
+                .addOnFailureListener(exception -> {
+                    if (exception instanceof FriendsResolutionRequiredException) {
+                        PendingIntent pendingIntent =
+                                ((FriendsResolutionRequiredException) exception)
+                                        .getResolution();
+                        try {
+                            activity.startIntentSenderForResult(
+                                    pendingIntent.getIntentSender(),
+                                    /* requestCode */ SHOW_SHARING_FRIENDS_CONSENT,
+                                    /* fillInIntent */ null,
+                                    /* flagsMask */ 0,
+                                    /* flagsValues */ 0,
+                                    /* extraFlags */ 0,
+                                    /* options */ null
+                            );
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.e(getClass().toString(), e.getMessage());
+                        }
+                    }
+                });
+    }
 
-    private void loadMore() {}
+    private void loadMore() {
+        client.loadMoreFriends(GameConstants.ITEMS_PER_PAGE)
+                .addOnSuccessListener(data -> {
+                    players.clear();
+                    PlayerBuffer playerBuffer = data.get();
+                    for (Player player : playerBuffer) {
+                        players.add(player.freeze());
+                    }
+                    adapter.notifyDataSetChanged();
+                    playerBuffer.close();
+                });
+    }
 }
