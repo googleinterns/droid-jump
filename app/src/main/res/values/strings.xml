@@ -45,7 +45,7 @@
     <string name="sign_in">Sign in</string>
     <string name="pgs">PGS</string>
     <string name="name">Name</string>
-    <string name="description">description</string>
+    <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="unlocked_section_name">Unlocked</string>
     <string name="locked_section_name">Locked</string>
