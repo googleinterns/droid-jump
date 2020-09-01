@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void countTimeOfPlaying() {
-        String leaderboardId = getResources().getString(R.string.leaderboard_smallest_time_is_better);
+        String leaderboardId = getResources().getString(R.string.leaderboard_best_time);
         if (savedSignedInAccount != null && LevelManager.getLastLevelIndex() != LevelManager.getLevelsLastIndex()) {
             LeaderboardsClient client = Games.getLeaderboardsClient(MainActivity.this, savedSignedInAccount);
             SharedPreferences gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
@@ -291,7 +291,7 @@ public class MainActivity extends FragmentActivity {
     private void setMaxScore(GoogleSignInAccount signInAccount) {
         Games.getLeaderboardsClient(this, signInAccount)
                 .loadCurrentPlayerLeaderboardScore(
-                        getResources().getString(R.string.leaderboard_top_scores_are_better),
+                        getResources().getString(R.string.leaderboard_best_score),
                         LeaderboardVariant.TIME_SPAN_ALL_TIME,
                         LeaderboardVariant.COLLECTION_PUBLIC)
                 .addOnSuccessListener(result -> {

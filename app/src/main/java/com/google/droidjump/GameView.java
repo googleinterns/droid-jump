@@ -285,7 +285,7 @@ public class GameView extends SurfaceView implements Runnable {
                 = activity.getSharedPreferences(GameConstants.GAME_VIEW_DATA, Context.MODE_PRIVATE);
         long maxScore = gameData.getLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, /* defValue= */ GameConstants.SCORE_DEF_VALUE);
         if (maxScore < score && activity.getSavedSignedInAccount() != null) {
-            String leaderboardId = activity.getResources().getString(R.string.leaderboard_top_scores_are_better);
+            String leaderboardId = activity.getResources().getString(R.string.leaderboard_best_score);
             Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
                     .submitScore(leaderboardId, score);
         }
