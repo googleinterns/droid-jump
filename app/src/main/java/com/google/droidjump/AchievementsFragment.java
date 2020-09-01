@@ -34,9 +34,6 @@ import com.google.droidjump.models.NavigationHelper;
  * Displays Achievements Screen.
  */
 public class AchievementsFragment extends Fragment {
-    private static final String DATE = "Aug 24";
-    private static final String DESCRIPTION = "Overcome 1 obstacle";
-    private static final String NAME = "Achievement";
     private MainActivity activity;
 
     @Override
@@ -64,16 +61,11 @@ public class AchievementsFragment extends Fragment {
 
             @Override
             public void onBindViewHolder(AchievementViewHolder viewHolder, int i) {
-                // Example of achievement.
-                viewHolder.getDate().setText(DATE);
-                viewHolder.getDescription().setText(DESCRIPTION);
-                viewHolder.getName().setText(NAME);
-                viewHolder.getIcon().setImageResource(R.mipmap.cactus);
             }
 
             @Override
             public int getItemCount() {
-                return 1;
+                return 0;
             }
         };
 
