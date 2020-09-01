@@ -33,6 +33,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
@@ -49,9 +50,10 @@ public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private String playerId;
-    private boolean isActiveConnection = false;
-    private GoogleSignInAccount savedSignedInAccount = null;
+    private Player player;
+    private boolean isActiveConnection;
+    private GoogleSignInAccount savedSignedInAccount;
+    private AchievementsClient achievementsClient;
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -64,6 +66,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isActiveConnection = false;
         init();
     }
 
@@ -146,11 +149,12 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
+            achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        playerId = player.getPlayerId();
+                        this.player = player;
                         // Showing a welcome popup.
                         Games.getGamesClient(this, googleSignInAccount)
                                 .setViewForPopups(findViewById(R.id.activity_wrapper));
@@ -199,7 +203,7 @@ public class MainActivity extends FragmentActivity {
                 switch (id) {
                     case R.id.nav_friends:
                     case R.id.nav_achievements:
-                        NavigationHelper.navigateToFragment(MainActivity.this, new StartFragment());
+                        NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
                         break;
                     case R.id.nav_auth:
                         startSignInIntent();
@@ -245,5 +249,13 @@ public class MainActivity extends FragmentActivity {
         });
         setupDrawer(/* isEnabled= */ true);
         NavigationHelper.navigateToFragment(this, new StartFragment());
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public AchievementsClient getAchievementsClient() {
+        return achievementsClient;
     }
 }
