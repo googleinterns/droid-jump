@@ -64,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/title_rounded_box"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -78,48 +79,35 @@
                 style="@style/AchievementDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/description"
-                android:layout_marginBottom="@dimen/fab_margin"/>
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:text="@string/description" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/xp_caption"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:text="@string/experience_poins" />
 
-                <TextView
-                    android:id="@+id/xp_caption"
-                    style="@style/RegularText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/experience_poins" />
+            <TextView
+                android:id="@+id/xp_value"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/xp_value"
-                    style="@style/RegularText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/date_caption"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:text="@string/date_caption" />
 
-                <TextView
-                    android:id="@+id/date_caption"
-                    style="@style/RegularText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_caption" />
+            <TextView
+                android:id="@+id/date"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/date"
-                    style="@style/RegularText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
         </LinearLayout>
 
         <ImageButton

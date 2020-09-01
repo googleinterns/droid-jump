@@ -63,7 +63,7 @@ public class AchievementDetailsFragment extends Fragment {
         TextView xpTextView = rootView.findViewById(R.id.xp_value);
         TextView dateTextView = rootView.findViewById(R.id.date);
         Date lastUpdated = new Date(achievement.getLastUpdatedTimestamp());
-        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd:MM:yy");
         dateTextView.setText(df.format(lastUpdated));
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
