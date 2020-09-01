@@ -50,4 +50,21 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="@dimen/player_avatar_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/friends_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/friends"
+            android:src="@mipmap/ic_friends" />
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,7 +56,7 @@ public class FriendsAdapter extends RecyclerView.Adapter {
         FriendsHolder holder = (FriendsHolder) baseHolder;
         ImageManager.create(activity).loadImage(holder.getAvatar(), player.getIconImageUri());
         holder.getName().setText(player.getDisplayName());
-        holder.itemView.setOnClickListener(ignored -> showComparingScreen(player));
+        holder.getFriendsIcon().setOnClickListener(ignored -> showComparingScreen(player));
     }
 
     @Override
@@ -78,11 +78,13 @@ public class FriendsAdapter extends RecyclerView.Adapter {
     private class FriendsHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private ImageView avatar;
+        private ImageView friendsIcon;
 
         public FriendsHolder(View view) {
             super(view);
             name = view.findViewById(R.id.friend_item_name);
             avatar = view.findViewById(R.id.friend_item_avatar);
+            friendsIcon = view.findViewById(R.id.friends_icon);
         }
 
         public TextView getName() {
@@ -91,6 +93,10 @@ public class FriendsAdapter extends RecyclerView.Adapter {
 
         public ImageView getAvatar() {
             return avatar;
+        }
+
+        public ImageView getFriendsIcon() {
+            return friendsIcon;
         }
     }
 }
