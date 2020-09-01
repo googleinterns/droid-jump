@@ -25,12 +25,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import java.util.List;
 
 public class FriendsAdapter extends RecyclerView.Adapter {
-    private static final int RC_SHOW_PROFILE = 3210;
     private List<Player> items;
     private MainActivity activity;
 
@@ -53,20 +51,11 @@ public class FriendsAdapter extends RecyclerView.Adapter {
         FriendsHolder holder = (FriendsHolder) baseHolder;
         ImageManager.create(activity).loadImage(holder.getAvatar(), player.getIconImageUri());
         holder.getName().setText(player.getDisplayName());
-        holder.itemView.setOnClickListener(ignored -> showComparingScreen(player));
     }
 
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    private void showComparingScreen(Player player) {
-        Games.getPlayersClient(activity, activity.getSavedSignedInAccount())
-                .getCompareProfileIntent(player)
-                .addOnSuccessListener(intent -> {
-                    activity.startActivityForResult(intent, RC_SHOW_PROFILE);
-                });
     }
 
     /**
