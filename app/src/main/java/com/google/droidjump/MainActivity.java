@@ -39,6 +39,7 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.navigation.NavigationView;
@@ -295,11 +296,17 @@ public class MainActivity extends FragmentActivity {
                         LeaderboardVariant.TIME_SPAN_ALL_TIME,
                         LeaderboardVariant.COLLECTION_PUBLIC)
                 .addOnSuccessListener(result -> {
-                    long score = result.get().getRawScore();
-                    // If account existed before.
-                    if (score != 0) {
-                        getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
-                                .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, score).apply();
+                    LeaderboardScore leaderboardScore = result.get();
+                    if (leaderboardScore != null) {
+                        long score = result.get().getRawScore();
+                        // If account existed before.
+                        if (score != 0) {
+                            getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
+                                    .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, score).apply();
+                        }
+                    } else {
+                        // Force reload leaderboards.
+                        Games.getLeaderboardsClient(this, getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ true);
                     }
                 });
     }

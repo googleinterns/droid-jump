@@ -69,13 +69,13 @@ public class LeaderboardsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchLeaderboards();
+        fetchLeaderboards(false);
     }
 
-    private void fetchLeaderboards() {
+    private void fetchLeaderboards(boolean isForceReload) {
         leaderboards.clear();
         LoadingHelper.onLoading(activity, getView(), layoutId);
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ false)
+        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ isForceReload)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
                     for (Leaderboard leaderboard : leaderboardBuffer) {
