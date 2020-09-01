@@ -105,7 +105,7 @@ public class FriendsFragment extends Fragment {
     }
 
     private void loadMore() {
-        client.loadMoreFriends(50)
+        client.loadMoreFriends(GameConstants.ITEMS_PER_PAGE)
                 .addOnSuccessListener(data -> {
                     players.clear();
                     PlayerBuffer playerBuffer = data.get();
