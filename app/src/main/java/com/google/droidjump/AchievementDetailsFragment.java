@@ -16,6 +16,7 @@
 
 package com.google.droidjump;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.droidjump.models.NavigationHelper;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Displays achievement details.
@@ -56,24 +60,28 @@ public class AchievementDetailsFragment extends Fragment {
         ImageManager manager = ImageManager.create(activity);
         TextView titleTextView = rootView.findViewById(R.id.achievement_title);
         TextView descriptionTextView = rootView.findViewById(R.id.achievement_description);
-        TextView xpTextView = rootView.findViewById(R.id.XP);
+        TextView xpTextView = rootView.findViewById(R.id.xp_value);
+        TextView dateTextView = rootView.findViewById(R.id.date);
+        Date lastUpdated = new Date(achievement.getLastUpdatedTimestamp());
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
+        dateTextView.setText(df.format(lastUpdated));
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 manager.loadImage(icon, achievement.getUnlockedImageUri());
                 titleTextView.setText(achievement.getName());
                 descriptionTextView.setText(achievement.getDescription());
-                xpTextView.setText(String.format("Experience points : %d", achievement.getXpValue()));
+                xpTextView.setText(String.valueOf(achievement.getXpValue()));
                 break;
             case Achievement.STATE_REVEALED:
                 manager.loadImage(icon, achievement.getRevealedImageUri());
                 titleTextView.setText(achievement.getName());
                 descriptionTextView.setText(achievement.getDescription());
-                xpTextView.setText(String.format("Experience points : %d", achievement.getXpValue()));
+                xpTextView.setText(String.valueOf(achievement.getXpValue()));
                 break;
             case Achievement.STATE_HIDDEN:
                 titleTextView.setText(R.string.hidden_achievement_name);
                 descriptionTextView.setText(R.string.hidden_achievement_description);
-                xpTextView.setText("");
+                rootView.findViewById(R.id.xp_caption).setVisibility(View.INVISIBLE);
                 break;
         }
         return rootView;

@@ -29,4 +29,5 @@
     <dimen name="placeholder_menu_text_width">150dp</dimen>
     <dimen name="menu_icon_padding">20dp</dimen>
     <dimen name="pgs_icon_width">50dp</dimen>
+    <dimen name="achievement_description_text_size">24sp</dimen>
 </resources>
