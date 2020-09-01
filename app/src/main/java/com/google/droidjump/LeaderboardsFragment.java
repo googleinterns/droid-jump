@@ -26,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
 import com.google.droidjump.leaderboards_data.LeaderboardsAdapter;
@@ -72,7 +71,7 @@ public class LeaderboardsFragment extends Fragment {
     private void fetchLeaderboards() {
         leaderboards.clear();
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ false)
+        activity.getLeaderboardsClient().loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
                     for (Leaderboard leaderboard : leaderboardBuffer) {

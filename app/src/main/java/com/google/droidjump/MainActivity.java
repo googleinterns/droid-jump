@@ -35,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,6 +53,7 @@ public class MainActivity extends FragmentActivity {
     private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
+    private LeaderboardsClient leaderboardsClient;
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -59,6 +61,10 @@ public class MainActivity extends FragmentActivity {
 
     public GoogleSignInAccount getSavedSignedInAccount() {
         return savedSignedInAccount;
+    }
+
+    public LeaderboardsClient getLeaderboardsClient() {
+        return leaderboardsClient;
     }
 
     @Override
@@ -151,6 +157,7 @@ public class MainActivity extends FragmentActivity {
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         playerId = player.getPlayerId();
+                        leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
                         // Showing a welcome popup.
                         Games.getGamesClient(this, googleSignInAccount)
                                 .setViewForPopups(findViewById(R.id.activity_wrapper));
@@ -186,6 +193,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.main_activity);
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        leaderboardsClient = null;
     }
 
     private void setupDrawer(boolean isEnabled) {
