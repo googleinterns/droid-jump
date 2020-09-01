@@ -45,6 +45,6 @@
     <string name="sign_in">Sign in</string>
     <string name="pgs">PGS</string>
     <string name="name">Name</string>
-    <string name="description">description</string>
+    <string name="description">Description</string>
     <string name="date">Date</string>
 </resources>
