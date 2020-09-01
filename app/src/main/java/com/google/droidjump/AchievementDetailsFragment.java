@@ -55,17 +55,25 @@ public class AchievementDetailsFragment extends Fragment {
         ImageView icon = rootView.findViewById(R.id.achievement_icon);
         ImageManager manager = ImageManager.create(activity);
         TextView titleTextView = rootView.findViewById(R.id.achievement_title);
+        TextView descriptionTextView = rootView.findViewById(R.id.achievement_description);
+        TextView xpTextView = rootView.findViewById(R.id.XP);
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 manager.loadImage(icon, achievement.getUnlockedImageUri());
                 titleTextView.setText(achievement.getName());
+                descriptionTextView.setText(achievement.getDescription());
+                xpTextView.setText(String.format("Experience points : %d", achievement.getXpValue()));
                 break;
             case Achievement.STATE_REVEALED:
                 manager.loadImage(icon, achievement.getRevealedImageUri());
                 titleTextView.setText(achievement.getName());
+                descriptionTextView.setText(achievement.getDescription());
+                xpTextView.setText(String.format("Experience points : %d", achievement.getXpValue()));
                 break;
             case Achievement.STATE_HIDDEN:
                 titleTextView.setText(R.string.hidden_achievement_name);
+                descriptionTextView.setText(R.string.hidden_achievement_description);
+                xpTextView.setText("");
                 break;
         }
         return rootView;

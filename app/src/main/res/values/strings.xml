@@ -50,5 +50,5 @@
     <string name="achievement_icon">achievement icon</string>
     <string name="hidden_achievement_name">Secret</string>
     <string name="hidden_achievement_description">Keep playing to learn more.</string>
-    <string name="experience_poins">Experience poins</string>
+    <string name="experience_poins">Experience points :</string>
 </resources>
