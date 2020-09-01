@@ -67,7 +67,11 @@ public class FriendsFragment extends Fragment {
         return view;
     }
 
-    private void fetchFriends() {}
+    private void fetchFriends() {
+        // TODO(maksme) Add fetchFriends implementation.
+    }
 
-    private void loadMore() {}
+    private void loadMore() {
+        // TODO(maksme) Add loadMore implementation.
+    }
 }
