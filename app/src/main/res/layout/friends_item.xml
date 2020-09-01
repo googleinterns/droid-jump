@@ -39,7 +39,6 @@
             android:contentDescription="@string/friends" />
     </androidx.cardview.widget.CardView>
 
-
     <TextView
         android:id="@+id/friend_item_name"
         style="@style/RegularText"
