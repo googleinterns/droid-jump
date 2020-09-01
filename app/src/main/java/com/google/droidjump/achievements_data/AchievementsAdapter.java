@@ -52,10 +52,10 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         for (int i = 0; i < achievementBuffer.getCount(); i++) {
             if (i == 0 && achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) {
                 items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
-                sectionNames.add("unlocked");
+                sectionNames.add(String.valueOf(R.string.unlocked_section_name));
             } else if (i == 0 || !(achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) && achievementBuffer.get(i - 1).getState() == Achievement.STATE_UNLOCKED) {
                 items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
-                sectionNames.add("locked");
+                sectionNames.add(String.valueOf(R.string.locked_section_name));
             }
             items.add(new RecyclerViewItem(ItemType.ACHIEVEMENT, i));
         }
@@ -95,7 +95,6 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case Achievement.STATE_HIDDEN:
                 break;
         }
-
     }
 
     @Override
@@ -112,7 +111,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return items.size();
     }
 
-    public enum ItemType {
+    private enum ItemType {
         SECTION_NAME,
         ACHIEVEMENT
     }
@@ -149,7 +148,6 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private static class AchievementViewHolder extends RecyclerView.ViewHolder {
-
         private TextView name;
         private TextView description;
         private TextView date;
@@ -161,7 +159,6 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             icon = view.findViewById(R.id.icon);
             description = view.findViewById(R.id.description);
         }
-
 
         public TextView getName() {
             return name;
@@ -179,5 +176,4 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return icon;
         }
     }
-
 }

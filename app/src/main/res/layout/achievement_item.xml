@@ -61,5 +61,4 @@
             android:layout_marginLeft="@dimen/fab_margin"
             android:text="@string/description" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

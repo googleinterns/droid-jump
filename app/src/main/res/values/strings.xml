@@ -47,4 +47,6 @@
     <string name="name">Name</string>
     <string name="description">description</string>
     <string name="date">Date</string>
+    <string name="unlocked_section_name">Unlocked</string>
+    <string name="locked_section_name">Locked</string>
 </resources>

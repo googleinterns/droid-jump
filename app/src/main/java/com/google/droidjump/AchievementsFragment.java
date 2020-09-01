@@ -62,7 +62,6 @@ public class AchievementsFragment extends Fragment {
                 Log.e("AchievementsFragment", "Failed to load achievements from client");
             }
         });
-
         return rootView;
     }
 }
