@@ -77,10 +77,14 @@ public class FriendsFragment extends Fragment {
         client.loadFriends(GameConstants.ITEMS_PER_PAGE, /* forceReload = */ false)
                 .addOnSuccessListener(data -> {
                     PlayerBuffer playerBuffer = data.get();
-                    for (Player player : playerBuffer) {
-                        players.add(player.freeze());
+                    if (playerBuffer.getCount() > 0) {
+                        for (Player player : playerBuffer) {
+                            players.add(player.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        onEmptyFriendsList();
                     }
-                    adapter.notifyDataSetChanged();
                     playerBuffer.close();
                 })
                 .addOnFailureListener(exception -> {
@@ -116,5 +120,10 @@ public class FriendsFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                     playerBuffer.close();
                 });
+    }
+
+    private void onEmptyFriendsList() {
+        getView().findViewById(R.id.load_more_button).setVisibility(View.GONE);
+        getView().findViewById(R.id.empty_list_text).setVisibility(View.VISIBLE);
     }
 }
