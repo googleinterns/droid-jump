@@ -301,8 +301,17 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void checkForAchievements() {
         if(level.getClass() == InfiniteLevelData.class){
-            if (obstaclesCount == 5){
-                achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
+            switch (obstaclesCount){
+                case 5:
+                    achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
+                    break;
+                case 20:
+                    achievementsManager.unlockAchievement(Achievement.AMATEUR_INFINITE_LEVEL_PLAYER);
+                    break;
+                case 50:
+                    achievementsManager.unlockAchievement(Achievement.PRO_INFINITE_LEVEL_PLAYER);
+                case 100:
+                    achievementsManager.unlockAchievement(Achievement.MASTER_INFINITE_LEVEL_PLAYER);
             }
         }
     }

@@ -203,8 +203,8 @@ public class MainActivity extends FragmentActivity {
                 switch (id) {
                     case R.id.nav_friends:
                     case R.id.nav_achievements:
-                        NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
-                        //showAchievements();
+                        //NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
+                        showAchievements();
                         break;
                     case R.id.nav_auth:
                         startSignInIntent();

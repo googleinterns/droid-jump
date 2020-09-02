@@ -19,11 +19,15 @@ package com.google.droidjump;
 public class AchievementsManager {
     MainActivity activity;
 
-    AchievementsManager(MainActivity achivity) {
+    public AchievementsManager(MainActivity achivity) {
         this.activity = achivity;
     }
 
     public void unlockAchievement(Achievement achievement) {
         activity.getAchievementsClient().unlock(activity.getString(achievement.id));
+    }
+
+    public void incrementAchievement(Achievement achievement, int steps) {
+        activity.getAchievementsClient().increment(activity.getString(achievement.id), steps);
     }
 }
