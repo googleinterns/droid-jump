@@ -14,14 +14,33 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <resources>
     <!--app_id-->
-    <string name="app_id">"902201000711"</string>
+    <string name="app_id" translatable="false">902201000711</string>
     <!--package_name-->
-    <string name="package_name" translatable="false" />
+    <string name="package_name" translatable="false"/>
     <!--achievement My First Achievement-->
     <string name="achievement_my_first_achievement" translatable="false">CgkIh4b7-qAaEAIQAA</string>
+    <!--achievement Novice Infinite Level Player-->
+    <string name="achievement_novice_infinite_level_player" translatable="false">CgkIh4b7-qAaEAIQBw</string>
+    <!--achievement Amateur Infinite Level Player-->
+    <string name="achievement_amateur_infinite_level_player" translatable="false">CgkIh4b7-qAaEAIQCA</string>
+    <!--achievement Pro Infinite Level Player-->
+    <string name="achievement_pro_infinite_level_player" translatable="false">CgkIh4b7-qAaEAIQCQ</string>
+    <!--achievement Master Infinite Level Player-->
+    <string name="achievement_master_infinite_level_player" translatable="false">CgkIh4b7-qAaEAIQCg</string>
+    <!--achievement Great start-->
+    <string name="achievement_great_start" translatable="false">CgkIh4b7-qAaEAIQCw</string>
+    <!--achievement New Star-->
+    <string name="achievement_new_star" translatable="false">CgkIh4b7-qAaEAIQDA</string>
+    <!--achievement Profi Player-->
+    <string name="achievement_profi_player" translatable="false">CgkIh4b7-qAaEAIQDQ</string>
+    <!--achievement Cactus Combo-->
+    <string name="achievement_cactus_combo" translatable="false">CgkIh4b7-qAaEAIQDg</string>
+    <!--achievement Palm Combo-->
+    <string name="achievement_palm_combo" translatable="false">CgkIh4b7-qAaEAIQDw</string>
+    <!--achievement Hardcore Combo-->
+    <string name="achievement_hardcore_combo" translatable="false">CgkIh4b7-qAaEAIQEA</string>
     <!--leaderboard My First Leaderboard-->
     <string name="leaderboard_my_first_leaderboard" translatable="false">CgkIh4b7-qAaEAIQAQ</string>
     <!--leaderboard Top scores are better-->
