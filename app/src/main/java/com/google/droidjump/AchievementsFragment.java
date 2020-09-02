@@ -61,6 +61,7 @@ public class AchievementsFragment extends Fragment {
                     achievementsView.setAdapter(adapter);
                 }
             } else {
+                //TODO(dnikolskaia): Improve exception handling behavior.
                 String message = Objects.requireNonNull(task.getException()).getMessage();
                 Log.e("AchievementsFragment", "Failed to load achievements from client: " + message);
                 Toast.makeText(activity, "Oops, something went wrong", Toast.LENGTH_SHORT).show();
