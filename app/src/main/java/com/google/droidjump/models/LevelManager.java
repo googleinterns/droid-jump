@@ -69,10 +69,10 @@ public class LevelManager {
             setCurrentLevelIndex(++currentLevelIndex);
             if (currentLevelIndex > lastLevel) {
                 setLastLevelIndex(currentLevelIndex);
+                updateAchievements();
             }
             gameDataEditor.apply();
         }
-        updateAchievements();
     }
 
     private static void updateAchievements() {
