@@ -88,8 +88,6 @@ public class GameView extends SurfaceView implements Runnable {
         this.isPlaying = isPlaying;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
-        score = 0;
-        cactusScore = 0;
         receiveLevelDetails();
 
         // Droid should be on a ground height, but platform includes grass.
