@@ -109,7 +109,8 @@ public class LeaderboardScoresFragment extends Fragment {
     }
 
     private void fetchScores(int timeSpan, int collection) {
-        getView().findViewById(R.id.empty_list_text).setVisibility(View.GONE);
+        TextView emptyListText = getView().findViewById(R.id.empty_list_text);
+        emptyListText.setVisibility(View.GONE);
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
@@ -124,7 +125,7 @@ public class LeaderboardScoresFragment extends Fragment {
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            getView().findViewById(R.id.empty_list_text).setVisibility(View.VISIBLE);
+                            emptyListText.setVisibility(View.VISIBLE);
                         }
                         LoadingHelper.onLoaded(getView(), recyclerViewId);
                         scoreBuffer.close();
