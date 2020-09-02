@@ -48,4 +48,7 @@
     <string name="description">Description</string>
     <string name="unlocked_section_name">Unlocked</string>
     <string name="locked_section_name">Locked</string>
+    <string name="date">Date</string>
+    <string name="empty_leaderboards_list_text">No leaderboards yet</string>
+    <string name="empty_scores_list_text">No scores yet</string>
 </resources>
