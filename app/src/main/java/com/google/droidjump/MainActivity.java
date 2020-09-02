@@ -33,9 +33,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,6 +55,19 @@ public class MainActivity extends FragmentActivity {
     private boolean isActiveConnection;
     private GoogleSignInAccount savedSignedInAccount;
     private AchievementsClient achievementsClient;
+    private LeaderboardsClient leaderboardsClient;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isActiveConnection = false;
+        LevelManager.init(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
+        setContentView(R.layout.main_activity);
+        ((DrawerLayout) findViewById(R.id.drawer_layout))
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        leaderboardsClient = null;
+    }
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -63,11 +77,41 @@ public class MainActivity extends FragmentActivity {
         return savedSignedInAccount;
     }
 
+    public LeaderboardsClient getLeaderboardsClient() {
+        return leaderboardsClient;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public AchievementsClient getAchievementsClient() {
+        return achievementsClient;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        isActiveConnection = false;
-        init();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // The signed in account is stored in the result.
+                GoogleSignInAccount signedInAccount = result.getSignInAccount();
+                onConnected(signedInAccount);
+                Log.d(TAG, " Active sign in success");
+            } else {
+                String message = result.getStatus().getStatusMessage();
+                if (message == null || message.isEmpty()) {
+                    message = "Unknown error";
+                }
+                new AlertDialog.Builder(this).setMessage(message)
+                        .setNeutralButton(android.R.string.ok, null).show();
+            }
+        }
+        // Making onActivityResult work in all fragments.
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -115,33 +159,10 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // The signed in account is stored in the result.
-                GoogleSignInAccount signedInAccount = result.getSignInAccount();
-                onConnected(signedInAccount);
-                Log.d(TAG, " Active sign in success");
-            } else {
-                String message = result.getStatus().getStatusMessage();
-                if (message == null || message.isEmpty()) {
-                    message = "Unknown error";
-                }
-                new AlertDialog.Builder(this).setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null).show();
-            }
-        }
-        // Making onActivityResult work in all fragments.
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            fragment.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
     private void onDisconnected() {
         isActiveConnection = true;
+        savedSignedInAccount = null;
+        leaderboardsClient = null;
         disableNavigationMenu();
     }
 
@@ -154,6 +175,7 @@ public class MainActivity extends FragmentActivity {
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
+                        leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
                         this.player = player;
                         // Showing a welcome popup.
                         Games.getGamesClient(this, googleSignInAccount)
@@ -182,14 +204,6 @@ public class MainActivity extends FragmentActivity {
                     // At this point, the user is signed out.
                     onDisconnected();
                 });
-    }
-
-    private void init() {
-        LevelManager.init(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
-        setContentView(R.layout.main_activity);
-        ((DrawerLayout) findViewById(R.id.drawer_layout))
-                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     private void setupDrawer(boolean isEnabled) {
@@ -249,13 +263,5 @@ public class MainActivity extends FragmentActivity {
         });
         setupDrawer(/* isEnabled= */ true);
         NavigationHelper.navigateToFragment(this, new StartFragment());
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public AchievementsClient getAchievementsClient() {
-        return achievementsClient;
     }
 }

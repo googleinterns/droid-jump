@@ -39,12 +39,9 @@
             android:contentDescription="@string/leaderboards" />
     </androidx.cardview.widget.CardView>
 
-
     <TextView
         android:id="@+id/leaderboard_item_name"
         style="@style/RegularText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
         android:layout_marginLeft="@dimen/fab_margin"
         android:textColor="@android:color/black"
