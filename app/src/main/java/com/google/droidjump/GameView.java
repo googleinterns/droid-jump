@@ -18,7 +18,6 @@ package com.google.droidjump;
 
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -29,7 +28,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import androidx.fragment.app.FragmentActivity;
+import com.google.droidjump.leveldata.InfiniteLevelData;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
@@ -48,7 +47,8 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-    private FragmentActivity activity;
+    private MainActivity activity;
+    private AchievementsManager achievementsManager;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Thread thread;
@@ -66,12 +66,14 @@ public class GameView extends SurfaceView implements Runnable {
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private LevelStrategy level;
     private int score;
+    private int obstaclesCount;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         timePoint = GameConstants.INTERVAL_START_TIME;
-        activity = (FragmentActivity) context;
+        activity = (MainActivity) context;
+        achievementsManager = new AchievementsManager(activity);
         surfaceHolder = getHolder();
         level = LevelManager.getCurrentLevelStrategy();
         this.screenX = screenX;
@@ -80,6 +82,7 @@ public class GameView extends SurfaceView implements Runnable {
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         score = 0;
+        obstaclesCount = 0;
         receiveLevelDetails();
 
         // Droid should be on a ground height, but platform includes grass.
@@ -95,6 +98,7 @@ public class GameView extends SurfaceView implements Runnable {
             updateGameState();
             drawScene();
             handleCollision();
+            checkForAchievements();
             sleep();
             timePoint++;
             intervalTimePoint++;
@@ -175,6 +179,7 @@ public class GameView extends SurfaceView implements Runnable {
             if (obstacle.getX() + obstacle.getWidth() < 0) {
                 it.remove();
                 score += 10;
+                obstaclesCount++;
             }
         }
     }
@@ -292,5 +297,13 @@ public class GameView extends SurfaceView implements Runnable {
                 || droid.getY() + droid.getHeight() < obstacle.getY()
                 || droid.getX() > obstacle.getX() + obstacle.getWidth()
                 || droid.getX() + droid.getWidth() < obstacle.getX());
+    }
+
+    private void checkForAchievements() {
+        if(level.getClass() == InfiniteLevelData.class){
+            if (obstaclesCount == 5){
+                achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ package com.google.droidjump;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public class AchievementDetailsFragment extends Fragment {
                 titleTextView.setText(achievement.getName());
                 descriptionTextView.setText(achievement.getDescription());
                 xpTextView.setText(String.valueOf(achievement.getXpValue()));
+                Log.d("AchievementDetailsFr", "XP " + achievement.getXpValue());
                 break;
             case Achievement.STATE_REVEALED:
                 manager.loadImage(icon, achievement.getRevealedImageUri());
