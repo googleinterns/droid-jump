@@ -81,7 +81,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:background="@android:color/transparent"
-        android:contentDescription="@string/pgs"
+        android:contentDescription="@string/play_game_services"
         app:layout_constraintBottom_toBottomOf="@+id/game_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/game_header" />
