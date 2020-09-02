@@ -16,6 +16,8 @@
 
 package com.google.droidjump;
 
+import static com.google.droidjump.GameConstants.RC_SHOW_PROFILE;
+
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -33,11 +35,13 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.PlayersClient;
+import com.google.droidjump.models.LoadingHelper;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsFragment extends Fragment {
     private static final int SHOW_SHARING_FRIENDS_CONSENT = 3561;
+    private final int recyclerView = R.id.friends_recycler_view;
     private MainActivity activity;
     private List<Player> players;
     private FriendsAdapter adapter;
@@ -55,7 +59,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SHOW_SHARING_FRIENDS_CONSENT) {
+        if (requestCode == SHOW_SHARING_FRIENDS_CONSENT || requestCode == RC_SHOW_PROFILE) {
             fetchFriends();
         }
     }
@@ -64,27 +68,34 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.friends_screen, container, /* attachToRoot = */ false);
-        RecyclerView recyclerView = view.findViewById(R.id.friends_recycler_view);
+        RecyclerView recyclerView = view.findViewById(this.recyclerView);
         recyclerView.setAdapter(adapter);
-        fetchFriends();
         view.findViewById(R.id.load_more_button).setOnClickListener(ignored -> loadMore());
         view.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchFriends();
+    }
+
     private void fetchFriends() {
-        players.clear();
+        LoadingHelper.onLoading(activity, getView(), recyclerView);
         client.loadFriends(GameConstants.ITEMS_PER_PAGE, /* forceReload = */ false)
                 .addOnSuccessListener(data -> {
                     PlayerBuffer playerBuffer = data.get();
                     if (playerBuffer.getCount() > 0) {
+                        players.clear();
                         for (Player player : playerBuffer) {
                             players.add(player.freeze());
                         }
                         adapter.notifyDataSetChanged();
-                    }else{
+                    } else {
                         onEmptyFriendsList();
                     }
+                    LoadingHelper.onLoaded(getView(), recyclerView);
                     playerBuffer.close();
                 })
                 .addOnFailureListener(exception -> {
@@ -110,14 +121,18 @@ public class FriendsFragment extends Fragment {
     }
 
     private void loadMore() {
+        LoadingHelper.onLoading(activity, getView(), recyclerView);
         client.loadMoreFriends(GameConstants.ITEMS_PER_PAGE)
                 .addOnSuccessListener(data -> {
-                    players.clear();
                     PlayerBuffer playerBuffer = data.get();
-                    for (Player player : playerBuffer) {
-                        players.add(player.freeze());
+                    if (playerBuffer.getCount() > 0) {
+                        players.clear();
+                        for (Player player : playerBuffer) {
+                            players.add(player.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
+                    LoadingHelper.onLoaded(getView(), recyclerView);
                     playerBuffer.close();
                 });
     }

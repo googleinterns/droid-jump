@@ -33,7 +33,6 @@ import java.util.List;
  * Extracts a friends data and styles it for showing in RecyclerView.
  */
 public class FriendsAdapter extends RecyclerView.Adapter {
-    private static final int RC_SHOW_PROFILE = 3838;
     private List<Player> items;
     private MainActivity activity;
 
@@ -68,7 +67,7 @@ public class FriendsAdapter extends RecyclerView.Adapter {
         Games.getPlayersClient(activity, activity.getSavedSignedInAccount())
                 .getCompareProfileIntent(player)
                 .addOnSuccessListener(intent -> {
-                    activity.startActivityForResult(intent, RC_SHOW_PROFILE);
+                    activity.startActivityForResult(intent, GameConstants.RC_SHOW_PROFILE);
                 });
     }
 
