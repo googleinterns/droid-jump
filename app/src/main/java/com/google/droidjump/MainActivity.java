@@ -33,8 +33,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
@@ -57,6 +57,12 @@ public class MainActivity extends FragmentActivity {
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isActiveConnection = false;
+        init();
+    }
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -68,13 +74,6 @@ public class MainActivity extends FragmentActivity {
 
     public LeaderboardsClient getLeaderboardsClient() {
         return leaderboardsClient;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        isActiveConnection = false;
-        init();
     }
 
     @Override
