@@ -16,13 +16,16 @@
   -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingLeft="16dp"
+    android:paddingLeft="@dimen/fab_margin"
     android:singleLine="true"
     android:textAllCaps="true"
     android:background="@android:color/transparent"
-    android:textSize="16sp"
+    android:textSize="@dimen/regular_text_size"
     android:id="@+id/section_text"
-    android:textStyle="bold" />
+    android:textStyle="bold"
+    android:paddingStart="@dimen/fab_margin"
+    tools:ignore="RtlSymmetry" />

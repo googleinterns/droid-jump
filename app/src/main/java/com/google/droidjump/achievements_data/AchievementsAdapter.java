@@ -35,6 +35,9 @@ import java.util.List;
  * Displays a list of achievements in RecyclerView.
  **/
 public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final static int SECTION_NAME_TYPE = 0;
+    private final static int ACHIEVEMENT_TYPE = 1;
+
     private AchievementBuffer achievementBuffer;
     private FragmentActivity activity;
     private List<RecyclerViewItem> items;
@@ -50,12 +53,21 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         items = new ArrayList<>();
         sectionNames = new ArrayList<>();
         for (int i = 0; i < achievementBuffer.getCount(); i++) {
-            if (i == 0 && achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) {
-                items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
-                sectionNames.add(String.valueOf(R.string.unlocked_section_name));
-            } else if (i == 0 || !(achievementBuffer.get(i).getState() == Achievement.STATE_UNLOCKED) && achievementBuffer.get(i - 1).getState() == Achievement.STATE_UNLOCKED) {
-                items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
-                sectionNames.add(String.valueOf(R.string.locked_section_name));
+            int currentAchievementState = achievementBuffer.get(i).getState();
+            if (i == 0) {
+                if (currentAchievementState == Achievement.STATE_UNLOCKED) {
+                    items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
+                    sectionNames.add(activity.getString(R.string.unlocked_section_name));
+                } else {
+                    items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
+                    sectionNames.add(activity.getString(R.string.locked_section_name));
+                }
+            } else if (!(currentAchievementState == Achievement.STATE_UNLOCKED)) {
+                int previousAchievementState = achievementBuffer.get(i - 1).getState();
+                if (previousAchievementState == Achievement.STATE_UNLOCKED) {
+                    items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
+                    sectionNames.add(activity.getString(R.string.locked_section_name));
+                }
             }
             items.add(new RecyclerViewItem(ItemType.ACHIEVEMENT, i));
         }
@@ -64,7 +76,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == 0) {
+        if (viewType == SECTION_NAME_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section, parent, false);
             return new SectionViewHolder(view);
         }
@@ -101,9 +113,9 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         super.getItemViewType(position);
         if (items.get(position).getType() == ItemType.SECTION_NAME) {
-            return 0;
+            return SECTION_NAME_TYPE;
         }
-        return 1;
+        return ACHIEVEMENT_TYPE;
     }
 
     @Override
