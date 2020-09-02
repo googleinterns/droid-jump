@@ -105,6 +105,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 manager.loadImage(icon, achievement.getRevealedImageUri());
                 break;
             case Achievement.STATE_HIDDEN:
+                //TODO(dnikolskaia): Load image for hidden achievements.
                 break;
         }
     }
