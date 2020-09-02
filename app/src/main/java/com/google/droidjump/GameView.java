@@ -60,12 +60,12 @@ public class GameView extends SurfaceView implements Runnable {
     private int timePoint;
     private int intervalTimePoint;
     private int levelSpeed;
-    private List<Obstacle> obstacleList;
     private int platformX = 0;
     private int groundHeight;
+    private int score;
     private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private LevelStrategy level;
-    private int score;
+    private List<Obstacle> obstacleList;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
@@ -84,7 +84,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Droid should be on a ground height, but platform includes grass.
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
-
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
@@ -200,7 +199,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void updatePlatformCoordinates() {
-        // The leftmost coordinate where the new platform starts
+        // The leftmost coordinate where the new platform starts.
         platformX = (platformX - levelSpeed) % platform.getWidth();
     }
 
