@@ -16,6 +16,7 @@
 
 package com.google.droidjump.achievements_data;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,13 +98,23 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.getDescription().setText(achievement.getDescription());
         holder.getName().setText(achievement.getName());
         ImageView icon = holder.getIcon();
+
+        View progressBarView = activity.getLayoutInflater().inflate(R.layout.progress_bar_layout, null);
+//        final int height = View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.EXACTLY);
+//        final int width = View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.EXACTLY);
+//        progressBarView.measure(height, width);
+        progressBarView.setDrawingCacheEnabled(true);
+        progressBarView.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(progressBarView.getDrawingCache());
+        icon.setImageBitmap(bitmap);
+        progressBarView.setDrawingCacheEnabled(false);
         ImageManager manager = ImageManager.create(activity);
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
-                manager.loadImage(icon, achievement.getUnlockedImageUri());
+                //manager.loadImage(icon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
-                manager.loadImage(icon, achievement.getRevealedImageUri());
+                //manager.loadImage(icon, achievement.getRevealedImageUri());
                 break;
             case Achievement.STATE_HIDDEN:
                 //TODO(dnikolskaia): Load image for hidden achievements.

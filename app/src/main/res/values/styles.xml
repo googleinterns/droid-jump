@@ -157,4 +157,9 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:src">@drawable/pgs_icon</item>
     </style>
+
+    <style name="CircularDeterminateProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle_template</item>
+    </style>
 </resources>
