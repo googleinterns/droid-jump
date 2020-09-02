@@ -65,7 +65,7 @@
                 style="@style/RegularText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/friends_empty_text"
+                android:text="@string/friends_empty_list_text"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView

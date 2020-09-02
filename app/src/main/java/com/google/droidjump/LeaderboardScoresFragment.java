@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -32,12 +33,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.FriendsResolutionRequiredException;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.droidjump.leaderboards_data.LeaderboardsScoresAdapter;
+import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class LeaderboardScoresFragment extends Fragment {
     private LeaderboardsScoresAdapter adapter;
     private int timeSpan;
     private int collection;
+    private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
@@ -65,6 +67,7 @@ public class LeaderboardScoresFragment extends Fragment {
         scores = new ArrayList<>();
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
+        recyclerViewId = R.id.scores_recycler_view;
     }
 
     @Override
@@ -85,7 +88,6 @@ public class LeaderboardScoresFragment extends Fragment {
         RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
         scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         scoresView.setAdapter(adapter);
-        fetchScores(timeSpan, collection);
         Switch friendsSwitch = rootView.findViewById(R.id.friends_switch);
         friendsSwitch.setOnClickListener(ignored -> {
             if (friendsSwitch.isChecked()) {
@@ -100,19 +102,32 @@ public class LeaderboardScoresFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchScores(timeSpan, collection);
+    }
+
     private void fetchScores(int timeSpan, int collection) {
-        Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
-                .loadPlayerCenteredScores(
-                        leaderboard.getLeaderboardId(), timeSpan,
-                        collection, GameConstants.ITEMS_PER_PAGE, /* forceReload= */ true)
+        TextView emptyListText = getView().findViewById(R.id.empty_list_text);
+        emptyListText.setVisibility(View.GONE);
+        LoadingHelper.onLoading(activity, getView(), recyclerViewId);
+        activity.getLeaderboardsClient().loadPlayerCenteredScores(
+                leaderboard.getLeaderboardId(), timeSpan,
+                collection, GameConstants.ITEMS_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
-                        scores.clear();
-                        for (LeaderboardScore score : scoreBuffer) {
-                            scores.add(score.freeze());
+                        if (scoreBuffer.getCount() > 0) {
+                            scores.clear();
+                            for (LeaderboardScore score : scoreBuffer) {
+                                scores.add(score.freeze());
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            emptyListText.setVisibility(View.VISIBLE);
                         }
-                        adapter.notifyDataSetChanged();
+                        LoadingHelper.onLoaded(getView(), recyclerViewId);
                         scoreBuffer.close();
                     } else {
                         if (task.getException() instanceof FriendsResolutionRequiredException) {

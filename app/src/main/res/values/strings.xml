@@ -45,5 +45,10 @@
     <string name="sign_in">Sign in</string>
     <string name="pgs">PGS</string>
     <string name="load_more">Load More</string>
-    <string name="friends_empty_text">You have no friends yet, please go to Play Games Application and add them.</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="date">Date</string>
+    <string name="friends_empty_list_text">No friends yet</string>
+    <string name="empty_leaderboards_list_text">No leaderboards yet</string>
+    <string name="empty_scores_list_text">No scores yet</string>
 </resources>
