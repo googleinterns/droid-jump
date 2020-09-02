@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.achievements_data.AchievementsAdapter;
 import com.google.droidjump.models.NavigationHelper;
+import java.util.Objects;
 
 /**
  * Displays Achievements Screen.
@@ -59,7 +60,8 @@ public class AchievementsFragment extends Fragment {
                     achievementsView.setAdapter(adapter);
                 }
             } else {
-                Log.e("AchievementsFragment", "Failed to load achievements from client");
+                String message = Objects.requireNonNull(task.getException()).getMessage();
+                Log.e("AchievementsFragment", "Failed to load achievements from client: " + message);
             }
         });
         return rootView;
