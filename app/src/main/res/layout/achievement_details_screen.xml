@@ -79,7 +79,7 @@
                 style="@style/AchievementDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/double_fab_margin"
                 android:text="@string/description" />
 
             <TextView
@@ -92,6 +92,7 @@
             <TextView
                 android:id="@+id/xp_value"
                 style="@style/RegularText"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
