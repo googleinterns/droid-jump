@@ -22,6 +22,7 @@ import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -32,6 +33,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.LevelStrategy;
@@ -202,14 +204,33 @@ public class GameView extends SurfaceView implements Runnable {
             return;
         }
         LeaderboardsClient client = Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount());
-        String leaderboardId = activity.getResources().getString(R.string.leaderboard_cactus_jumper);
-        client.loadCurrentPlayerLeaderboardScore(
-                leaderboardId,
-                LeaderboardVariant.TIME_SPAN_ALL_TIME,
-                LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(score ->
-                client.submitScore(leaderboardId, score.get().getRawScore() + cactusScore)
-        );
-        // TODO(maksme) Do the same with other leaderboards.
+        int[] leaderboards = {R.string.leaderboard_cactus_jumper, R.string.leaderboard_bat_avoider, R.string.leaderboard_palm_climber};
+        Resources resources = getResources();
+        for (int leaderboard : leaderboards) {
+            String leaderboardId = resources.getString(leaderboard);
+            client.loadCurrentPlayerLeaderboardScore(
+                    leaderboardId,
+                    LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                    LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(data -> {
+                        LeaderboardScore leaderboardScore = data.get();
+                        long newScore;
+                        switch (leaderboard) {
+                            case R.string.leaderboard_cactus_jumper:
+                                newScore = cactusScore;
+                                break;
+                            case R.string.leaderboard_bat_avoider:
+                                newScore = batScore;
+                                break;
+                            default:
+                                newScore = palmScore;
+                        }
+                        if (leaderboardScore != null) {
+                            newScore += leaderboardScore.getRawScore();
+                        }
+                        client.submitScore(leaderboardId, newScore);
+                    }
+            );
+        }
     }
 
     private void updateDroidCoordinates() {

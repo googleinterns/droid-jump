@@ -59,6 +59,7 @@ public class MainActivity extends FragmentActivity {
     private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
+    private LeaderboardsClient leaderboardsClient;
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -228,6 +229,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.main_activity);
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
     }
 
     private void setupDrawer(boolean isEnabled) {
@@ -297,16 +299,17 @@ public class MainActivity extends FragmentActivity {
                         LeaderboardVariant.COLLECTION_PUBLIC)
                 .addOnSuccessListener(result -> {
                     LeaderboardScore leaderboardScore = result.get();
+                    int value = 0;
                     if (leaderboardScore != null) {
-                        long score = result.get().getRawScore();
-                        // If account existed before.
-                        if (score != 0) {
-                            getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
-                                    .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, score).apply();
-                        }
+                        value += leaderboardScore.getRawScore();
                     } else {
-                        // Force reload leaderboards.
-                        Games.getLeaderboardsClient(this, getSavedSignedInAccount()).loadLeaderboardMetadata(/* forceReload = */ true);
+                        Games.getLeaderboardsClient(this, signInAccount)
+                                .submitScore(getResources().getString(R.string.leaderboard_best_score), value);
+                    }
+                    // If account existed before -> receive best score,
+                    if (value != 0) {
+                        getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
+                                .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, value).apply();
                     }
                 });
     }
