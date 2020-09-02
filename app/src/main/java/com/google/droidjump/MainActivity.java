@@ -61,7 +61,32 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isActiveConnection = false;
-        init();
+        LevelManager.init(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
+        setContentView(R.layout.main_activity);
+        ((DrawerLayout) findViewById(R.id.drawer_layout))
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        leaderboardsClient = null;
+    }
+
+    public void openUserMenu() {
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
+    }
+
+    public GoogleSignInAccount getSavedSignedInAccount() {
+        return savedSignedInAccount;
+    }
+
+    public LeaderboardsClient getLeaderboardsClient() {
+        return leaderboardsClient;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public AchievementsClient getAchievementsClient() {
+        return achievementsClient;
     }
 
     @Override
@@ -96,26 +121,6 @@ public class MainActivity extends FragmentActivity {
         if (!isActiveConnection) {
             signInSilently();
         }
-    }
-
-    public void openUserMenu() {
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
-    }
-
-    public GoogleSignInAccount getSavedSignedInAccount() {
-        return savedSignedInAccount;
-    }
-
-    public LeaderboardsClient getLeaderboardsClient() {
-        return leaderboardsClient;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public AchievementsClient getAchievementsClient() {
-        return achievementsClient;
     }
 
     private void signInSilently() {
@@ -156,6 +161,8 @@ public class MainActivity extends FragmentActivity {
 
     private void onDisconnected() {
         isActiveConnection = true;
+        savedSignedInAccount = null;
+        leaderboardsClient = null;
         disableNavigationMenu();
     }
 
@@ -197,15 +204,6 @@ public class MainActivity extends FragmentActivity {
                     // At this point, the user is signed out.
                     onDisconnected();
                 });
-    }
-
-    private void init() {
-        LevelManager.init(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
-        setContentView(R.layout.main_activity);
-        ((DrawerLayout) findViewById(R.id.drawer_layout))
-                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        leaderboardsClient = null;
     }
 
     private void setupDrawer(boolean isEnabled) {
