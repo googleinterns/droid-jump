@@ -54,15 +54,16 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         sectionNames = new ArrayList<>();
         for (int i = 0; i < achievementBuffer.getCount(); i++) {
             int currentAchievementState = achievementBuffer.get(i).getState();
+            boolean currentAchievementIsUnlocked = currentAchievementState == Achievement.STATE_UNLOCKED;
             if (i == 0) {
-                if (currentAchievementState == Achievement.STATE_UNLOCKED) {
+                if (currentAchievementIsUnlocked) {
                     items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
                     sectionNames.add(activity.getString(R.string.unlocked_section_name));
                 } else {
                     items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
                     sectionNames.add(activity.getString(R.string.locked_section_name));
                 }
-            } else if (!(currentAchievementState == Achievement.STATE_UNLOCKED)) {
+            } else if (!currentAchievementIsUnlocked) {
                 int previousAchievementState = achievementBuffer.get(i - 1).getState();
                 if (previousAchievementState == Achievement.STATE_UNLOCKED) {
                     items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
