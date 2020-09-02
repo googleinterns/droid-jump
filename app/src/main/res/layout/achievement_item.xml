@@ -61,18 +61,4 @@
             android:layout_marginLeft="@dimen/fab_margin"
             android:text="@string/description" />
     </LinearLayout>
-
-    <LinearLayout
-        style="@style/WrapContent"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginRight="@dimen/fab_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/date"
-            style="@style/WrapContent"
-            android:text="@string/date" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

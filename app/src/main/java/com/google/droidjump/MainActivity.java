@@ -98,7 +98,6 @@ public class MainActivity extends FragmentActivity {
                 // The signed in account is stored in the result.
                 GoogleSignInAccount signedInAccount = result.getSignInAccount();
                 onConnected(signedInAccount);
-                Log.d(TAG, " Active sign in success");
             } else {
                 String message = result.getStatus().getStatusMessage();
                 if (message == null || message.isEmpty()) {
@@ -116,7 +115,6 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "Into onResume()");
         super.onResume();
         if (!isActiveConnection) {
             signInSilently();
@@ -126,11 +124,8 @@ public class MainActivity extends FragmentActivity {
     private void signInSilently() {
         GoogleSignInOptions signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN;
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        Log.d(TAG, "Into Silent Sign in");
         if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
             // Already signed in.
-            // The signed in account is stored in the 'account' variable.
-            Log.d(TAG, "Into Silent Sign in : already signed in");
             GoogleSignInAccount signedInAccount = account;
             onConnected(signedInAccount);
         } else {
@@ -167,7 +162,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
-        Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
