@@ -69,12 +69,15 @@ public class MainActivity extends FragmentActivity {
         return savedSignedInAccount;
     }
 
+    public LeaderboardsClient getLeaderboardsClient() {
+        return leaderboardsClient;
+    }
+
     public void countTimeOfPlaying() {
         String leaderboardId = getResources().getString(R.string.leaderboard_best_time);
         if (savedSignedInAccount != null && LevelManager.getLastLevelIndex() != LevelManager.getLevelsLastIndex()) {
-            LeaderboardsClient client = Games.getLeaderboardsClient(MainActivity.this, savedSignedInAccount);
             SharedPreferences gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
-            client.loadCurrentPlayerLeaderboardScore(
+            leaderboardsClient.loadCurrentPlayerLeaderboardScore(
                     leaderboardId,
                     LeaderboardVariant.TIME_SPAN_ALL_TIME,
                     LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(
@@ -86,7 +89,7 @@ public class MainActivity extends FragmentActivity {
                                 if (savedSignedInAccount != null) {
                                     long time = gameData.getLong(GameConstants.GAME_TIME, /* defValue = */ 0);
                                     if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
-                                        client.submitScore(leaderboardId, time);
+                                        leaderboardsClient.submitScore(leaderboardId, time);
                                         timer.cancel();
                                     }
                                     time += MINUTE_IN_MILLISECONDS;
@@ -192,6 +195,7 @@ public class MainActivity extends FragmentActivity {
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         playerId = player.getPlayerId();
+                        leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
                         // Showing a welcome popup.
                         Games.getGamesClient(this, googleSignInAccount)
                                 .setViewForPopups(findViewById(R.id.activity_wrapper));
@@ -229,7 +233,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.main_activity);
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
     }
 
     private void setupDrawer(boolean isEnabled) {
@@ -292,19 +295,17 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void setMaxScore(GoogleSignInAccount signInAccount) {
-        Games.getLeaderboardsClient(this, signInAccount)
-                .loadCurrentPlayerLeaderboardScore(
-                        getResources().getString(R.string.leaderboard_best_score),
-                        LeaderboardVariant.TIME_SPAN_ALL_TIME,
-                        LeaderboardVariant.COLLECTION_PUBLIC)
+        leaderboardsClient.loadCurrentPlayerLeaderboardScore(
+                getResources().getString(R.string.leaderboard_best_score),
+                LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                LeaderboardVariant.COLLECTION_PUBLIC)
                 .addOnSuccessListener(result -> {
                     LeaderboardScore leaderboardScore = result.get();
                     int value = 0;
                     if (leaderboardScore != null) {
                         value += leaderboardScore.getRawScore();
                     } else {
-                        Games.getLeaderboardsClient(this, signInAccount)
-                                .submitScore(getResources().getString(R.string.leaderboard_best_score), value);
+                        leaderboardsClient.submitScore(getResources().getString(R.string.leaderboard_best_score), value);
                     }
                     // If account existed before -> receive best score,
                     if (value != 0) {

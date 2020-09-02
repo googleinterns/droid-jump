@@ -31,7 +31,6 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
@@ -203,7 +202,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (activity.getSavedSignedInAccount() == null) {
             return;
         }
-        LeaderboardsClient client = Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount());
+        LeaderboardsClient client = activity.getLeaderboardsClient();
         int[] leaderboards = {R.string.leaderboard_cactus_jumper, R.string.leaderboard_bat_avoider, R.string.leaderboard_palm_climber};
         Resources resources = getResources();
         for (int leaderboard : leaderboards) {
@@ -307,8 +306,7 @@ public class GameView extends SurfaceView implements Runnable {
         long maxScore = gameData.getLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, /* defValue= */ GameConstants.SCORE_DEF_VALUE);
         if (maxScore < score && activity.getSavedSignedInAccount() != null) {
             String leaderboardId = activity.getResources().getString(R.string.leaderboard_best_score);
-            Games.getLeaderboardsClient(activity, activity.getSavedSignedInAccount())
-                    .submitScore(leaderboardId, score);
+            activity.getLeaderboardsClient().submitScore(leaderboardId, score);
         }
     }
 
