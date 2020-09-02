@@ -69,15 +69,20 @@ public class LeaderboardsFragment extends Fragment {
     }
 
     private void fetchLeaderboards() {
-        leaderboards.clear();
+        getView().findViewById(R.id.empty_list_text).setVisibility(View.GONE);
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         activity.getLeaderboardsClient().loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
-                    for (Leaderboard leaderboard : leaderboardBuffer) {
-                        leaderboards.add(leaderboard.freeze());
+                    if (leaderboardBuffer.getCount() > 0) {
+                        leaderboards.clear();
+                        for (Leaderboard leaderboard : leaderboardBuffer) {
+                            leaderboards.add(leaderboard.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        getView().findViewById(R.id.empty_list_text).setVisibility(View.VISIBLE);
                     }
-                    adapter.notifyDataSetChanged();
                     LoadingHelper.onLoaded(getView(), recyclerViewId);
                     leaderboardBuffer.close();
                 });

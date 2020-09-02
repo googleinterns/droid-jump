@@ -109,19 +109,23 @@ public class LeaderboardScoresFragment extends Fragment {
     }
 
     private void fetchScores(int timeSpan, int collection) {
-        scores.clear();
+        getView().findViewById(R.id.empty_list_text).setVisibility(View.GONE);
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
-                        leaderboard.getLeaderboardId(), timeSpan,
-                        collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
+                leaderboard.getLeaderboardId(), timeSpan,
+                collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
-                        scores.clear();
-                        for (LeaderboardScore score : scoreBuffer) {
-                            scores.add(score.freeze());
+                        if (scoreBuffer.getCount() > 0) {
+                            scores.clear();
+                            for (LeaderboardScore score : scoreBuffer) {
+                                scores.add(score.freeze());
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            getView().findViewById(R.id.empty_list_text).setVisibility(View.VISIBLE);
                         }
-                        adapter.notifyDataSetChanged();
                         LoadingHelper.onLoaded(getView(), recyclerViewId);
                         scoreBuffer.close();
                     } else {

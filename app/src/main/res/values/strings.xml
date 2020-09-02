@@ -47,4 +47,6 @@
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
+    <string name="empty_leaderboards_list_text">No leaderboards yet</string>
+    <string name="empty_scores_list_text">No scores yet</string>
 </resources>
