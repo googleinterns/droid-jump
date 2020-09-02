@@ -35,7 +35,6 @@ public interface GameConstants {
     int SCORE_DEF_VALUE = 0; // Default value.
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
-    int SCORES_PER_PAGE = 25; // Count of scores on one page.
 
     double GROUND_PROPORTION = 0.6; // Handpicked value of proportion in a platform picture.
 

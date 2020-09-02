@@ -55,6 +55,7 @@ public class LeaderboardScoresFragment extends Fragment {
     private int collection;
     private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
+    private static final int SCORES_PER_PAGE = 25;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -114,7 +115,7 @@ public class LeaderboardScoresFragment extends Fragment {
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
-                collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
+                collection, SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();

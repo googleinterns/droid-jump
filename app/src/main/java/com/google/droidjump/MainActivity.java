@@ -216,6 +216,8 @@ public class MainActivity extends FragmentActivity {
             if (isEnabled) {
                 switch (id) {
                     case R.id.nav_friends:
+                        NavigationHelper.navigateToFragment(MainActivity.this, new FriendsFragment());
+                        break;
                     case R.id.nav_achievements:
                         NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
                         break;

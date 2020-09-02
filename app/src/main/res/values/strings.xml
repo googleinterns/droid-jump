@@ -43,7 +43,8 @@
     <string name="score_text">"Score: "</string>
     <string name="player_avatar">Player avatar</string>
     <string name="sign_in">Sign in</string>
-    <string name="pgs">PGS</string>
+    <string name="play_game_services">Play Game Services</string>
+    <string name="load_more">Load More</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
