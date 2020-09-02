@@ -183,6 +183,8 @@ public class MainActivity extends FragmentActivity {
 
     private void onDisconnected() {
         isActiveConnection = true;
+        savedSignedInAccount = null;
+        leaderboardsClient = null;
         disableNavigationMenu();
     }
 
@@ -307,7 +309,7 @@ public class MainActivity extends FragmentActivity {
                     } else {
                         leaderboardsClient.submitScore(getResources().getString(R.string.leaderboard_best_score), value);
                     }
-                    // If account existed before -> receive best score,
+                    // If account existed before -> receive best score.
                     if (value != 0) {
                         getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
                                 .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, value).apply();

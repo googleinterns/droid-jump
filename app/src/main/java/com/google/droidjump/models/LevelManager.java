@@ -75,7 +75,7 @@ public class LevelManager {
     public static void resetGameData() {
         gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
         gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
-        gameDataEditor.putInt(INFINITE_LEVEL_MAX_SCORE, SCORE_DEF_VALUE);
+        gameDataEditor.putLong(INFINITE_LEVEL_MAX_SCORE, SCORE_DEF_VALUE);
         gameDataEditor.putInt(GAME_TIME, SCORE_DEF_VALUE);
         for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
             gameDataEditor.putInt(String.valueOf(levelIndex), SCORE_DEF_VALUE);
