@@ -60,6 +60,18 @@ public class MainActivity extends FragmentActivity {
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
     private LeaderboardsClient leaderboardsClient;
+    private SharedPreferences gameData;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LevelManager.init(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
+        setContentView(R.layout.main_activity);
+        ((DrawerLayout) findViewById(R.id.drawer_layout))
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
+    }
 
     public void openUserMenu() {
         ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GameConstants.NAVIGATION_START_POSITION);
@@ -76,7 +88,6 @@ public class MainActivity extends FragmentActivity {
     public void countTimeOfPlaying() {
         String leaderboardId = getResources().getString(R.string.leaderboard_best_time);
         if (savedSignedInAccount != null && LevelManager.getLastLevelIndex() != LevelManager.getLevelsLastIndex()) {
-            SharedPreferences gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
             leaderboardsClient.loadCurrentPlayerLeaderboardScore(
                     leaderboardId,
                     LeaderboardVariant.TIME_SPAN_ALL_TIME,
@@ -103,12 +114,6 @@ public class MainActivity extends FragmentActivity {
                                 /* period = */ TEN_SECONDS_IN_MILLISECONDS);
                     });
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init();
     }
 
     @Override
@@ -229,14 +234,6 @@ public class MainActivity extends FragmentActivity {
                 });
     }
 
-    private void init() {
-        LevelManager.init(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
-        setContentView(R.layout.main_activity);
-        ((DrawerLayout) findViewById(R.id.drawer_layout))
-                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
     private void setupDrawer(boolean isEnabled) {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
@@ -315,5 +312,28 @@ public class MainActivity extends FragmentActivity {
                                 .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, value).apply();
                     }
                 });
+    }
+
+    private void setLeaderboardsScores() {
+        int[] leaderboards = {R.string.leaderboard_cactus_jumper, R.string.leaderboard_bat_avoider, R.string.leaderboard_palm_climber};
+        for (int leaderboard : leaderboards) {
+            String leaderboardId = getResources().getString(leaderboard);
+            leaderboardsClient.loadCurrentPlayerLeaderboardScore(
+                    leaderboardId,
+                    LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                    LeaderboardVariant.COLLECTION_PUBLIC)
+                    .addOnSuccessListener(data -> {
+                        LeaderboardScore score = data.get();
+                        // Merging a local score with the Play Games Score.
+                        if (score != null) {
+                            long localScore = gameData.getLong(leaderboardId, GameConstants.SCORE_DEF_VALUE);
+                            long newScore = localScore + score.getRawScore();
+                            gameData.edit().putLong(leaderboardId, newScore).apply();
+                            if (newScore != localScore) {
+                                leaderboardsClient.submitScore(leaderboardId, newScore);
+                            }
+                        }
+                    });
+        }
     }
 }
