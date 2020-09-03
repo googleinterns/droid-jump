@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:padding="@dimen/fab_margin">
+    android:paddingVertical="@dimen/fab_margin">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/player_avatar_card_view"
