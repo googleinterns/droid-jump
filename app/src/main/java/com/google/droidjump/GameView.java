@@ -28,6 +28,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -218,8 +219,12 @@ public class GameView extends SurfaceView implements Runnable {
                             case R.string.leaderboard_bat_avoider:
                                 newScore = batScore;
                                 break;
-                            default:
+                            case R.string.leaderboard_palm_climber:
                                 newScore = palmScore;
+                                break;
+                            default:
+                                Log.e(getClass().getName(), "An updateObstacleLeaderboards function: a leaderboard not found.");
+                                newScore = 0;
                         }
                         if (leaderboardScore != null) {
                             newScore += leaderboardScore.getRawScore();

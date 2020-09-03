@@ -54,8 +54,8 @@ import java.util.TimerTask;
 public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-    private static final int MINUTE_IN_MILLISECONDS = 60000;
-    private static final String TAG = "MainActivity";
+    private static final int TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
+    private static final String TAG = MainActivity.class.getName();
     private String playerId;
     private boolean isActiveConnection = false;
     private GoogleSignInAccount savedSignedInAccount = null;
@@ -92,15 +92,15 @@ public class MainActivity extends FragmentActivity {
                                         leaderboardsClient.submitScore(leaderboardId, time);
                                         timer.cancel();
                                     }
-                                    time += MINUTE_IN_MILLISECONDS;
+                                    time += TEN_SECONDS_IN_MILLISECONDS;
                                     gameData.edit().putLong(GameConstants.GAME_TIME, time).apply();
                                 }
                             }
                         };
                         timer.scheduleAtFixedRate(
                                 /* task = */ task,
-                                /* delay = */ MINUTE_IN_MILLISECONDS,
-                                /* period = */ MINUTE_IN_MILLISECONDS);
+                                /* delay = */ TEN_SECONDS_IN_MILLISECONDS,
+                                /* period = */ TEN_SECONDS_IN_MILLISECONDS);
                     });
         }
     }
