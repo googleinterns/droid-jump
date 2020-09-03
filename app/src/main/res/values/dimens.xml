@@ -31,4 +31,5 @@
     <dimen name="placeholder_menu_text_width">150dp</dimen>
     <dimen name="menu_icon_padding">20dp</dimen>
     <dimen name="pgs_icon_width">50dp</dimen>
+    <dimen name="friend_icon_size">40dp</dimen>
 </resources>
