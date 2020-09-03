@@ -38,13 +38,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/leaderboards_title"
+                android:id="@+id/friends_title"
                 style="@style/CenterHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
                 android:gravity="center_horizontal"
-                android:text="@string/leaderboards"
+                android:text="@string/friends"
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
         </LinearLayout>
@@ -60,23 +60,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-            <TextView
-                android:id="@+id/empty_list_text"
-                style="@style/RegularText"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/friends_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <Button
+                android:id="@+id/load_more_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/empty_leaderboards_list_text"
-                android:visibility="gone" />
-
-            <include layout="@layout/loading_layout" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/leaderboards_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:background="@android:color/black"
+                android:padding="@dimen/fab_margin"
+                android:text="@string/load_more"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <ImageButton

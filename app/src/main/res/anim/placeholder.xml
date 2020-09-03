@@ -15,17 +15,12 @@
   ~ limitations under the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingLeft="@dimen/fab_margin"
-    android:singleLine="true"
-    android:textAllCaps="true"
-    android:background="@android:color/transparent"
-    android:textSize="@dimen/small_text"
-    android:id="@+id/section_text"
-    android:textStyle="bold"
-    android:paddingStart="@dimen/fab_margin"
-    tools:ignore="RtlSymmetry" />
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <alpha
+        android:duration="1000"
+        android:fromAlpha="1.0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:repeatCount="infinite"
+        android:repeatMode="reverse"
+        android:toAlpha="0.6" />
+</set>
