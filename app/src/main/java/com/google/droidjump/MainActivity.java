@@ -18,7 +18,6 @@ package com.google.droidjump;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -64,7 +63,6 @@ public class MainActivity extends FragmentActivity {
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
     private PlayersClient playersClient;
-    private SharedPreferences gameData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +73,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.main_activity);
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
         leaderboardsClient = null;
         achievementsClient = null;
         savedSignedInAccount = null;
@@ -323,15 +320,19 @@ public class MainActivity extends FragmentActivity {
                     LeaderboardVariant.COLLECTION_PUBLIC)
                     .addOnSuccessListener(data -> {
                         LeaderboardScore score = data.get();
-                        long localScore = gameData.getLong(leaderboardId, GameConstants.SCORE_DEF_VALUE);
+                        long localScore = ScoreManager.getScore(leaderboardId);
+
                         // Merging a local score with the leaderboard score.
+                        long newScore;
                         if (score != null) {
                             long leaderboardScore = score.getRawScore();
-                            long newScore = Math.max(localScore, leaderboardScore);
-                            // Update local and leaderboard score.
-                            ScoreManager.submitScore(leaderboardId, newScore);
+                            newScore = Math.max(localScore, leaderboardScore);
                         } else {
-                            ScoreManager.submitScore(leaderboardId, localScore);
+                            newScore = localScore;
+                        }
+                        if (leaderboard != R.string.leaderboard_best_time
+                                || LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
+                            ScoreManager.submitScore(leaderboardId, newScore);
                         }
                     });
         }

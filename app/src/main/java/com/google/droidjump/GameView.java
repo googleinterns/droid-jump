@@ -21,7 +21,6 @@ import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +31,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.android.gms.games.LeaderboardsClient;
 import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.LevelType;
@@ -199,7 +197,6 @@ public class GameView extends SurfaceView implements Runnable {
         if (activity.getSavedSignedInAccount() == null) {
             return;
         }
-        LeaderboardsClient client = activity.getLeaderboardsClient();
         Resources resources = getResources();
         for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
             String leaderboardId = resources.getString(leaderboard);
@@ -214,8 +211,12 @@ public class GameView extends SurfaceView implements Runnable {
                 case R.string.leaderboard_palm_climber:
                     score += palmScore;
                     break;
+                case R.string.leaderboard_best_score:
+                case R.string.leaderboard_best_time:
+                    return;
                 default:
                     Log.e(getClass().getName(), "An updateObstacleLeaderboards function: a leaderboard not found.");
+                    return;
             }
             ScoreManager.submitScore(leaderboardId, score);
         }
@@ -290,8 +291,6 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void updateScoreInMaxScoreLeaderboard() {
-        SharedPreferences gameData
-                = activity.getSharedPreferences(GameConstants.GAME_VIEW_DATA, Context.MODE_PRIVATE);
         String leaderboardId = getResources().getString(R.string.leaderboard_best_score);
         long maxLevelScore = LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex());
         long maxBestScore = Math.max(ScoreManager.getScore(leaderboardId), maxLevelScore);
