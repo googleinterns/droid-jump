@@ -16,12 +16,15 @@
 
 package com.google.droidjump.achievements_data;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
@@ -87,6 +90,8 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new AchievementViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder mholder, int position) {
         if (items.get(position).getType() == ItemType.SECTION_NAME) {
@@ -107,12 +112,13 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.getName().setText(achievement.getName());
                 break;
             case Achievement.STATE_REVEALED:
-                manager.loadImage(icon, achievement.getRevealedImageUri());
+                icon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));
                 holder.getDescription().setText(achievement.getDescription());
                 holder.getName().setText(achievement.getName());
                 break;
             case Achievement.STATE_HIDDEN:
                 //TODO(dnikolskaia): Load image for hidden achievements.
+                icon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_block_24));
                 holder.getDescription().setText(R.string.hidden_achievement_description);
                 holder.getName().setText(R.string.hidden_achievement_name);
                 break;
