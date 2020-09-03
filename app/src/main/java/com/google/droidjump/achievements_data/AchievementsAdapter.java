@@ -93,40 +93,32 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder mholder, int position) {
-        if (items.get(position).getType() == ItemType.SECTION_NAME) {
-            SectionViewHolder holder = (SectionViewHolder) mholder;
-            holder.getSectionText().setText(sectionNames.get(items.get(position).getListPosition()));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof SectionViewHolder) {
+            ((SectionViewHolder) holder).getSectionText().setText(sectionNames.get(items.get(position).getListPosition()));
             return;
         }
         Achievement achievement = achievementBuffer.get(items.get(position).getListPosition());
-        AchievementViewHolder holder = (AchievementViewHolder) mholder;
-        holder.getDescription().setText(achievement.getDescription());
-        holder.getName().setText(achievement.getName());
-        ImageView icon = holder.getIcon();
-        ImageManager manager = ImageManager.create(activity);
+        AchievementViewHolder achievementHolder = (AchievementViewHolder) holder;
+        achievementHolder.getDescription().setText(achievement.getDescription());
+        achievementHolder.getName().setText(achievement.getName());
+        ImageView icon = achievementHolder.getIcon();
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
-                manager.loadImage(icon, achievement.getUnlockedImageUri());
-                holder.getDescription().setText(achievement.getDescription());
-                holder.getName().setText(achievement.getName());
+                ImageManager.create(activity).loadImage(icon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
                 icon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));
-                holder.getDescription().setText(achievement.getDescription());
-                holder.getName().setText(achievement.getName());
                 break;
             case Achievement.STATE_HIDDEN:
-                //TODO(dnikolskaia): Load image for hidden achievements.
                 icon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_block_24));
-                holder.getDescription().setText(R.string.hidden_achievement_description);
-                holder.getName().setText(R.string.hidden_achievement_name);
+                achievementHolder.getDescription().setText(R.string.hidden_achievement_description);
+                achievementHolder.getName().setText(R.string.hidden_achievement_name);
                 break;
         }
-        holder.itemView.setOnClickListener(view -> {
+        achievementHolder.itemView.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new AchievementDetailsFragment(achievement));
         });
-
     }
 
     @Override
@@ -182,7 +174,6 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static class AchievementViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView description;
-        private TextView date;
         private ImageView icon;
 
         public AchievementViewHolder(View view) {
@@ -198,10 +189,6 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public TextView getDescription() {
             return description;
-        }
-
-        public TextView getDate() {
-            return date;
         }
 
         public ImageView getIcon() {
