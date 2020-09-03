@@ -52,8 +52,8 @@
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/friend_icon_size"
+        android:layout_height="@dimen/friend_icon_size"
         app:cardCornerRadius="@dimen/player_avatar_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

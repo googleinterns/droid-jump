@@ -61,14 +61,14 @@ public class FriendsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.friends_screen, container, /* attachToRoot = */ false);
-        RecyclerView recyclerView = view.findViewById(this.recyclerViewId);
+        View rootView = inflater.inflate(R.layout.friends_screen, container, /* attachToRoot = */ false);
+        RecyclerView recyclerView = rootView.findViewById(recyclerViewId);
         recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
-        view.findViewById(R.id.load_more_button).setOnClickListener(ignored -> loadMore());
-        view.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
+        rootView.findViewById(R.id.load_more_button).setOnClickListener(ignored -> loadMore());
+        rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         NavigationHelper.addOnBackPressedEventListener(activity);
-        return view;
+        return rootView;
     }
 
     @Override
