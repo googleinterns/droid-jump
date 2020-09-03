@@ -35,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
@@ -54,11 +55,12 @@ import java.util.TimerTask;
 public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-    private static final int TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
+    private static final long TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
     private static final String TAG = MainActivity.class.getName();
-    private String playerId;
-    private boolean isActiveConnection = false;
-    private GoogleSignInAccount savedSignedInAccount = null;
+    private Player player;
+    private boolean isActiveConnection;
+    private GoogleSignInAccount savedSignedInAccount;
+    private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
     private SharedPreferences gameData;
 
@@ -71,6 +73,10 @@ public class MainActivity extends FragmentActivity {
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         gameData = getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE);
+        leaderboardsClient = null;
+        achievementsClient = null;
+        savedSignedInAccount = null;
+        isActiveConnection = false;
     }
 
     public void openUserMenu() {
@@ -83,6 +89,14 @@ public class MainActivity extends FragmentActivity {
 
     public LeaderboardsClient getLeaderboardsClient() {
         return leaderboardsClient;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public AchievementsClient getAchievementsClient() {
+        return achievementsClient;
     }
 
     public void countTimeOfPlaying() {
@@ -98,13 +112,13 @@ public class MainActivity extends FragmentActivity {
                             @Override
                             public void run() {
                                 if (savedSignedInAccount != null) {
-                                    long time = gameData.getLong(GameConstants.GAME_TIME, /* defValue = */ 0);
+                                    long time = gameData.getLong(leaderboardId, /* defValue = */ 0);
                                     if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
                                         leaderboardsClient.submitScore(leaderboardId, time);
                                         timer.cancel();
                                     }
                                     time += TEN_SECONDS_IN_MILLISECONDS;
-                                    gameData.edit().putLong(GameConstants.GAME_TIME, time).apply();
+                                    gameData.edit().putLong(leaderboardId, time).apply();
                                 }
                             }
                         };
@@ -117,8 +131,31 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // The signed in account is stored in the result.
+                GoogleSignInAccount signedInAccount = result.getSignInAccount();
+                onConnected(signedInAccount);
+            } else {
+                String message = result.getStatus().getStatusMessage();
+                if (message == null || message.isEmpty()) {
+                    message = "Unknown error";
+                }
+                new AlertDialog.Builder(this).setMessage(message)
+                        .setNeutralButton(android.R.string.ok, null).show();
+            }
+        }
+        // Making onActivityResult work in all fragments.
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     protected void onResume() {
-        Log.d(TAG, "Into onResume()");
         super.onResume();
         if (!isActiveConnection) {
             signInSilently();
@@ -128,11 +165,8 @@ public class MainActivity extends FragmentActivity {
     private void signInSilently() {
         GoogleSignInOptions signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN;
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        Log.d(TAG, "Into Silent Sign in");
         if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
             // Already signed in.
-            // The signed in account is stored in the 'account' variable.
-            Log.d(TAG, "Into Silent Sign in : already signed in");
             GoogleSignInAccount signedInAccount = account;
             onConnected(signedInAccount);
         } else {
@@ -161,48 +195,24 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // The signed in account is stored in the result.
-                GoogleSignInAccount signedInAccount = result.getSignInAccount();
-                onConnected(signedInAccount);
-                Log.d(TAG, " Active sign in success");
-            } else {
-                String message = result.getStatus().getStatusMessage();
-                if (message == null || message.isEmpty()) {
-                    message = "Unknown error";
-                }
-                new AlertDialog.Builder(this).setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null).show();
-            }
-        }
-        // Making onActivityResult work in all fragments.
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            fragment.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
     private void onDisconnected() {
         isActiveConnection = true;
         savedSignedInAccount = null;
         leaderboardsClient = null;
         disableNavigationMenu();
+        LevelManager.clearScores();
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
-        Log.d(TAG, "Into on connected method");
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
+            achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
+            leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
             // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        playerId = player.getPlayerId();
-                        leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
+                        this.player = player;
                         // Showing a welcome popup.
                         Games.getGamesClient(this, googleSignInAccount)
                                 .setViewForPopups(findViewById(R.id.activity_wrapper));
@@ -210,16 +220,16 @@ public class MainActivity extends FragmentActivity {
                             isActiveConnection = false;
                         }
                         enableNavigationMenu(player);
-                        setMaxScore(googleSignInAccount);
+                        setLeaderboardsScores();
                         countTimeOfPlaying();
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
     }
 
-    private OnFailureListener createFailureListener(final String string) {
+    private OnFailureListener createFailureListener(final String message) {
         return e -> {
-            Log.e(TAG, string);
+            Log.e(TAG, message);
             onDisconnected();
         };
     }
@@ -244,8 +254,10 @@ public class MainActivity extends FragmentActivity {
             if (isEnabled) {
                 switch (id) {
                     case R.id.nav_friends:
+                        NavigationHelper.navigateToFragment(MainActivity.this, new FriendsFragment());
+                        break;
                     case R.id.nav_achievements:
-                        NavigationHelper.navigateToFragment(MainActivity.this, new StartFragment());
+                        NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
                         break;
                     case R.id.nav_auth:
                         startSignInIntent();
@@ -293,30 +305,8 @@ public class MainActivity extends FragmentActivity {
         NavigationHelper.navigateToFragment(this, new StartFragment());
     }
 
-    private void setMaxScore(GoogleSignInAccount signInAccount) {
-        leaderboardsClient.loadCurrentPlayerLeaderboardScore(
-                getResources().getString(R.string.leaderboard_best_score),
-                LeaderboardVariant.TIME_SPAN_ALL_TIME,
-                LeaderboardVariant.COLLECTION_PUBLIC)
-                .addOnSuccessListener(result -> {
-                    LeaderboardScore leaderboardScore = result.get();
-                    int value = 0;
-                    if (leaderboardScore != null) {
-                        value += leaderboardScore.getRawScore();
-                    } else {
-                        leaderboardsClient.submitScore(getResources().getString(R.string.leaderboard_best_score), value);
-                    }
-                    // If account existed before -> receive best score.
-                    if (value != 0) {
-                        getSharedPreferences(GameConstants.GAME_VIEW_DATA, MODE_PRIVATE)
-                                .edit().putLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, value).apply();
-                    }
-                });
-    }
-
     private void setLeaderboardsScores() {
-        int[] leaderboards = {R.string.leaderboard_cactus_jumper, R.string.leaderboard_bat_avoider, R.string.leaderboard_palm_climber};
-        for (int leaderboard : leaderboards) {
+        for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
             String leaderboardId = getResources().getString(leaderboard);
             leaderboardsClient.loadCurrentPlayerLeaderboardScore(
                     leaderboardId,
@@ -324,14 +314,19 @@ public class MainActivity extends FragmentActivity {
                     LeaderboardVariant.COLLECTION_PUBLIC)
                     .addOnSuccessListener(data -> {
                         LeaderboardScore score = data.get();
-                        // Merging a local score with the Play Games Score.
+                        long localScore = gameData.getLong(leaderboardId, GameConstants.SCORE_DEF_VALUE);
+                        // Merging a local score with the leaderboard score.
                         if (score != null) {
-                            long localScore = gameData.getLong(leaderboardId, GameConstants.SCORE_DEF_VALUE);
-                            long newScore = localScore + score.getRawScore();
+                            long leaderboardScore = score.getRawScore();
+                            long newScore = Math.max(localScore, leaderboardScore);
+                            // Update a local score.
                             gameData.edit().putLong(leaderboardId, newScore).apply();
-                            if (newScore != localScore) {
+                            // Update a leaderboard score.
+                            if (newScore != leaderboardScore) {
                                 leaderboardsClient.submitScore(leaderboardId, newScore);
                             }
+                        } else {
+                            leaderboardsClient.submitScore(leaderboardId, localScore);
                         }
                     });
         }

@@ -51,5 +51,4 @@
         android:background="?android:attr/listDivider" />
 
     <include layout="@layout/leaderboards_placeholder" />
-
 </LinearLayout>

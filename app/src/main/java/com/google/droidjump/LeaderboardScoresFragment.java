@@ -16,7 +16,6 @@
 
 package com.google.droidjump;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,8 +53,9 @@ public class LeaderboardScoresFragment extends Fragment {
     private LeaderboardsScoresAdapter adapter;
     private int timeSpan;
     private int collection;
-    private int layoutId;
+    private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
+    private static final int SCORES_PER_PAGE = 25;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -68,7 +68,7 @@ public class LeaderboardScoresFragment extends Fragment {
         scores = new ArrayList<>();
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
-        layoutId = R.id.scores_recycler_view;
+        recyclerViewId = R.id.scores_recycler_view;
     }
 
     @Override
@@ -109,22 +109,27 @@ public class LeaderboardScoresFragment extends Fragment {
         fetchScores(timeSpan, collection);
     }
 
-    @SuppressLint("CommitPrefEdits")
     private void fetchScores(int timeSpan, int collection) {
-        scores.clear();
-        LoadingHelper.onLoading(activity, getView(), layoutId);
+        View rootView = getView();
+        TextView emptyListText = rootView.findViewById(R.id.empty_list_text);
+        emptyListText.setVisibility(View.GONE);
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
-                collection, GameConstants.SCORES_PER_PAGE, /* forceReload = */ false)
+                collection, SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
-                        scores.clear();
-                        for (LeaderboardScore score : scoreBuffer) {
-                            scores.add(score.freeze());
+                        if (scoreBuffer.getCount() > 0) {
+                            scores.clear();
+                            for (LeaderboardScore score : scoreBuffer) {
+                                scores.add(score.freeze());
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            emptyListText.setVisibility(View.VISIBLE);
                         }
-                        adapter.notifyDataSetChanged();
-                        LoadingHelper.onLoaded(getView(), layoutId);
+                        LoadingHelper.onLoaded(rootView, recyclerViewId);
                         scoreBuffer.close();
                     } else {
                         if (task.getException() instanceof FriendsResolutionRequiredException) {

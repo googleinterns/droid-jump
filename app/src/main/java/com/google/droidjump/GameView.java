@@ -93,7 +93,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Droid should be on a ground height, but platform includes grass.
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
-
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
@@ -256,7 +255,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void updatePlatformCoordinates() {
-        // The leftmost coordinate where the new platform starts
+        // The leftmost coordinate where the new platform starts.
         platformX = (platformX - levelSpeed) % platform.getWidth();
     }
 
@@ -306,11 +305,16 @@ public class GameView extends SurfaceView implements Runnable {
     private void updateScoreInMaxScoreLeaderboard() {
         SharedPreferences gameData
                 = activity.getSharedPreferences(GameConstants.GAME_VIEW_DATA, Context.MODE_PRIVATE);
-        long maxScore = gameData.getLong(GameConstants.INFINITE_LEVEL_MAX_SCORE, /* defValue= */ GameConstants.SCORE_DEF_VALUE);
-        if (maxScore < score && activity.getSavedSignedInAccount() != null) {
-            String leaderboardId = activity.getResources().getString(R.string.leaderboard_best_score);
-            activity.getLeaderboardsClient().submitScore(leaderboardId, score);
+        String leaderboardId = getResources().getString(R.string.leaderboard_best_score);
+        long maxLevelScore = LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex());
+        long maxBestScore = Math.max(gameData.getLong(leaderboardId, /* defValue= */ GameConstants.SCORE_DEF_VALUE), maxLevelScore);
+        // Update a local best score.
+        gameData.edit().putLong(leaderboardId, /* defValue= */ maxBestScore).apply();
+        // Update Play Game Services Best Score leaderboard.
+        if (activity.getSavedSignedInAccount() != null) {
+            activity.getLeaderboardsClient().submitScore(leaderboardId, maxBestScore);
         }
+        Log.d("GAME_SCORE_BEST", String.valueOf(gameData.getLong(leaderboardId, 0)));
     }
 
     private void winGame() {

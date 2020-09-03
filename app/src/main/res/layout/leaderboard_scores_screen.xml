@@ -82,6 +82,14 @@
                 android:theme="@style/MySwitch"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+            <TextView
+                android:id="@+id/empty_list_text"
+                style="@style/RegularText"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/empty_scores_list_text"
+                android:visibility="gone" />
+
+
             <include layout="@layout/loading_layout" />
 
             <androidx.recyclerview.widget.RecyclerView

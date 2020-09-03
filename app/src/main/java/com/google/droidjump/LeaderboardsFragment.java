@@ -16,14 +16,13 @@
 
 package com.google.droidjump;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,17 +41,16 @@ public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
     private ArrayList<Leaderboard> leaderboards;
     private LeaderboardsAdapter adapter;
-    private int layoutId;
+    private int recyclerViewId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         leaderboards = new ArrayList<>();
-        layoutId = R.id.leaderboards_recycler_view;
+        recyclerViewId = R.id.leaderboards_recycler_view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboards_screen, container, /* attachToRoot= */ false);
@@ -68,20 +66,27 @@ public class LeaderboardsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchLeaderboards(false);
+        fetchLeaderboards();
     }
 
-    private void fetchLeaderboards(boolean isForceReload) {
-        leaderboards.clear();
-        LoadingHelper.onLoading(activity, getView(), layoutId);
-        activity.getLeaderboardsClient().loadLeaderboardMetadata(/* forceReload = */ isForceReload)
+    private void fetchLeaderboards() {
+        View rootView = getView();
+        TextView emptyListText = rootView.findViewById(R.id.empty_list_text);
+        emptyListText.setVisibility(View.GONE);
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
+        activity.getLeaderboardsClient().loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
-                    for (Leaderboard leaderboard : leaderboardBuffer) {
-                        leaderboards.add(leaderboard.freeze());
+                    if (leaderboardBuffer.getCount() > 0) {
+                        leaderboards.clear();
+                        for (Leaderboard leaderboard : leaderboardBuffer) {
+                            leaderboards.add(leaderboard.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        emptyListText.setVisibility(View.VISIBLE);
                     }
-                    adapter.notifyDataSetChanged();
-                    LoadingHelper.onLoaded(getView(), layoutId);
+                    LoadingHelper.onLoaded(rootView, recyclerViewId);
                     leaderboardBuffer.close();
                 });
     }

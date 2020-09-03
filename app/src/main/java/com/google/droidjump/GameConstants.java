@@ -35,7 +35,13 @@ public interface GameConstants {
     int SCORE_DEF_VALUE = 0; // Default value.
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
-    int SCORES_PER_PAGE = 25; // Count of scores on one page.
+    int[] LEADERBOARD_LIST = {
+            R.string.leaderboard_cactus_jumper,
+            R.string.leaderboard_bat_avoider,
+            R.string.leaderboard_palm_climber,
+            R.string.leaderboard_best_score,
+            R.string.leaderboard_best_time
+    }; // Leaderboards for Play Game Services.
 
     double GROUND_PROPORTION = 0.6; // Handpicked value of proportion in a platform picture.
 
@@ -46,6 +52,4 @@ public interface GameConstants {
     String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
     // Used to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
-    String INFINITE_LEVEL_MAX_SCORE = "com.google.droidjump.InfiniteLevelMaxScore"; // Max score from all infinite levels of the game.
-    String GAME_TIME = "com.google.droidjump.GameView.GameTime"; // Amount of time to pass all levels.
 }
