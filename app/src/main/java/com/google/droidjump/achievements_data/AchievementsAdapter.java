@@ -17,6 +17,8 @@
 package com.google.droidjump.achievements_data;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,13 +102,16 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView icon = holder.getIcon();
 
         View progressBarView = activity.getLayoutInflater().inflate(R.layout.progress_bar_layout, null);
-//        final int height = View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.EXACTLY);
-//        final int width = View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.EXACTLY);
-//        progressBarView.measure(height, width);
-        progressBarView.setDrawingCacheEnabled(true);
-        progressBarView.buildDrawingCache();
-        Bitmap bitmap = Bitmap.createBitmap(progressBarView.getDrawingCache());
-        icon.setImageBitmap(bitmap);
+        Log.d("ProgressBar", "Params " + progressBarView.getWidth() + " " + progressBarView.getHeight());
+        //progressBarView.setLayoutParams(new ViewGroup.LayoutParams(20, 20));
+        Bitmap bitmap = getBitmapFromView(progressBarView);
+        //icon.setImageBitmap(bitmap);
+        icon.post(new Runnable() {
+            @Override
+            public void run() {
+                icon.setImageBitmap(bitmap);
+            }
+        });
         progressBarView.setDrawingCacheEnabled(false);
         ImageManager manager = ImageManager.create(activity);
         switch (achievement.getState()) {
@@ -120,6 +125,14 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 //TODO(dnikolskaia): Load image for hidden achievements.
                 break;
         }
+    }
+
+    public Bitmap getBitmapFromView(View view)
+    {
+        Bitmap bitmap = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
     }
 
     @Override
