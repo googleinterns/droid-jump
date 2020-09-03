@@ -24,7 +24,6 @@ import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.google.droidjump.GameConstants;
 import com.google.droidjump.MainActivity;
 import com.google.droidjump.R;
 import com.google.droidjump.leveldata.LevelConfig;
@@ -78,21 +77,7 @@ public class LevelManager {
         gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
         gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
         gameDataEditor.apply();
-        clearScores();
-    }
-
-    public static void clearScores() {
-        // Clearing local leaderboard scores.
-        for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
-            String leaderboardId = activity.getResources().getString(leaderboard);
-            gameDataEditor.putLong(leaderboardId, SCORE_DEF_VALUE);
-        }
-
-        // Clearing local level scores.
-        for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
-            gameDataEditor.putLong(String.valueOf(levelIndex), SCORE_DEF_VALUE);
-        }
-        gameDataEditor.apply();
+        ScoreManager.clearScores();
     }
 
     public static int getCurrentLevelIndex() {

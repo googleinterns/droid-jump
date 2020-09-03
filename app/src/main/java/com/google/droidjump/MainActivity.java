@@ -46,6 +46,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
+import com.google.droidjump.models.ScoreManager;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -67,6 +68,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScoreManager.init(this);
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
@@ -200,7 +202,6 @@ public class MainActivity extends FragmentActivity {
         savedSignedInAccount = null;
         leaderboardsClient = null;
         disableNavigationMenu();
-        LevelManager.clearScores();
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {

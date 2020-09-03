@@ -33,8 +33,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.android.gms.games.LeaderboardsClient;
-import com.google.android.gms.games.leaderboard.LeaderboardScore;
-import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.LevelType;
@@ -46,6 +44,7 @@ import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.Palm;
+import com.google.droidjump.models.ScoreManager;
 import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -201,36 +200,24 @@ public class GameView extends SurfaceView implements Runnable {
             return;
         }
         LeaderboardsClient client = activity.getLeaderboardsClient();
-        int[] leaderboards = {R.string.leaderboard_cactus_jumper, R.string.leaderboard_bat_avoider, R.string.leaderboard_palm_climber};
         Resources resources = getResources();
-        for (int leaderboard : leaderboards) {
+        for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
             String leaderboardId = resources.getString(leaderboard);
-            client.loadCurrentPlayerLeaderboardScore(
-                    leaderboardId,
-                    LeaderboardVariant.TIME_SPAN_ALL_TIME,
-                    LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(data -> {
-                        LeaderboardScore leaderboardScore = data.get();
-                        long newScore;
-                        switch (leaderboard) {
-                            case R.string.leaderboard_cactus_jumper:
-                                newScore = cactusScore;
-                                break;
-                            case R.string.leaderboard_bat_avoider:
-                                newScore = batScore;
-                                break;
-                            case R.string.leaderboard_palm_climber:
-                                newScore = palmScore;
-                                break;
-                            default:
-                                Log.e(getClass().getName(), "An updateObstacleLeaderboards function: a leaderboard not found.");
-                                newScore = 0;
-                        }
-                        if (leaderboardScore != null) {
-                            newScore += leaderboardScore.getRawScore();
-                        }
-                        client.submitScore(leaderboardId, newScore);
-                    }
-            );
+            long score = ScoreManager.getLocalScoreFromLeaderboard(leaderboardId);
+            switch (leaderboard) {
+                case R.string.leaderboard_cactus_jumper:
+                    score += cactusScore;
+                    break;
+                case R.string.leaderboard_bat_avoider:
+                    score += batScore;
+                    break;
+                case R.string.leaderboard_palm_climber:
+                    score += palmScore;
+                    break;
+                default:
+                    Log.e(getClass().getName(), "An updateObstacleLeaderboards function: a leaderboard not found.");
+            }
+            client.submitScore(leaderboardId, score);
         }
     }
 
@@ -314,7 +301,6 @@ public class GameView extends SurfaceView implements Runnable {
         if (activity.getSavedSignedInAccount() != null) {
             activity.getLeaderboardsClient().submitScore(leaderboardId, maxBestScore);
         }
-        Log.d("GAME_SCORE_BEST", String.valueOf(gameData.getLong(leaderboardId, 0)));
     }
 
     private void winGame() {
