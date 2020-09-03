@@ -29,13 +29,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.games.FriendsResolutionRequiredException;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.PlayersClient;
 import com.google.droidjump.models.LoadingHelper;
+import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,26 @@ public class FriendsFragment extends Fragment {
         activity = (MainActivity) getActivity();
         players = new ArrayList<>();
         adapter = new FriendsAdapter(players, activity);
-        client = Games.getPlayersClient(activity, activity.getSavedSignedInAccount());
+        client = activity.getPlayersClient();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.friends_screen, container, /* attachToRoot = */ false);
+        RecyclerView recyclerView = view.findViewById(this.recyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(adapter);
+        view.findViewById(R.id.load_more_button).setOnClickListener(ignored -> loadMore());
+        view.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
+        NavigationHelper.addOnBackPressedEventListener(activity);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchFriends();
     }
 
     @Override
@@ -64,25 +84,9 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.friends_screen, container, /* attachToRoot = */ false);
-        RecyclerView recyclerView = view.findViewById(this.recyclerView);
-        recyclerView.setAdapter(adapter);
-        view.findViewById(R.id.load_more_button).setOnClickListener(ignored -> loadMore());
-        view.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fetchFriends();
-    }
-
     private void fetchFriends() {
-        LoadingHelper.onLoading(activity, getView(), recyclerView);
+        View rootView = getView();
+        LoadingHelper.onLoading(activity, rootView, recyclerView);
         client.loadFriends(GameConstants.ITEMS_PER_PAGE, /* forceReload = */ false)
                 .addOnSuccessListener(data -> {
                     PlayerBuffer playerBuffer = data.get();
@@ -95,7 +99,7 @@ public class FriendsFragment extends Fragment {
                     } else {
                         onEmptyFriendsList();
                     }
-                    LoadingHelper.onLoaded(getView(), recyclerView);
+                    LoadingHelper.onLoaded(rootView, recyclerView);
                     playerBuffer.close();
                 })
                 .addOnFailureListener(exception -> {
@@ -121,7 +125,8 @@ public class FriendsFragment extends Fragment {
     }
 
     private void loadMore() {
-        LoadingHelper.onLoading(activity, getView(), recyclerView);
+        View rootView = getView();
+        LoadingHelper.onLoading(activity, rootView, recyclerView);
         client.loadMoreFriends(GameConstants.ITEMS_PER_PAGE)
                 .addOnSuccessListener(data -> {
                     PlayerBuffer playerBuffer = data.get();
@@ -132,13 +137,14 @@ public class FriendsFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                     }
-                    LoadingHelper.onLoaded(getView(), recyclerView);
+                    LoadingHelper.onLoaded(rootView, recyclerView);
                     playerBuffer.close();
                 });
     }
 
     private void onEmptyFriendsList() {
-        getView().findViewById(R.id.load_more_button).setVisibility(View.GONE);
-        getView().findViewById(R.id.empty_list_text).setVisibility(View.VISIBLE);
+        View rootView = getView();
+        rootView.findViewById(R.id.load_more_button).setVisibility(View.GONE);
+        rootView.findViewById(R.id.empty_list_text).setVisibility(View.VISIBLE);
     }
 }

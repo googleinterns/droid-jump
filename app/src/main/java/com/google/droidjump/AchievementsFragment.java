@@ -17,18 +17,21 @@
 package com.google.droidjump;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.games.achievement.AchievementBuffer;
+import com.google.droidjump.achievements_data.AchievementsAdapter;
 import com.google.droidjump.models.NavigationHelper;
+import java.util.Objects;
 
 /**
  * Displays Achievements Screen.
@@ -50,57 +53,20 @@ public class AchievementsFragment extends Fragment {
                 NavigationHelper.navigateToFragment(activity, new StartFragment()));
         RecyclerView achievementsView = rootView.findViewById(R.id.achievements_recycler_view);
         achievementsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
-
-        // TODO(dnikolskaia): Extract data from Achievements client.
-        RecyclerView.Adapter adapter = new RecyclerView.Adapter<AchievementViewHolder>() {
-            @Override
-            public AchievementViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.achievement_item, viewGroup, false);
-                return new AchievementViewHolder(view);
+        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
+            if (task.isSuccessful()) {
+                AchievementBuffer achievementBuffer = task.getResult().get();
+                if (achievementBuffer != null) {
+                    AchievementsAdapter adapter = new AchievementsAdapter(achievementBuffer, activity);
+                    achievementsView.setAdapter(adapter);
+                }
+            } else {
+                //TODO(dnikolskaia): Improve exception handling behavior.
+                String message = Objects.requireNonNull(task.getException()).getMessage();
+                Log.e("AchievementsFragment", "Failed to load achievements from client: " + message);
+                Toast.makeText(activity, "Oops, something went wrong", Toast.LENGTH_SHORT).show();
             }
-
-            @Override
-            public void onBindViewHolder(AchievementViewHolder viewHolder, int i) {
-            }
-
-            @Override
-            public int getItemCount() {
-                return 0;
-            }
-        };
-
-        achievementsView.setAdapter(adapter);
+        });
         return rootView;
-    }
-
-    private class AchievementViewHolder extends RecyclerView.ViewHolder {
-        private TextView name;
-        private TextView description;
-        private TextView date;
-        private ImageView icon;
-
-        public AchievementViewHolder(View view) {
-            super(view);
-            name = view.findViewById(R.id.achievement_name);
-            icon = view.findViewById(R.id.icon);
-            description = view.findViewById(R.id.description);
-            date = view.findViewById(R.id.date);
-        }
-
-        public TextView getName() {
-            return name;
-        }
-
-        public TextView getDescription() {
-            return description;
-        }
-
-        public TextView getDate() {
-            return date;
-        }
-
-        public ImageView getIcon() {
-            return icon;
-        }
     }
 }

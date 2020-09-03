@@ -43,10 +43,12 @@
     <string name="score_text">"Score: "</string>
     <string name="player_avatar">Player avatar</string>
     <string name="sign_in">Sign in</string>
-    <string name="pgs">PGS</string>
+    <string name="play_game_services">Play Game Services</string>
     <string name="load_more">Load More</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
+    <string name="unlocked_section_name">Unlocked</string>
+    <string name="locked_section_name">Locked</string>
     <string name="date">Date</string>
     <string name="friends_empty_list_text">No friends yet</string>
     <string name="empty_leaderboards_list_text">No leaderboards yet</string>
