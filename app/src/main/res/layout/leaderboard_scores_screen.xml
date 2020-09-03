@@ -89,7 +89,6 @@
                 android:text="@string/empty_scores_list_text"
                 android:visibility="gone" />
 
-
             <include layout="@layout/loading_layout" />
 
             <androidx.recyclerview.widget.RecyclerView
