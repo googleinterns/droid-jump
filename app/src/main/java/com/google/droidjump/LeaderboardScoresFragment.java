@@ -115,7 +115,7 @@ public class LeaderboardScoresFragment extends Fragment {
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
-                collection, GameConstants.ITEMS_PER_PAGE, /* forceReload= */ false)
+                collection, SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();

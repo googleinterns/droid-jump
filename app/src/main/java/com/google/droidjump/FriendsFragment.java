@@ -41,8 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsFragment extends Fragment {
+    private static final int FRIENDS_PER_PAGE = 100;
     private static final int SHOW_SHARING_FRIENDS_CONSENT = 3561;
-    private final int recyclerView = R.id.friends_recycler_view;
+    private final int recyclerViewId = R.id.friends_recycler_view;
     private MainActivity activity;
     private List<Player> players;
     private FriendsAdapter adapter;
@@ -61,7 +62,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.friends_screen, container, /* attachToRoot = */ false);
-        RecyclerView recyclerView = view.findViewById(this.recyclerView);
+        RecyclerView recyclerView = view.findViewById(this.recyclerViewId);
         recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
         view.findViewById(R.id.load_more_button).setOnClickListener(ignored -> loadMore());
@@ -86,8 +87,8 @@ public class FriendsFragment extends Fragment {
 
     private void fetchFriends() {
         View rootView = getView();
-        LoadingHelper.onLoading(activity, rootView, recyclerView);
-        client.loadFriends(GameConstants.ITEMS_PER_PAGE, /* forceReload = */ false)
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
+        client.loadFriends(FRIENDS_PER_PAGE, /* forceReload = */ false)
                 .addOnSuccessListener(data -> {
                     PlayerBuffer playerBuffer = data.get();
                     if (playerBuffer.getCount() > 0) {
@@ -99,7 +100,7 @@ public class FriendsFragment extends Fragment {
                     } else {
                         onEmptyFriendsList();
                     }
-                    LoadingHelper.onLoaded(rootView, recyclerView);
+                    LoadingHelper.onLoaded(rootView, recyclerViewId);
                     playerBuffer.close();
                 })
                 .addOnFailureListener(exception -> {
@@ -126,8 +127,8 @@ public class FriendsFragment extends Fragment {
 
     private void loadMore() {
         View rootView = getView();
-        LoadingHelper.onLoading(activity, rootView, recyclerView);
-        client.loadMoreFriends(GameConstants.ITEMS_PER_PAGE)
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
+        client.loadMoreFriends(FRIENDS_PER_PAGE)
                 .addOnSuccessListener(data -> {
                     PlayerBuffer playerBuffer = data.get();
                     if (playerBuffer.getCount() > 0) {
@@ -137,7 +138,7 @@ public class FriendsFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                     }
-                    LoadingHelper.onLoaded(rootView, recyclerView);
+                    LoadingHelper.onLoaded(rootView, recyclerViewId);
                     playerBuffer.close();
                 });
     }
