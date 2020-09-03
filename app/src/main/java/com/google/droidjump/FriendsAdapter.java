@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayersClient;
 import java.util.List;
 
 /**
@@ -34,10 +35,12 @@ import java.util.List;
 public class FriendsAdapter extends RecyclerView.Adapter {
     private List<Player> items;
     private MainActivity activity;
+    private PlayersClient client;
 
     public FriendsAdapter(List<Player> items, FragmentActivity activity) {
         this.items = items;
         this.activity = (MainActivity) activity;
+        client = this.activity.getPlayersClient();
     }
 
     @NonNull
@@ -54,11 +57,18 @@ public class FriendsAdapter extends RecyclerView.Adapter {
         FriendsHolder holder = (FriendsHolder) baseHolder;
         ImageManager.create(activity).loadImage(holder.getAvatar(), player.getIconImageUri());
         holder.getName().setText(player.getDisplayName());
+        holder.getFriendIcon().setOnClickListener(ignored -> showComparingScreen(player));
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    private void showComparingScreen(Player player) {
+        client.getCompareProfileIntent(player).addOnSuccessListener(intent -> {
+            activity.startActivityForResult(intent, GameConstants.RC_SHOW_PROFILE);
+        });
     }
 
     /**
@@ -67,11 +77,13 @@ public class FriendsAdapter extends RecyclerView.Adapter {
     private class FriendsHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private ImageView avatar;
+        private ImageView friendIcon;
 
         public FriendsHolder(View view) {
             super(view);
             name = view.findViewById(R.id.friend_item_name);
             avatar = view.findViewById(R.id.friend_item_avatar);
+            friendIcon = view.findViewById(R.id.friend_icon);
         }
 
         public TextView getName() {
@@ -80,6 +92,10 @@ public class FriendsAdapter extends RecyclerView.Adapter {
 
         public ImageView getAvatar() {
             return avatar;
+        }
+
+        public ImageView getFriendIcon() {
+            return friendIcon;
         }
     }
 }

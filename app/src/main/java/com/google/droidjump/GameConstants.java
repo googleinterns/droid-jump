@@ -35,6 +35,7 @@ public interface GameConstants {
     int SCORE_DEF_VALUE = 0; // Default value.
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
+    int RC_SHOW_PROFILE = 3838; // Request code to show profile.
     int[] LEADERBOARD_LIST = {
             R.string.leaderboard_cactus_jumper,
             R.string.leaderboard_bat_avoider,

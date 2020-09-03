@@ -63,6 +63,7 @@ public class MainActivity extends FragmentActivity {
     private GoogleSignInAccount savedSignedInAccount;
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
+    private PlayersClient playersClient;
     private SharedPreferences gameData;
 
     @Override
@@ -78,6 +79,7 @@ public class MainActivity extends FragmentActivity {
         leaderboardsClient = null;
         achievementsClient = null;
         savedSignedInAccount = null;
+        playersClient = null;
         isActiveConnection = false;
     }
 
@@ -99,6 +101,10 @@ public class MainActivity extends FragmentActivity {
 
     public AchievementsClient getAchievementsClient() {
         return achievementsClient;
+    }
+
+    public PlayersClient getPlayersClient() {
+        return playersClient;
     }
 
     public void countTimeOfPlaying() {
@@ -169,8 +175,7 @@ public class MainActivity extends FragmentActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
             // Already signed in.
-            GoogleSignInAccount signedInAccount = account;
-            onConnected(signedInAccount);
+            onConnected(account);
         } else {
             // Haven't been signed-in before. Try the silent sign-in first.
             GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
@@ -201,6 +206,9 @@ public class MainActivity extends FragmentActivity {
         isActiveConnection = true;
         savedSignedInAccount = null;
         leaderboardsClient = null;
+        achievementsClient = null;
+        playersClient = null;
+        ScoreManager.setClient(null);
         disableNavigationMenu();
     }
 
@@ -209,9 +217,8 @@ public class MainActivity extends FragmentActivity {
             savedSignedInAccount = googleSignInAccount;
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
+            playersClient = Games.getPlayersClient(this, savedSignedInAccount);
             ScoreManager.setClient(leaderboardsClient);
-            // Get the playerId from the PlayersClient.
-            PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         this.player = player;
