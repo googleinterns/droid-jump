@@ -114,13 +114,13 @@ public class MainActivity extends FragmentActivity {
                             @Override
                             public void run() {
                                 if (savedSignedInAccount != null) {
-                                    long time = gameData.getLong(leaderboardId, /* defValue = */ 0);
+                                    long time = ScoreManager.getScore(leaderboardId);
                                     if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
-                                        leaderboardsClient.submitScore(leaderboardId, time);
+                                        ScoreManager.submitScore(leaderboardId, time);
                                         timer.cancel();
                                     }
                                     time += TEN_SECONDS_IN_MILLISECONDS;
-                                    gameData.edit().putLong(leaderboardId, time).apply();
+                                    ScoreManager.submitLocalScore(leaderboardId, time);
                                 }
                             }
                         };
@@ -209,6 +209,7 @@ public class MainActivity extends FragmentActivity {
             savedSignedInAccount = googleSignInAccount;
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
+            ScoreManager.setClient(leaderboardsClient);
             // Get the playerId from the PlayersClient.
             PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
             playersClient.getCurrentPlayer()
@@ -320,14 +321,10 @@ public class MainActivity extends FragmentActivity {
                         if (score != null) {
                             long leaderboardScore = score.getRawScore();
                             long newScore = Math.max(localScore, leaderboardScore);
-                            // Update a local score.
-                            gameData.edit().putLong(leaderboardId, newScore).apply();
-                            // Update a leaderboard score.
-                            if (newScore != leaderboardScore) {
-                                leaderboardsClient.submitScore(leaderboardId, newScore);
-                            }
+                            // Update local and leaderboard score.
+                            ScoreManager.submitScore(leaderboardId, newScore);
                         } else {
-                            leaderboardsClient.submitScore(leaderboardId, localScore);
+                            ScoreManager.submitScore(leaderboardId, localScore);
                         }
                     });
         }

@@ -21,6 +21,7 @@ import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.google.android.gms.games.LeaderboardsClient;
 import com.google.droidjump.GameConstants;
 import com.google.droidjump.MainActivity;
 
@@ -28,15 +29,33 @@ public class ScoreManager {
     private static SharedPreferences gameData;
     private static SharedPreferences.Editor gameDataEditor;
     private static MainActivity activity;
+    private static LeaderboardsClient client;
 
     public static void init(Context context) {
         activity = (MainActivity) context;
         gameData = context.getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         gameDataEditor = gameData.edit();
+        client = null;
     }
 
-    public static long getLocalScoreFromLeaderboard(String leaderboardId) {
+    public static void setClient(LeaderboardsClient client) {
+        ScoreManager.client = client;
+    }
+
+    public static long getScore(String leaderboardId) {
         return gameData.getLong(leaderboardId, GameConstants.SCORE_DEF_VALUE);
+    }
+
+    public static void submitScore(String leaderboardId, long value) {
+        submitLocalScore(leaderboardId, value);
+        // Submit leaderboard score.
+        if (client != null) {
+            client.submitScore(leaderboardId, value);
+        }
+    }
+
+    public static void submitLocalScore(String leaderboardId, long value) {
+        gameDataEditor.putLong(leaderboardId, value).apply();
     }
 
     public static void clearScores() {

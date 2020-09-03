@@ -203,7 +203,7 @@ public class GameView extends SurfaceView implements Runnable {
         Resources resources = getResources();
         for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
             String leaderboardId = resources.getString(leaderboard);
-            long score = ScoreManager.getLocalScoreFromLeaderboard(leaderboardId);
+            long score = ScoreManager.getScore(leaderboardId);
             switch (leaderboard) {
                 case R.string.leaderboard_cactus_jumper:
                     score += cactusScore;
@@ -217,7 +217,7 @@ public class GameView extends SurfaceView implements Runnable {
                 default:
                     Log.e(getClass().getName(), "An updateObstacleLeaderboards function: a leaderboard not found.");
             }
-            client.submitScore(leaderboardId, score);
+            ScoreManager.submitScore(leaderboardId, score);
         }
     }
 
@@ -294,13 +294,9 @@ public class GameView extends SurfaceView implements Runnable {
                 = activity.getSharedPreferences(GameConstants.GAME_VIEW_DATA, Context.MODE_PRIVATE);
         String leaderboardId = getResources().getString(R.string.leaderboard_best_score);
         long maxLevelScore = LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex());
-        long maxBestScore = Math.max(gameData.getLong(leaderboardId, /* defValue= */ GameConstants.SCORE_DEF_VALUE), maxLevelScore);
-        // Update a local best score.
-        gameData.edit().putLong(leaderboardId, /* defValue= */ maxBestScore).apply();
-        // Update Play Game Services Best Score leaderboard.
-        if (activity.getSavedSignedInAccount() != null) {
-            activity.getLeaderboardsClient().submitScore(leaderboardId, maxBestScore);
-        }
+        long maxBestScore = Math.max(ScoreManager.getScore(leaderboardId), maxLevelScore);
+        // Update a local and leaderboard best score.
+        ScoreManager.submitScore(leaderboardId, maxBestScore);
     }
 
     private void winGame() {
