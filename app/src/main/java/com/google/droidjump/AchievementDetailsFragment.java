@@ -23,9 +23,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
@@ -51,7 +53,7 @@ public class AchievementDetailsFragment extends Fragment {
         activity = (MainActivity) getActivity();
     }
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi"})
+    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi", "DefaultLocale"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,6 +78,14 @@ public class AchievementDetailsFragment extends Fragment {
                 ImageManager.create(activity).loadImage(achievementIcon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
+                if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {
+                    ((ConstraintLayout)rootView.findViewById(R.id.progressbar_layout)).setVisibility(View.VISIBLE);
+                    achievementIcon.setVisibility(View.GONE);
+                    int progress = getPercentCountOfProgress(achievement);
+                    ((ProgressBar)rootView.findViewById(R.id.progress_bar)).setProgress(progress);
+                    ((TextView)rootView.findViewById(R.id.progress_text)).setText(String.format("%d%s", progress, "%"));
+                    break;
+                }
                 achievementIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));
                 dateLayout.setVisibility(View.GONE);
                 break;
@@ -88,6 +98,10 @@ public class AchievementDetailsFragment extends Fragment {
                 break;
         }
         return rootView;
+    }
+
+    private int getPercentCountOfProgress(Achievement achievement) {
+        return achievement.getCurrentSteps() * 100 / achievement.getTotalSteps();
     }
 }
 
