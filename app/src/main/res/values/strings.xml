@@ -50,6 +50,7 @@
     <string name="unlocked_section_name">Unlocked</string>
     <string name="locked_section_name">Locked</string>
     <string name="date">Date</string>
+    <string name="friends_empty_list_text">No friends yet</string>
     <string name="empty_leaderboards_list_text">No leaderboards yet</string>
     <string name="empty_scores_list_text">No scores yet</string>
     <string name="achievement_icon">Achievement icon</string>
