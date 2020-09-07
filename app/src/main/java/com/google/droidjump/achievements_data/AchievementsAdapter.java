@@ -16,15 +16,15 @@
 
 package com.google.droidjump.achievements_data;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
@@ -100,26 +100,22 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.getDescription().setText(achievement.getDescription());
         holder.getName().setText(achievement.getName());
         ImageView icon = holder.getIcon();
-
-        View progressBarView = activity.getLayoutInflater().inflate(R.layout.progress_bar_layout, null);
-        Log.d("ProgressBar", "Params " + progressBarView.getWidth() + " " + progressBarView.getHeight());
-        //progressBarView.setLayoutParams(new ViewGroup.LayoutParams(20, 20));
-        Bitmap bitmap = getBitmapFromView(progressBarView);
-        //icon.setImageBitmap(bitmap);
-        icon.post(new Runnable() {
-            @Override
-            public void run() {
-                icon.setImageBitmap(bitmap);
-            }
-        });
-        progressBarView.setDrawingCacheEnabled(false);
         ImageManager manager = ImageManager.create(activity);
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
-                //manager.loadImage(icon, achievement.getUnlockedImageUri());
+                manager.loadImage(icon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
-                //manager.loadImage(icon, achievement.getRevealedImageUri());
+                if (achievement.getType() == Achievement.TYPE_INCREMENTAL){
+                    holder.getProgressbarLayout().setVisibility(View.VISIBLE);
+                    icon.setVisibility(View.GONE);
+                    int percentage = getPercentCountOfProgress(achievement);
+                    holder.getProgressBar().setProgress(percentage);
+                    holder.getProgressText().setText(String.valueOf(percentage) + "%");
+                }
+                else{
+                    manager.loadImage(icon, achievement.getRevealedImageUri());
+                }
                 break;
             case Achievement.STATE_HIDDEN:
                 //TODO(dnikolskaia): Load image for hidden achievements.
@@ -127,12 +123,11 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public Bitmap getBitmapFromView(View view)
-    {
-        Bitmap bitmap = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap;
+    private int getPercentCountOfProgress(Achievement achievement){
+        int totalSteps = achievement.getTotalSteps();
+        int currentSteps = achievement.getCurrentSteps();
+        Log.d("IncrementslAchievement", "total steps: " + totalSteps + " current steps : " + currentSteps);
+        return currentSteps  * 100 / totalSteps;
     }
 
     @Override
@@ -188,14 +183,19 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static class AchievementViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView description;
-        private TextView date;
         private ImageView icon;
+        private ConstraintLayout progressbarLayout;
+        private ProgressBar progressBar;
+        private TextView progressText;
 
         public AchievementViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.achievement_name);
             icon = view.findViewById(R.id.icon);
             description = view.findViewById(R.id.description);
+            progressbarLayout = view.findViewById(R.id.progressbar_layout);
+            progressBar = view.findViewById(R.id.progress_bar);
+            progressText = view.findViewById(R.id.progress_text);
         }
 
         public TextView getName() {
@@ -206,12 +206,20 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return description;
         }
 
-        public TextView getDate() {
-            return date;
-        }
-
         public ImageView getIcon() {
             return icon;
+        }
+
+        public ConstraintLayout getProgressbarLayout() {
+            return progressbarLayout;
+        }
+
+        public ProgressBar getProgressBar() {
+            return progressBar;
+        }
+
+        public TextView getProgressText() {
+            return progressText;
         }
     }
 }

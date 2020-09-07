@@ -17,15 +17,23 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
+        <shape
+            android:shape="ring"
+            android:thicknessRatio="15"
+            android:useLevel="false">
+            <solid android:color="#DDD" />
+        </shape>
+    </item>
+    <item>
         <rotate
             android:fromDegrees="270"
             android:toDegrees="270">
             <shape
                 android:shape="ring"
-                android:thicknessRatio="16"
+                android:thicknessRatio="15"
                 android:useLevel="true">
                 <gradient
-                    android:startColor="#CCDE26"
+                    android:startColor="#b2cb39"
                     android:endColor="#FFFFFF"
                     android:type="sweep"/>
             </shape>
