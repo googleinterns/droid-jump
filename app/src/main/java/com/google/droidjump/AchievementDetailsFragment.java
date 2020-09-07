@@ -70,6 +70,7 @@ public class AchievementDetailsFragment extends Fragment {
         nameTextView.setText(achievement.getName());
         descriptionTextView.setText(achievement.getDescription());
         xpTextView.setText(String.valueOf(achievement.getXpValue()));
+
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 ImageManager.create(activity).loadImage(achievementIcon, achievement.getUnlockedImageUri());

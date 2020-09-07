@@ -101,6 +101,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         achievementHolder.getDescription().setText(achievement.getDescription());
         achievementHolder.getName().setText(achievement.getName());
         ImageView icon = achievementHolder.getIcon();
+
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 ImageManager.create(activity).loadImage(icon, achievement.getUnlockedImageUri());
