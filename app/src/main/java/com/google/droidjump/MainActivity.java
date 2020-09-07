@@ -112,25 +112,7 @@ public class MainActivity extends FragmentActivity {
                     LeaderboardVariant.TIME_SPAN_ALL_TIME,
                     LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(
                     result -> {
-                        Timer timer = new Timer();
-                        TimerTask task = new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (savedSignedInAccount != null) {
-                                    long time = ScoreManager.getScore(leaderboardId);
-                                    if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
-                                        ScoreManager.submitScore(leaderboardId, time);
-                                        timer.cancel();
-                                    }
-                                    time += TEN_SECONDS_IN_MILLISECONDS;
-                                    ScoreManager.submitLocalScore(leaderboardId, time);
-                                }
-                            }
-                        };
-                        timer.scheduleAtFixedRate(
-                                /* task = */ task,
-                                /* delay = */ TEN_SECONDS_IN_MILLISECONDS,
-                                /* period = */ TEN_SECONDS_IN_MILLISECONDS);
+                        runTimeTask(leaderboardId);
                     });
         }
     }
@@ -165,6 +147,28 @@ public class MainActivity extends FragmentActivity {
         if (!isActiveConnection) {
             signInSilently();
         }
+    }
+
+    private void runTimeTask(String leaderboardId) {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (savedSignedInAccount != null) {
+                    long time = ScoreManager.getScore(leaderboardId);
+                    if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
+                        ScoreManager.submitScore(leaderboardId, time);
+                        timer.cancel();
+                    }
+                    time += TEN_SECONDS_IN_MILLISECONDS;
+                    ScoreManager.submitLocalScore(leaderboardId, time);
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(
+                /* task = */ task,
+                /* delay = */ TEN_SECONDS_IN_MILLISECONDS,
+                /* period = */ TEN_SECONDS_IN_MILLISECONDS);
     }
 
     private void signInSilently() {

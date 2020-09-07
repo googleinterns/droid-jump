@@ -52,11 +52,11 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
+    private final Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private MainActivity activity;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Paint levelPaint;
-    private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private LevelStrategy level;
     private List<Obstacle> obstacleList;
     private Thread thread;
@@ -67,7 +67,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int timePoint;
     private int intervalTimePoint;
     private int levelSpeed;
-    private int platformX = 0;
+    private int platformX;
     private int groundHeight;
     private int score;
     private int cactusScore;
@@ -215,7 +215,7 @@ public class GameView extends SurfaceView implements Runnable {
                 case R.string.leaderboard_best_time:
                     return;
                 default:
-                    Log.e(getClass().getName(), "An updateObstacleLeaderboards function: a leaderboard not found.");
+                    Log.e(getClass().getName(), "Found an unknown obstacle.");
                     return;
             }
             ScoreManager.submitScore(leaderboardId, score);
