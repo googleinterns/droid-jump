@@ -65,6 +65,7 @@ public class AchievementDetailsFragment extends Fragment {
         TextView descriptionTextView = rootView.findViewById(R.id.achievement_description);
         TextView xpTextView = rootView.findViewById(R.id.xp_value);
         TextView dateTextView = rootView.findViewById(R.id.date);
+        TextView dateCaptionTextView = rootView.findViewById(R.id.date_caption);
         LinearLayout xpLayout = rootView.findViewById(R.id.xp_layout);
         LinearLayout dateLayout = rootView.findViewById(R.id.date_layout);
         dateTextView.setText(new SimpleDateFormat("d MMMM y", Locale.ENGLISH)
@@ -76,6 +77,7 @@ public class AchievementDetailsFragment extends Fragment {
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 ImageManager.create(activity).loadImage(achievementIcon, achievement.getUnlockedImageUri());
+                dateCaptionTextView.setText(activity.getText(R.string.date_caption_for_unlocked_achievements));
                 break;
             case Achievement.STATE_REVEALED:
                 if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {

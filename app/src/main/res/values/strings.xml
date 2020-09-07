@@ -57,5 +57,6 @@
     <string name="hidden_achievement_name">Secret</string>
     <string name="hidden_achievement_description">Keep playing to learn more.</string>
     <string name="experience_poins">Experience points</string>
-    <string name="date_caption">Last updated</string>
+    <string name="date_caption_for_locked_achievements">Last updated</string>
+    <string name="date_caption_for_unlocked_achievements">Earned</string>
 </resources>

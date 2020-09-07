@@ -140,7 +140,7 @@
                     style="@style/RegularText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/date_caption" />
+                    android:text="@string/date_caption_for_locked_achievements" />
 
                 <TextView
                     android:id="@+id/date"
