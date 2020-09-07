@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.FriendsResolutionRequiredException;
-import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
@@ -56,8 +55,6 @@ public class LeaderboardScoresFragment extends Fragment {
     private int collection;
     private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
-    private static final int SCORES_PER_PAGE = 25;
-    PlayerBuffer playerBuffer = null;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -129,7 +126,7 @@ public class LeaderboardScoresFragment extends Fragment {
         LoadingHelper.onLoading(activity, getView(), recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
-                collection, SCORES_PER_PAGE, /* forceReload= */ false)
+                collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();

@@ -159,25 +159,26 @@ public class MainActivity extends FragmentActivity {
     }
 
     public Task<AnnotatedData<PlayerBuffer>> loadFriendNames() {
-        return getPlayersClient().loadFriends(100, false).addOnSuccessListener(buffer -> {
-            playerBuffer = buffer.get();
-            try {
-                while (DataBufferUtils.hasNextPage(playerBuffer)) {
-                    getPlayersClient().loadMoreFriends(100).addOnSuccessListener(data -> {
-                        playerBuffer = data.get();
-                    });
-                }
-            } finally {
-                friendNames.clear();
-                for (Player player : playerBuffer) {
-                    String friendName = player.freeze().getDisplayName();
-                    friendNames.add(friendName);
-                }
-                friendListAccess = true;
-                isLoadFriendNames = false;
-                playerBuffer.close();
-            }
-        }).addOnFailureListener(ignored -> friendListAccess = false);
+        return getPlayersClient().loadFriends(GameConstants.FRIENDS_PER_PAGE, /* forceReload = */ false)
+                .addOnSuccessListener(buffer -> {
+                    playerBuffer = buffer.get();
+                    try {
+                        while (DataBufferUtils.hasNextPage(playerBuffer)) {
+                            getPlayersClient().loadMoreFriends(GameConstants.FRIENDS_PER_PAGE).addOnSuccessListener(data -> {
+                                playerBuffer = data.get();
+                            });
+                        }
+                    } finally {
+                        friendNames.clear();
+                        for (Player player : playerBuffer) {
+                            String friendName = player.freeze().getDisplayName();
+                            friendNames.add(friendName);
+                        }
+                        friendListAccess = true;
+                        isLoadFriendNames = false;
+                        playerBuffer.close();
+                    }
+                }).addOnFailureListener(ignored -> friendListAccess = false);
     }
 
     private void signInSilently() {
