@@ -57,16 +57,17 @@ public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "MainActivity";
-    private Player player;
     private boolean isActiveConnection;
+    private boolean friendListAccess;
+    private boolean isLoadFriendNames;
+    private Player player;
     private GoogleSignInAccount savedSignedInAccount;
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
     private PlayersClient playersClient;
-    private Boolean friendListAccess;
     private Set<String> friendNames;
     private PlayerBuffer playerBuffer;
-    private boolean isLoadFriendNames;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
