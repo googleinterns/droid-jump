@@ -91,11 +91,12 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @SuppressLint({"UseCompatLoadingForDrawables", "NewApi"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        int listPosition = items.get(position).getListPosition();
         if (holder instanceof SectionViewHolder) {
-            ((SectionViewHolder) holder).getSectionText().setText(sectionNames.get(items.get(position).getListPosition()));
+            ((SectionViewHolder) holder).getSectionText().setText(sectionNames.get(listPosition));
             return;
         }
-        Achievement achievement = achievementBuffer.get(items.get(position).getListPosition());
+        Achievement achievement = achievementBuffer.get(listPosition);
         AchievementViewHolder achievementHolder = (AchievementViewHolder) holder;
         achievementHolder.getDescription().setText(achievement.getDescription());
         achievementHolder.getName().setText(achievement.getName());
