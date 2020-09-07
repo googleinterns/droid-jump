@@ -157,4 +157,13 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:src">@drawable/pgs_icon</item>
     </style>
+
+    <style name="AchievementDescriptionText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/achievement_description_text_size</item>
+    </style>
 </resources>

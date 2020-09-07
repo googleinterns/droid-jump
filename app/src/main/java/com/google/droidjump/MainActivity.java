@@ -68,7 +68,6 @@ public class MainActivity extends FragmentActivity {
     private Set<String> friendNames;
     private PlayerBuffer playerBuffer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
