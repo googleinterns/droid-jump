@@ -31,24 +31,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.common.images.ImageManager;
-import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.FriendsResolutionRequiredException;
-import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
-import com.google.android.gms.tasks.Task;
 import com.google.droidjump.leaderboards_data.LeaderboardsScoresAdapter;
 import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Displays Leaderboards Screen.
@@ -61,8 +55,6 @@ public class LeaderboardScoresFragment extends Fragment {
     private int timeSpan;
     private int collection;
     private int recyclerViewId;
-    private boolean friendListAccess;
-    private Set<String> friends;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
     private static final int SCORES_PER_PAGE = 25;
     PlayerBuffer playerBuffer = null;
@@ -79,16 +71,18 @@ public class LeaderboardScoresFragment extends Fragment {
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
         recyclerViewId = R.id.scores_recycler_view;
-        friends = new HashSet<>();
-        friendListAccess = false;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SHOW_SHARING_FRIENDS_CONSENT) {
-            collection = LeaderboardVariant.COLLECTION_FRIENDS;
             fetchScores(timeSpan, collection);
+        } else if (requestCode == GameConstants.RC_SHOW_PROFILE) {
+            LoadingHelper.onLoading(activity, getView(), recyclerViewId);
+            activity.loadFriendNames().addOnSuccessListener(ignored -> {
+                fetchScores(timeSpan, collection);
+            });
         }
     }
 
@@ -97,7 +91,7 @@ public class LeaderboardScoresFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.leaderboard_scores_screen, container, /* attachToRoot= */ false);
         ImageManager.create(activity).loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
-        adapter = new LeaderboardsScoresAdapter(scores, activity, friends, friendListAccess);
+        adapter = new LeaderboardsScoresAdapter(scores, activity, activity.getFriendNames(), activity.isFriendListAccess());
         RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
         scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         scoresView.setAdapter(adapter);
@@ -115,33 +109,18 @@ public class LeaderboardScoresFragment extends Fragment {
         return rootView;
     }
 
-    public Task<AnnotatedData<PlayerBuffer>> loadFriends() {
-        return activity.getPlayersClient().loadFriends(100, false).addOnSuccessListener(buffer -> {
-            playerBuffer = buffer.get();
-            try {
-                while (DataBufferUtils.hasNextPage(playerBuffer)) {
-                    activity.getPlayersClient().loadMoreFriends(100).addOnSuccessListener(data -> {
-                        playerBuffer = data.get();
-                    });
-                }
-            } finally {
-                friends.clear();
-                for (Player player : playerBuffer) {
-                    String friendName = player.freeze().getDisplayName();
-                    friends.add(friendName);
-                }
-                playerBuffer.close();
-                adapter.setFriendListAccess(true);
-            }
-        });
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadFriends().addOnSuccessListener(data -> {
+        if (activity.getLoadFriendNames()) {
+            activity.loadFriendNames().addOnSuccessListener(data -> {
+                adapter.setFriendListAccess(activity.isFriendListAccess());
+                adapter.notifyDataSetChanged();
+                fetchScores(timeSpan, collection);
+            });
+        } else {
             fetchScores(timeSpan, collection);
-        });
+        }
     }
 
     private void fetchScores(int timeSpan, int collection) {

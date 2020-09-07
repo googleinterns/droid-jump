@@ -33,16 +33,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.AchievementsClient;
+import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents main activity.
@@ -57,6 +63,10 @@ public class MainActivity extends FragmentActivity {
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
     private PlayersClient playersClient;
+    private Boolean friendListAccess;
+    private Set<String> friendNames;
+    private PlayerBuffer playerBuffer;
+    private boolean isLoadFriendNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +80,18 @@ public class MainActivity extends FragmentActivity {
         leaderboardsClient = null;
         playersClient = null;
         achievementsClient = null;
+        playerBuffer = null;
+        friendListAccess = false;
+        friendNames = new HashSet<>();
+        isLoadFriendNames = true;
+    }
+
+    public boolean isFriendListAccess() {
+        return friendListAccess;
+    }
+
+    public Set<String> getFriendNames() {
+        return friendNames;
     }
 
     public void openUserMenu() {
@@ -94,6 +116,14 @@ public class MainActivity extends FragmentActivity {
 
     public PlayersClient getPlayersClient() {
         return playersClient;
+    }
+
+    public boolean getLoadFriendNames() {
+        return isLoadFriendNames;
+    }
+
+    public void setLoadFriendNames(Boolean isLoadFriendNames) {
+        this.isLoadFriendNames = isLoadFriendNames;
     }
 
     @Override
@@ -126,6 +156,28 @@ public class MainActivity extends FragmentActivity {
         if (!isActiveConnection) {
             signInSilently();
         }
+    }
+
+    public Task<AnnotatedData<PlayerBuffer>> loadFriendNames() {
+        return getPlayersClient().loadFriends(100, false).addOnSuccessListener(buffer -> {
+            playerBuffer = buffer.get();
+            try {
+                while (DataBufferUtils.hasNextPage(playerBuffer)) {
+                    getPlayersClient().loadMoreFriends(100).addOnSuccessListener(data -> {
+                        playerBuffer = data.get();
+                    });
+                }
+            } finally {
+                friendNames.clear();
+                for (Player player : playerBuffer) {
+                    String friendName = player.freeze().getDisplayName();
+                    friendNames.add(friendName);
+                }
+                friendListAccess = true;
+                isLoadFriendNames = false;
+                playerBuffer.close();
+            }
+        }).addOnFailureListener(ignored -> friendListAccess = false);
     }
 
     private void signInSilently() {
@@ -166,6 +218,8 @@ public class MainActivity extends FragmentActivity {
         leaderboardsClient = null;
         achievementsClient = null;
         playersClient = null;
+        isLoadFriendNames = true;
+        friendListAccess = false;
         disableNavigationMenu();
     }
 
@@ -175,6 +229,7 @@ public class MainActivity extends FragmentActivity {
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
             playersClient = Games.getPlayersClient(this, savedSignedInAccount);
+            loadFriendNames();
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         this.player = player;
