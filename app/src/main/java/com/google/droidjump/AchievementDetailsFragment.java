@@ -79,11 +79,11 @@ public class AchievementDetailsFragment extends Fragment {
                 break;
             case Achievement.STATE_REVEALED:
                 if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {
-                    ((ConstraintLayout)rootView.findViewById(R.id.progressbar_layout)).setVisibility(View.VISIBLE);
+                    ((ConstraintLayout) rootView.findViewById(R.id.progressbar_layout)).setVisibility(View.VISIBLE);
                     achievementIcon.setVisibility(View.GONE);
                     int progress = getPercentCountOfProgress(achievement);
-                    ((ProgressBar)rootView.findViewById(R.id.progress_bar)).setProgress(progress);
-                    ((TextView)rootView.findViewById(R.id.progress_text)).setText(String.format("%d%s", progress, "%"));
+                    ((ProgressBar) rootView.findViewById(R.id.progress_bar)).setProgress(progress);
+                    ((TextView) rootView.findViewById(R.id.progress_text)).setText(String.format("%d%s", progress, "%"));
                     break;
                 }
                 achievementIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));

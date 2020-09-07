@@ -177,7 +177,6 @@
     </style>
 
     <style name="ProgressBarText">
-        <item name="android:textSize">@dimen/small_text</item>
         <item name="layout_constraintBottom_toBottomOf">@+id/progress_bar</item>
         <item name="layout_constraintLeft_toLeftOf">@+id/progress_bar</item>
         <item name="layout_constraintRight_toRightOf">@+id/progress_bar</item>
