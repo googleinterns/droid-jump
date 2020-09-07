@@ -52,7 +52,7 @@
     <string name="date">Date</string>
     <string name="empty_leaderboards_list_text">No leaderboards yet</string>
     <string name="empty_scores_list_text">No scores yet</string>
-    <string name="achievement_icon">achievement icon</string>
+    <string name="achievement_icon">Achievement icon</string>
     <string name="hidden_achievement_name">Secret</string>
     <string name="hidden_achievement_description">Keep playing to learn more.</string>
     <string name="experience_poins">Experience points</string>
