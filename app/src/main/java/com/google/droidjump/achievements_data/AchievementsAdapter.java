@@ -16,7 +16,7 @@
 
 package com.google.droidjump.achievements_data;
 
-import android.util.Log;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +88,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new AchievementViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder mholder, int position) {
         if (items.get(position).getType() == ItemType.SECTION_NAME) {
@@ -106,14 +107,13 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 manager.loadImage(icon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
-                if (achievement.getType() == Achievement.TYPE_INCREMENTAL){
+                if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {
                     holder.getProgressbarLayout().setVisibility(View.VISIBLE);
                     icon.setVisibility(View.GONE);
-                    int percentage = getPercentCountOfProgress(achievement);
-                    holder.getProgressBar().setProgress(percentage);
-                    holder.getProgressText().setText(String.valueOf(percentage) + "%");
-                }
-                else{
+                    int progress = getPercentCountOfProgress(achievement);
+                    holder.getProgressBar().setProgress(progress);
+                    holder.getProgressText().setText(String.format("%d%s", progress, "%"));
+                } else {
                     manager.loadImage(icon, achievement.getRevealedImageUri());
                 }
                 break;
@@ -123,11 +123,8 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private int getPercentCountOfProgress(Achievement achievement){
-        int totalSteps = achievement.getTotalSteps();
-        int currentSteps = achievement.getCurrentSteps();
-        Log.d("IncrementslAchievement", "total steps: " + totalSteps + " current steps : " + currentSteps);
-        return currentSteps  * 100 / totalSteps;
+    private int getPercentCountOfProgress(Achievement achievement) {
+        return achievement.getCurrentSteps() * 100 / achievement.getTotalSteps();
     }
 
     @Override
