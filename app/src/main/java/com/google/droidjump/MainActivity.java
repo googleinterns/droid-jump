@@ -40,6 +40,7 @@ import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
@@ -56,6 +57,7 @@ public class MainActivity extends FragmentActivity {
     private GoogleSignInAccount savedSignedInAccount;
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
+    private PlayersClient playersClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,8 @@ public class MainActivity extends FragmentActivity {
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         leaderboardsClient = null;
+        playersClient = null;
+        achievementsClient = null;
     }
 
     public void openUserMenu() {
@@ -87,6 +91,10 @@ public class MainActivity extends FragmentActivity {
 
     public AchievementsClient getAchievementsClient() {
         return achievementsClient;
+    }
+
+    public PlayersClient getPlayersClient() {
+        return playersClient;
     }
 
     @Override
@@ -126,8 +134,7 @@ public class MainActivity extends FragmentActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
             // Already signed in.
-            GoogleSignInAccount signedInAccount = account;
-            onConnected(signedInAccount);
+            onConnected(account);
         } else {
             // Haven't been signed-in before. Try the silent sign-in first.
             GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
@@ -158,6 +165,8 @@ public class MainActivity extends FragmentActivity {
         isActiveConnection = true;
         savedSignedInAccount = null;
         leaderboardsClient = null;
+        achievementsClient = null;
+        playersClient = null;
         disableNavigationMenu();
     }
 
@@ -165,11 +174,10 @@ public class MainActivity extends FragmentActivity {
         if (savedSignedInAccount != googleSignInAccount) {
             savedSignedInAccount = googleSignInAccount;
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
-            // Get the playerId from the PlayersClient.
-            PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
+            leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
+            playersClient = Games.getPlayersClient(this, savedSignedInAccount);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
-                        leaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
                         this.player = player;
                         // Showing a welcome popup.
                         Games.getGamesClient(this, googleSignInAccount)
@@ -183,9 +191,9 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private OnFailureListener createFailureListener(final String string) {
+    private OnFailureListener createFailureListener(final String message) {
         return e -> {
-            Log.e(TAG, string);
+            Log.e(TAG, message);
             onDisconnected();
         };
     }
