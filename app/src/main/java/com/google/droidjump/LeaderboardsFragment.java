@@ -70,9 +70,10 @@ public class LeaderboardsFragment extends Fragment {
     }
 
     private void fetchLeaderboards() {
-        TextView emptyListText = getView().findViewById(R.id.empty_list_text);
+        View rootView = getView();
+        TextView emptyListText = rootView.findViewById(R.id.empty_list_text);
         emptyListText.setVisibility(View.GONE);
-        LoadingHelper.onLoading(activity, getView(), recyclerViewId);
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
         activity.getLeaderboardsClient().loadLeaderboardMetadata(/* forceReload = */ false)
                 .addOnSuccessListener(result -> {
                     LeaderboardBuffer leaderboardBuffer = result.get();
@@ -85,7 +86,7 @@ public class LeaderboardsFragment extends Fragment {
                     } else {
                         emptyListText.setVisibility(View.VISIBLE);
                     }
-                    LoadingHelper.onLoaded(getView(), recyclerViewId);
+                    LoadingHelper.onLoaded(rootView, recyclerViewId);
                     leaderboardBuffer.close();
                 });
     }

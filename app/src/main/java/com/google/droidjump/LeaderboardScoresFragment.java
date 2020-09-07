@@ -110,9 +110,10 @@ public class LeaderboardScoresFragment extends Fragment {
     }
 
     private void fetchScores(int timeSpan, int collection) {
-        TextView emptyListText = getView().findViewById(R.id.empty_list_text);
+        View rootView = getView();
+        TextView emptyListText = rootView.findViewById(R.id.empty_list_text);
         emptyListText.setVisibility(View.GONE);
-        LoadingHelper.onLoading(activity, getView(), recyclerViewId);
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
                 collection, SCORES_PER_PAGE, /* forceReload= */ false)
@@ -128,7 +129,7 @@ public class LeaderboardScoresFragment extends Fragment {
                         } else {
                             emptyListText.setVisibility(View.VISIBLE);
                         }
-                        LoadingHelper.onLoaded(getView(), recyclerViewId);
+                        LoadingHelper.onLoaded(rootView, recyclerViewId);
                         scoreBuffer.close();
                     } else {
                         if (task.getException() instanceof FriendsResolutionRequiredException) {

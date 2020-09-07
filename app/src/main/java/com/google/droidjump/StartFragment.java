@@ -69,6 +69,7 @@ public class StartFragment extends Fragment {
 
     private void startNewGame(View view) {
         LevelManager.resetGameData();
+        activity.countTimeOfPlaying();
         play(view);
     }
 
