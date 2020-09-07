@@ -22,8 +22,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingVertical="@dimen/fab_margin"
-    android:paddingHorizontal="@dimen/very_small_margin">
+    android:paddingHorizontal="@dimen/very_small_margin"
+    android:paddingVertical="@dimen/fab_margin">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/player_avatar_card_view"
@@ -50,13 +50,13 @@
 
         <TextView
             android:id="@+id/player_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
             android:text="@string/username"
             android:textColor="@android:color/black"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             style="@style/WrapContent">
@@ -98,6 +98,7 @@
             android:layout_height="@dimen/friend_icon_size"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/player_avatar_size">
 
             <ImageView
