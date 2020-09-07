@@ -17,14 +17,12 @@
 package com.google.droidjump.achievements_data;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
@@ -90,8 +88,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new AchievementViewHolder(view);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SectionViewHolder) {
