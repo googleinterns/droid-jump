@@ -67,6 +67,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+            <include layout="@layout/loading_layout" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/achievements_recycler_view"
                 android:layout_width="match_parent"
