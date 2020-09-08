@@ -16,21 +16,21 @@
 
 package com.google.droidjump;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
 import com.google.droidjump.leaderboards_data.LeaderboardsAdapter;
+import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
 
@@ -41,15 +41,16 @@ public class LeaderboardsFragment extends Fragment {
     private MainActivity activity;
     private ArrayList<Leaderboard> leaderboards;
     private LeaderboardsAdapter adapter;
+    private int recyclerViewId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         leaderboards = new ArrayList<>();
+        recyclerViewId = R.id.leaderboards_recycler_view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.leaderboards_screen, container, /* attachToRoot= */ false);
@@ -57,26 +58,36 @@ public class LeaderboardsFragment extends Fragment {
         leaderboardsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         adapter = new LeaderboardsAdapter(leaderboards, activity);
         leaderboardsView.setAdapter(adapter);
-        fetchLeaderboards();
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fetchLeaderboards();
+    }
+
     private void fetchLeaderboards() {
-        Games.getLeaderboardsClient(activity,
-                activity.getSavedSignedInAccount())
-                .loadLeaderboardMetadata(/* forceReload= */ false)
-                .continueWithTask(task -> {
-                    LeaderboardBuffer leaderboardBuffer = task.getResult().get();
-                    leaderboards.clear();
-                    for (Leaderboard leaderboard : leaderboardBuffer) {
-                        leaderboards.add(leaderboard.freeze());
+        View rootView = getView();
+        TextView emptyListText = rootView.findViewById(R.id.empty_list_text);
+        emptyListText.setVisibility(View.GONE);
+        LoadingHelper.onLoading(activity, rootView, recyclerViewId);
+        activity.getLeaderboardsClient().loadLeaderboardMetadata(/* forceReload = */ false)
+                .addOnSuccessListener(result -> {
+                    LeaderboardBuffer leaderboardBuffer = result.get();
+                    if (leaderboardBuffer.getCount() > 0) {
+                        leaderboards.clear();
+                        for (Leaderboard leaderboard : leaderboardBuffer) {
+                            leaderboards.add(leaderboard.freeze());
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        emptyListText.setVisibility(View.VISIBLE);
                     }
-                    adapter.notifyDataSetChanged();
+                    LoadingHelper.onLoaded(rootView, recyclerViewId);
                     leaderboardBuffer.close();
-                    return null;
                 });
     }
 }

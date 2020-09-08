@@ -50,7 +50,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/achievement_title"
+                android:id="@+id/achievement_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
@@ -79,35 +79,53 @@
                 style="@style/AchievementDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/double_fab_margin"
                 android:text="@string/description" />
 
-            <TextView
-                android:id="@+id/xp_caption"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/xp_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/experience_poins" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-            <TextView
-                android:id="@+id/xp_value"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/xp_caption"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/experience_poins" />
 
-            <TextView
-                android:id="@+id/date_caption"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/xp_value"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/fab_margin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/date_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/date_caption" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-            <TextView
-                android:id="@+id/date"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/date_caption"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_caption" />
 
+                <TextView
+                    android:id="@+id/date"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
         <ImageButton

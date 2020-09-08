@@ -27,16 +27,20 @@ import static com.google.droidjump.GameConstants.PALM_COMBO_COUNT;
 import static com.google.droidjump.GameConstants.PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.leveldata.LevelConfig;
 import com.google.droidjump.leveldata.InfiniteLevelData;
 import com.google.droidjump.leveldata.LevelStrategy;
+import com.google.droidjump.leveldata.LevelType;
 import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Cactus;
@@ -45,6 +49,7 @@ import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.Obstacle;
 import com.google.droidjump.models.Palm;
+import com.google.droidjump.models.ScoreManager;
 import com.google.droidjump.models.TwoStepAnimative;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -54,12 +59,15 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
+    private final Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
     private MainActivity activity;
     private AchievementsManager achievementsManager;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
-    private Thread thread;
     private Paint levelPaint;
+    private LevelStrategy level;
+    private List<Obstacle> obstacleList;
+    private Thread thread;
     private boolean isPlaying;
     private int screenX;
     private int screenY;
@@ -67,12 +75,12 @@ public class GameView extends SurfaceView implements Runnable {
     private int timePoint;
     private int intervalTimePoint;
     private int levelSpeed;
-    private List<Obstacle> obstacleList;
-    private int platformX = 0;
+    private int platformX;
     private int groundHeight;
-    private Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
-    private LevelStrategy level;
     private int score;
+    private int cactusScore;
+    private int palmScore;
+    private int batScore;
     private int obstaclesCount;
     private int cactusCount;
     private int palmCount;
@@ -100,7 +108,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         // Droid should be on a ground height, but platform includes grass.
         groundHeight = (int) (platform.getHeight() * GROUND_PROPORTION);
-
         droid = new Droid(screenMargin, screenY - groundHeight, getResources());
         NavigationHelper.addOnBackPressedEventListener(activity, new StartFragment());
     }
@@ -195,7 +202,45 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 it.remove();
                 score += 10;
+                if (activity.getSavedSignedInAccount() != null) {
+                    if (obstacle instanceof Cactus) {
+                        cactusScore += 1;
+                    } else if (obstacle instanceof Bat) {
+                        batScore += 1;
+                    } else if (obstacle instanceof Palm) {
+                        palmScore += 1;
+                    }
+                }
             }
+        }
+    }
+
+    private void updateObstacleLeaderboards() {
+        if (activity.getSavedSignedInAccount() == null) {
+            return;
+        }
+        Resources resources = getResources();
+        for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
+            String leaderboardId = resources.getString(leaderboard);
+            long score = ScoreManager.getScore(leaderboardId);
+            switch (leaderboard) {
+                case R.string.leaderboard_cactus_jumper:
+                    score += cactusScore;
+                    break;
+                case R.string.leaderboard_bat_avoider:
+                    score += batScore;
+                    break;
+                case R.string.leaderboard_palm_climber:
+                    score += palmScore;
+                    break;
+                case R.string.leaderboard_best_score:
+                case R.string.leaderboard_best_time:
+                    return;
+                default:
+                    Log.e(getClass().getName(), "Found an unknown obstacle.");
+                    return;
+            }
+            ScoreManager.submitScore(leaderboardId, score);
         }
     }
 
@@ -243,7 +288,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void updatePlatformCoordinates() {
-        // The leftmost coordinate where the new platform starts
+        // The leftmost coordinate where the new platform starts.
         platformX = (platformX - levelSpeed) % platform.getWidth();
     }
 
@@ -283,12 +328,26 @@ public class GameView extends SurfaceView implements Runnable {
         isPlaying = false;
         LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameFailureFragment());
+        LevelConfig currentLevel = LevelManager.getGameLevels().get(LevelManager.getCurrentLevelIndex());
+        if (currentLevel.getLevelType() == LevelType.INFINITE) {
+            updateScoreInMaxScoreLeaderboard();
+        }
+        updateObstacleLeaderboards();
+    }
+
+    private void updateScoreInMaxScoreLeaderboard() {
+        String leaderboardId = getResources().getString(R.string.leaderboard_best_score);
+        long maxLevelScore = LevelManager.getLevelMaxScore(LevelManager.getCurrentLevelIndex());
+        long maxBestScore = Math.max(ScoreManager.getScore(leaderboardId), maxLevelScore);
+        // Update a local and leaderboard best score.
+        ScoreManager.submitScore(leaderboardId, maxBestScore);
     }
 
     private void winGame() {
         isPlaying = false;
         LevelManager.setCurrentLevelScore(score);
         NavigationHelper.navigateToFragment(activity, new GameSuccessFragment());
+        updateObstacleLeaderboards();
     }
 
     private void drawDroid(Canvas canvas) {

@@ -43,13 +43,19 @@
     <string name="score_text">"Score: "</string>
     <string name="player_avatar">Player avatar</string>
     <string name="sign_in">Sign in</string>
-    <string name="pgs">PGS</string>
+    <string name="play_game_services">Play Game Services</string>
+    <string name="load_more">Load More</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
+    <string name="unlocked_section_name">Unlocked</string>
+    <string name="locked_section_name">Locked</string>
     <string name="date">Date</string>
-    <string name="achievement_icon">achievement icon</string>
+    <string name="friends_empty_list_text">No friends yet</string>
+    <string name="empty_leaderboards_list_text">No leaderboards yet</string>
+    <string name="empty_scores_list_text">No scores yet</string>
+    <string name="achievement_icon">Achievement icon</string>
     <string name="hidden_achievement_name">Secret</string>
     <string name="hidden_achievement_description">Keep playing to learn more.</string>
-    <string name="experience_poins">Experience points : </string>
-    <string name="date_caption">Last updated: </string>
+    <string name="experience_poins">Experience points</string>
+    <string name="date_caption">Last updated</string>
 </resources>

@@ -22,6 +22,7 @@ import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_MAX_LAST_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.droidjump.AchievementsManager;
@@ -42,7 +43,7 @@ public class LevelManager {
     private static SharedPreferences gameData;
     private static SharedPreferences.Editor gameDataEditor;
     private static ArrayList<LevelConfig> gameLevels;
-    private static int currentLevelScore;
+    private static long currentLevelScore;
     private static AchievementsManager achievementsManager;
     private static MainActivity activity;
 
@@ -86,13 +87,10 @@ public class LevelManager {
     }
 
     public static void resetGameData() {
-        SharedPreferences.Editor editor = gameData.edit();
-        editor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
-        editor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
-        for (int levelIndex = 0; levelIndex <= levelsLastIndex; levelIndex++) {
-            editor.putInt(String.valueOf(levelIndex), SCORE_DEF_VALUE);
-        }
-        editor.apply();
+        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
+        gameDataEditor.apply();
+        ScoreManager.clearScores();
     }
 
     public static int getCurrentLevelIndex() {
@@ -125,8 +123,8 @@ public class LevelManager {
         return gameLevels.get(getCurrentLevelIndex()).getLevelStrategy();
     }
 
-    public static int getLevelMaxScore(int index) {
-        return gameData.getInt(String.valueOf(index), SCORE_DEF_VALUE);
+    public static long getLevelMaxScore(int index) {
+        return gameData.getLong(String.valueOf(index), SCORE_DEF_VALUE);
     }
 
     public static String getCurrentLevelName() {
@@ -137,17 +135,17 @@ public class LevelManager {
         return Collections.unmodifiableList(gameLevels);
     }
 
-    public static int getCurrentLevelScore() {
+    public static long getCurrentLevelScore() {
         return currentLevelScore;
     }
 
-    public static void setCurrentLevelScore(int score) {
+    public static void setCurrentLevelScore(long score) {
         currentLevelScore = score;
     }
 
     public static void updateCurrentLevelMaxScore() {
         if (getLevelMaxScore(getCurrentLevelIndex()) < currentLevelScore) {
-            gameDataEditor.putInt(String.valueOf(getCurrentLevelIndex()), currentLevelScore);
+            gameDataEditor.putLong(String.valueOf(getCurrentLevelIndex()), currentLevelScore);
             gameDataEditor.apply();
         }
     }

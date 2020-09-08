@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,9 +30,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.droidjump.models.NavigationHelper;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Displays achievement details.
@@ -50,38 +51,40 @@ public class AchievementDetailsFragment extends Fragment {
         activity = (MainActivity) getActivity();
     }
 
+    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.achievement_details_screen, container, /* attachToRoot= */ false);
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored ->
                 NavigationHelper.navigateToFragment(activity, new AchievementsFragment()));
-        ImageView icon = rootView.findViewById(R.id.achievement_icon);
-        ImageManager manager = ImageManager.create(activity);
-        TextView titleTextView = rootView.findViewById(R.id.achievement_title);
+        ImageView achievementIcon = rootView.findViewById(R.id.achievement_icon);
+        TextView nameTextView = rootView.findViewById(R.id.achievement_name);
         TextView descriptionTextView = rootView.findViewById(R.id.achievement_description);
         TextView xpTextView = rootView.findViewById(R.id.xp_value);
         TextView dateTextView = rootView.findViewById(R.id.date);
-        Date lastUpdated = new Date(achievement.getLastUpdatedTimestamp());
-        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd:MM:yy");
-        dateTextView.setText(df.format(lastUpdated));
+        LinearLayout xpLayout = rootView.findViewById(R.id.xp_layout);
+        LinearLayout dateLayout = rootView.findViewById(R.id.date_layout);
+        dateTextView.setText(new SimpleDateFormat("d MMMM y", Locale.ENGLISH)
+                .format(new Date(achievement.getLastUpdatedTimestamp())));
+        nameTextView.setText(achievement.getName());
+        descriptionTextView.setText(achievement.getDescription());
+        xpTextView.setText(String.valueOf(achievement.getXpValue()));
+
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
-                manager.loadImage(icon, achievement.getUnlockedImageUri());
-                titleTextView.setText(achievement.getName());
-                descriptionTextView.setText(achievement.getDescription());
-                xpTextView.setText(String.valueOf(achievement.getXpValue()));
+                ImageManager.create(activity).loadImage(achievementIcon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
-                manager.loadImage(icon, achievement.getRevealedImageUri());
-                titleTextView.setText(achievement.getName());
-                descriptionTextView.setText(achievement.getDescription());
-                xpTextView.setText(String.valueOf(achievement.getXpValue()));
+                achievementIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));
+                dateLayout.setVisibility(View.GONE);
                 break;
             case Achievement.STATE_HIDDEN:
-                titleTextView.setText(R.string.hidden_achievement_name);
+                achievementIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_block_24));
+                nameTextView.setText(R.string.hidden_achievement_name);
                 descriptionTextView.setText(R.string.hidden_achievement_description);
-                rootView.findViewById(R.id.xp_caption).setVisibility(View.INVISIBLE);
+                dateLayout.setVisibility(View.GONE);
+                xpLayout.setVisibility(View.GONE);
                 break;
         }
         return rootView;

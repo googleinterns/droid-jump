@@ -37,7 +37,14 @@ public interface GameConstants {
     int SCORE_DEF_VALUE = 0; // Default value.
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
-    int SCORES_PER_PAGE = 25; // Count of scores on one page.
+    int RC_SHOW_PROFILE = 3838; // Request code to show profile.
+    int[] LEADERBOARD_LIST = {
+            R.string.leaderboard_cactus_jumper,
+            R.string.leaderboard_bat_avoider,
+            R.string.leaderboard_palm_climber,
+            R.string.leaderboard_best_score,
+            R.string.leaderboard_best_time
+    }; // Leaderboards for Play Game Services.
 
     double GROUND_PROPORTION = 0.6; // Handpicked value of proportion in a platform picture.
 
