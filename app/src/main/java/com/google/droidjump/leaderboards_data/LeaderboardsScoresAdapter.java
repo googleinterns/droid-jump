@@ -77,7 +77,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
             holder.getComparingButton().setVisibility(View.VISIBLE);
             ImageView playGameServicesIcon = holder.getComparingButton().findViewById(R.id.friend_icon);
             playGameServicesIcon.setOnClickListener(ignored -> showComparingScreen(score.getScoreHolder()));
-            if (friends.contains(score.getScoreHolder().getDisplayName())) {
+            if (friends.contains(score.getScoreHolder().getPlayerId())) {
                 playGameServicesIcon.setImageResource(R.mipmap.ic_friends);
             } else {
                 playGameServicesIcon.setImageResource(R.drawable.ic_not_yet_friends);

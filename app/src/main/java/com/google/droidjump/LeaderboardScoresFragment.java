@@ -77,7 +77,7 @@ public class LeaderboardScoresFragment extends Fragment {
             fetchScores(timeSpan, collection);
         } else if (requestCode == GameConstants.RC_SHOW_PROFILE) {
             LoadingHelper.onLoading(activity, getView(), recyclerViewId);
-            activity.loadFriendNames().addOnSuccessListener(ignored -> {
+            activity.getFriendsIds().addOnSuccessListener(ignored -> {
                 fetchScores(timeSpan, collection);
             });
         }
@@ -110,7 +110,7 @@ public class LeaderboardScoresFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (activity.getLoadFriendNames()) {
-            activity.loadFriendNames().addOnSuccessListener(data -> {
+            activity.getFriendsIds().addOnSuccessListener(data -> {
                 adapter.setFriendListAccess(activity.hasFriendListAccess());
                 adapter.notifyDataSetChanged();
                 fetchScores(timeSpan, collection);
