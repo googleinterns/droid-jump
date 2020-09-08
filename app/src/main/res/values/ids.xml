@@ -18,8 +18,6 @@
 <resources>
     <!--app_id-->
     <string name="app_id" translatable="false">902201000711</string>
-    <!--package_name-->
-    <string name="package_name" translatable="false"></string>
     <!--achievement Novice Infinite Level Player-->
     <string name="achievement_novice_infinite_level_player" translatable="false">CgkIh4b7-qAaEAIQBw</string>
     <!--achievement Amateur Infinite Level Player-->
