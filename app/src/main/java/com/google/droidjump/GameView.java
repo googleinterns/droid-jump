@@ -35,7 +35,6 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.google.droidjump.achievements_data.Achievement;
 import com.google.droidjump.leveldata.InfiniteLevelData;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
@@ -341,24 +340,24 @@ public class GameView extends SurfaceView implements Runnable {
     private void checkForAchievements() {
         switch (obstaclesCount) {
             case NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
-                achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
+                achievementsManager.unlockAchievement(R.string.achievement_novice_infinite_level_player);
                 break;
             case AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
-                achievementsManager.unlockAchievement(Achievement.AMATEUR_INFINITE_LEVEL_PLAYER);
+                achievementsManager.unlockAchievement(R.string.achievement_amateur_infinite_level_player);
                 break;
             case PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
-                achievementsManager.unlockAchievement(Achievement.PRO_INFINITE_LEVEL_PLAYER);
+                achievementsManager.unlockAchievement(R.string.achievement_pro_infinite_level_player);
             case MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
-                achievementsManager.unlockAchievement(Achievement.MASTER_INFINITE_LEVEL_PLAYER);
+                achievementsManager.unlockAchievement(R.string.achievement_master_infinite_level_player);
         }
         if (cactusCount == CACTUS_COMBO_COUNT) {
-            achievementsManager.unlockAchievement(Achievement.CACTUS_COMBO);
+            achievementsManager.unlockAchievement(R.string.achievement_cactus_combo);
         }
         if (palmCount == PALM_COMBO_COUNT) {
-            achievementsManager.unlockAchievement(Achievement.PALM_COMBO);
+            achievementsManager.unlockAchievement(R.string.achievement_palm_combo);
         }
         if (hardcoreComboIndex == HARDCORE_COMBO.length) {
-            achievementsManager.unlockAchievement(Achievement.HARDCORE_COMBO);
+            achievementsManager.unlockAchievement(R.string.achievement_hardcore_combo);
         }
     }
 }

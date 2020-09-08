@@ -24,7 +24,6 @@ import static com.google.droidjump.GameConstants.GAME_VIEW_MAX_LAST_LEVEL_STRING
 import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.google.droidjump.achievements_data.Achievement;
 import com.google.droidjump.AchievementsManager;
 import com.google.droidjump.MainActivity;
 import com.google.droidjump.R;
@@ -81,9 +80,9 @@ public class LevelManager {
     }
 
     private static void updateAchievements() {
-        achievementsManager.incrementAchievement(Achievement.GREAT_START, 1);
-        achievementsManager.incrementAchievement(Achievement.NEW_STAR, 1);
-        achievementsManager.incrementAchievement(Achievement.PROF_PLAYER, 1);
+        achievementsManager.incrementAchievement(R.string.achievement_great_start, 1);
+        achievementsManager.incrementAchievement(R.string.achievement_new_star, 1);
+        achievementsManager.incrementAchievement(R.string.achievement_profi_player, 1);
     }
 
     public static void resetGameData() {

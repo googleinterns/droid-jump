@@ -16,20 +16,18 @@
 
 package com.google.droidjump;
 
-import com.google.droidjump.achievements_data.Achievement;
-
 public class AchievementsManager {
     MainActivity activity;
 
-    public AchievementsManager(MainActivity achivity) {
-        this.activity = achivity;
+    public AchievementsManager(MainActivity activity) {
+        this.activity = activity;
     }
 
-    public void unlockAchievement(Achievement achievement) {
-        activity.getAchievementsClient().unlock(activity.getString(achievement.id));
+    public void unlockAchievement(int achievementId) {
+        activity.getAchievementsClient().unlock(activity.getString(achievementId));
     }
 
-    public void incrementAchievement(Achievement achievement, int steps) {
-        activity.getAchievementsClient().increment(activity.getString(achievement.id), steps);
+    public void incrementAchievement(int achievementId, int steps) {
+        activity.getAchievementsClient().increment(activity.getString(achievementId), steps);
     }
 }
