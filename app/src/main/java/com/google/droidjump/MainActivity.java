@@ -42,13 +42,18 @@ import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.PlayersClient;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
+import com.google.droidjump.models.ScoreManager;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Represents main activity.
@@ -56,7 +61,8 @@ import java.util.Set;
 public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-    private static final String TAG = "MainActivity";
+    private static final long TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
+    private static final String TAG = MainActivity.class.getName();
     private boolean isActiveConnection;
     private boolean friendListAccess;
     private boolean isLoadFriendNames;
@@ -71,19 +77,21 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isActiveConnection = false;
+        ScoreManager.init(this);
         LevelManager.init(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_wrapper, new StartFragment()).commit();
         setContentView(R.layout.main_activity);
         ((DrawerLayout) findViewById(R.id.drawer_layout))
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         leaderboardsClient = null;
-        playersClient = null;
         achievementsClient = null;
         playerBuffer = null;
         friendListAccess = false;
         friendNames = new HashSet<>();
         isLoadFriendNames = true;
+        savedSignedInAccount = null;
+        playersClient = null;
+        isActiveConnection = false;
     }
 
     public boolean isFriendListAccess() {
@@ -122,8 +130,17 @@ public class MainActivity extends FragmentActivity {
         return isLoadFriendNames;
     }
 
-    public void setLoadFriendNames(Boolean isLoadFriendNames) {
-        this.isLoadFriendNames = isLoadFriendNames;
+    public void countTimeOfPlaying() {
+        String leaderboardId = getResources().getString(R.string.leaderboard_best_time);
+        if (savedSignedInAccount != null && LevelManager.getLastLevelIndex() != LevelManager.getLevelsLastIndex()) {
+            leaderboardsClient.loadCurrentPlayerLeaderboardScore(
+                    leaderboardId,
+                    LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                    LeaderboardVariant.COLLECTION_PUBLIC).addOnSuccessListener(
+                    result -> {
+                        runTimeTask(leaderboardId);
+                    });
+        }
     }
 
     @Override
@@ -181,6 +198,28 @@ public class MainActivity extends FragmentActivity {
                 }).addOnFailureListener(ignored -> friendListAccess = false);
     }
 
+    private void runTimeTask(String leaderboardId) {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (savedSignedInAccount != null) {
+                    long time = ScoreManager.getScore(leaderboardId);
+                    if (LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
+                        ScoreManager.submitScore(leaderboardId, time);
+                        timer.cancel();
+                    }
+                    time += TEN_SECONDS_IN_MILLISECONDS;
+                    ScoreManager.submitLocalScore(leaderboardId, time);
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(
+                /* task = */ task,
+                /* delay = */ TEN_SECONDS_IN_MILLISECONDS,
+                /* period = */ TEN_SECONDS_IN_MILLISECONDS);
+    }
+
     private void signInSilently() {
         GoogleSignInOptions signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN;
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -221,6 +260,7 @@ public class MainActivity extends FragmentActivity {
         playersClient = null;
         isLoadFriendNames = true;
         friendListAccess = false;
+        ScoreManager.setClient(null);
         disableNavigationMenu();
     }
 
@@ -231,6 +271,7 @@ public class MainActivity extends FragmentActivity {
             leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
             playersClient = Games.getPlayersClient(this, savedSignedInAccount);
             loadFriendNames();
+            ScoreManager.setClient(leaderboardsClient);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
                         this.player = player;
@@ -241,6 +282,8 @@ public class MainActivity extends FragmentActivity {
                             isActiveConnection = false;
                         }
                         enableNavigationMenu(player);
+                        setLeaderboardsScores();
+                        countTimeOfPlaying();
                     })
                     .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
@@ -322,5 +365,32 @@ public class MainActivity extends FragmentActivity {
         });
         setupDrawer(/* isEnabled= */ true);
         NavigationHelper.navigateToFragment(this, new StartFragment());
+    }
+
+    private void setLeaderboardsScores() {
+        for (int leaderboard : GameConstants.LEADERBOARD_LIST) {
+            String leaderboardId = getResources().getString(leaderboard);
+            leaderboardsClient.loadCurrentPlayerLeaderboardScore(
+                    leaderboardId,
+                    LeaderboardVariant.TIME_SPAN_ALL_TIME,
+                    LeaderboardVariant.COLLECTION_PUBLIC)
+                    .addOnSuccessListener(data -> {
+                        LeaderboardScore score = data.get();
+                        long localScore = ScoreManager.getScore(leaderboardId);
+
+                        // Merging a local score with the leaderboard score.
+                        long newScore;
+                        if (score != null) {
+                            long leaderboardScore = score.getRawScore();
+                            newScore = Math.max(localScore, leaderboardScore);
+                        } else {
+                            newScore = localScore;
+                        }
+                        if (leaderboard != R.string.leaderboard_best_time
+                                || LevelManager.getLastLevelIndex() == LevelManager.getLevelsLastIndex()) {
+                            ScoreManager.submitScore(leaderboardId, newScore);
+                        }
+                    });
+        }
     }
 }

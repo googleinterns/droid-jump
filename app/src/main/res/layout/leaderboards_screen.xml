@@ -40,8 +40,6 @@
             <TextView
                 android:id="@+id/leaderboards_title"
                 style="@style/CenterHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fab_margin"
                 android:gravity="center_horizontal"
                 android:text="@string/leaderboards"
@@ -63,8 +61,6 @@
             <TextView
                 android:id="@+id/empty_list_text"
                 style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/empty_leaderboards_list_text"
                 android:visibility="gone" />

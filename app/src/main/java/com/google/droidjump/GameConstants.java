@@ -38,6 +38,13 @@ public interface GameConstants {
     int RC_SHOW_PROFILE = 3838; // Request code to show profile.
     int SCORES_PER_PAGE = 25; // Count of scores on one page.
     int FRIENDS_PER_PAGE = 100; // Count of friends on one page.
+    int[] LEADERBOARD_LIST = {
+            R.string.leaderboard_cactus_jumper,
+            R.string.leaderboard_bat_avoider,
+            R.string.leaderboard_palm_climber,
+            R.string.leaderboard_best_score,
+            R.string.leaderboard_best_time
+    }; // Leaderboards for Play Game Services.
 
     double GROUND_PROPORTION = 0.6; // Handpicked value of proportion in a platform picture.
 
