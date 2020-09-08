@@ -17,13 +17,15 @@
 package com.google.droidjump.drawable;
 
 import static android.graphics.Bitmap.createBitmap;
-import static android.graphics.BitmapFactory.decodeResource;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import com.google.droidjump.GameConstants;
 import com.google.droidjump.R;
+import com.google.droidjump.models.GameItem;
 
 /**
  * Draws droid character on different screens.
@@ -36,7 +38,8 @@ public class DroidStartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Bitmap fullDroidPicture = decodeResource(getResources(), R.mipmap.droid);
+        Drawable drawable = getResources().getDrawable(R.drawable.droid);
+        Bitmap fullDroidPicture = GameItem.drawableToBitmap(drawable);
         int droidWidth = fullDroidPicture.getWidth() / GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         int jumpingDroidPosition = droidWidth * GameConstants.DROID_JUMPING_CHARACTER_INDEX;
         Bitmap droid = createBitmap(fullDroidPicture, jumpingDroidPosition, /* y= */ 0,
