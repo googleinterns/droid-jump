@@ -88,7 +88,7 @@ public class LeaderboardScoresFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.leaderboard_scores_screen, container, /* attachToRoot= */ false);
         ImageManager.create(activity).loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
-        adapter = new LeaderboardsScoresAdapter(scores, activity, activity.getFriendNames(), activity.isFriendListAccess());
+        adapter = new LeaderboardsScoresAdapter(scores, activity, activity.getFriendNames(), activity.hasFriendListAccess());
         RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
         scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         scoresView.setAdapter(adapter);
@@ -111,7 +111,7 @@ public class LeaderboardScoresFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (activity.getLoadFriendNames()) {
             activity.loadFriendNames().addOnSuccessListener(data -> {
-                adapter.setFriendListAccess(activity.isFriendListAccess());
+                adapter.setFriendListAccess(activity.hasFriendListAccess());
                 adapter.notifyDataSetChanged();
                 fetchScores(timeSpan, collection);
             });

@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents main activity.
@@ -72,7 +73,6 @@ public class MainActivity extends FragmentActivity {
     private LeaderboardsClient leaderboardsClient;
     private PlayersClient playersClient;
     private Set<String> friendNames;
-    private PlayerBuffer playerBuffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class MainActivity extends FragmentActivity {
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         leaderboardsClient = null;
         achievementsClient = null;
-        playerBuffer = null;
         friendListAccess = false;
         friendNames = new HashSet<>();
         isLoadFriendNames = true;
@@ -94,7 +93,7 @@ public class MainActivity extends FragmentActivity {
         isActiveConnection = false;
     }
 
-    public boolean isFriendListAccess() {
+    public boolean hasFriendListAccess() {
         return friendListAccess;
     }
 
@@ -178,23 +177,21 @@ public class MainActivity extends FragmentActivity {
     public Task<AnnotatedData<PlayerBuffer>> loadFriendNames() {
         return getPlayersClient().loadFriends(GameConstants.FRIENDS_PER_PAGE, /* forceReload = */ false)
                 .addOnSuccessListener(buffer -> {
-                    playerBuffer = buffer.get();
-                    try {
-                        while (DataBufferUtils.hasNextPage(playerBuffer)) {
-                            getPlayersClient().loadMoreFriends(GameConstants.FRIENDS_PER_PAGE).addOnSuccessListener(data -> {
-                                playerBuffer = data.get();
-                            });
-                        }
-                    } finally {
-                        friendNames.clear();
-                        for (Player player : playerBuffer) {
-                            String friendName = player.freeze().getDisplayName();
-                            friendNames.add(friendName);
-                        }
-                        friendListAccess = true;
-                        isLoadFriendNames = false;
-                        playerBuffer.close();
+                    AtomicReference<PlayerBuffer> playerBufferAtomicReference = new AtomicReference<>();
+                    playerBufferAtomicReference.set(buffer.get());
+                    while (DataBufferUtils.hasNextPage(playerBufferAtomicReference.get())) {
+                        getPlayersClient().loadMoreFriends(GameConstants.FRIENDS_PER_PAGE).addOnSuccessListener(data -> {
+                            playerBufferAtomicReference.set(data.get());
+                        });
                     }
+                    friendNames.clear();
+                    for (Player player : playerBufferAtomicReference.get()) {
+                        String friendName = player.freeze().getDisplayName();
+                        friendNames.add(friendName);
+                    }
+                    friendListAccess = true;
+                    isLoadFriendNames = false;
+                    playerBufferAtomicReference.get().close();
                 }).addOnFailureListener(ignored -> friendListAccess = false);
     }
 
