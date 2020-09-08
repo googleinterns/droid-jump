@@ -21,7 +21,6 @@ import static android.graphics.Bitmap.createBitmap;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import com.google.droidjump.GameConstants;
 import com.google.droidjump.R;
@@ -38,8 +37,7 @@ public class DroidStartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Drawable drawable = getResources().getDrawable(R.drawable.droid);
-        Bitmap fullDroidPicture = GameItem.drawableToBitmap(drawable);
+        Bitmap fullDroidPicture = GameItem.drawableToBitmap(getResources().getDrawable(R.drawable.droid));
         int droidWidth = fullDroidPicture.getWidth() / GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         int jumpingDroidPosition = droidWidth * GameConstants.DROID_JUMPING_CHARACTER_INDEX;
         Bitmap droid = createBitmap(fullDroidPicture, jumpingDroidPosition, /* y= */ 0,

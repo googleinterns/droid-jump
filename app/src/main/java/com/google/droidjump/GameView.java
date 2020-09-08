@@ -74,7 +74,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int cactusScore;
     private int palmScore;
     private int batScore;
-    private int batPosition;
+    private int batY;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
@@ -86,7 +86,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
-        batPosition = screenY - 400;
+        batY = screenY - 400;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         receiveLevelDetails();
@@ -150,16 +150,17 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
             ObstacleType newObstacleType = level.getNewObstacleType();
+            int obstacleY = screenY - groundHeight + obstacleAdditionalMargin;
             // Adding new obstacle to game.
             switch (newObstacleType) {
                 case CACTUS:
-                    obstacleList.add(new Cactus(screenX, screenY - groundHeight + obstacleAdditionalMargin, getResources()));
+                    obstacleList.add(new Cactus(screenX, obstacleY, getResources()));
                     break;
                 case PALM:
-                    obstacleList.add(new Palm(screenX, screenY - groundHeight + obstacleAdditionalMargin, getResources()));
+                    obstacleList.add(new Palm(screenX, obstacleY, getResources()));
                     break;
                 case BAT:
-                    obstacleList.add(new Bat(screenX, batPosition, getResources()));
+                    obstacleList.add(new Bat(screenX, batY, getResources()));
                     break;
             }
             intervalTimePoint = GameConstants.INTERVAL_START_TIME;
