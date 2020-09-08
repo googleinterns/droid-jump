@@ -27,7 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
@@ -81,11 +80,15 @@ public class AchievementDetailsFragment extends Fragment {
                 break;
             case Achievement.STATE_REVEALED:
                 if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {
-                    ((ConstraintLayout) rootView.findViewById(R.id.progressbar_layout)).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.progressbar_layout).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.progress_info_layout).setVisibility(View.VISIBLE);
                     achievementIcon.setVisibility(View.GONE);
                     int progress = getPercentCountOfProgress(achievement);
                     ((ProgressBar) rootView.findViewById(R.id.progress_bar)).setProgress(progress);
                     ((TextView) rootView.findViewById(R.id.progress_text)).setText(String.format("%d%s", progress, "%"));
+                    String stepsCompleted = activity.getString(R.string.steps_completed);
+                    ((TextView) rootView.findViewById(R.id.steps))
+                            .setText(String.format("%s %d/%d", stepsCompleted, achievement.getCurrentSteps(), achievement.getTotalSteps()));
                     break;
                 }
                 achievementIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));

@@ -105,11 +105,29 @@
                 android:text="@string/description" />
 
             <LinearLayout
+                android:id="@+id/progress_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/steps"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/steps_completed" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/xp_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:visibility="visible">
 
                 <TextView
@@ -124,7 +142,7 @@
                     style="@style/RegularText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/fab_margin" />
+                    android:layout_marginLeft="@dimen/space_margin" />
             </LinearLayout>
 
             <LinearLayout
@@ -132,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:visibility="visible">
 
                 <TextView
@@ -146,7 +164,8 @@
                     android:id="@+id/date"
                     style="@style/RegularText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_margin" />
             </LinearLayout>
         </LinearLayout>
 
