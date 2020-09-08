@@ -33,4 +33,5 @@
     <dimen name="pgs_icon_width">50dp</dimen>
     <dimen name="achievement_description_text_size">24sp</dimen>
     <dimen name="friend_icon_size">40dp</dimen>
+    <dimen name="space_margin">7dp</dimen>
 </resources>

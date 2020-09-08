@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +52,7 @@ public class AchievementDetailsFragment extends Fragment {
         activity = (MainActivity) getActivity();
     }
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi"})
+    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi", "DefaultLocale"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class AchievementDetailsFragment extends Fragment {
         TextView descriptionTextView = rootView.findViewById(R.id.achievement_description);
         TextView xpTextView = rootView.findViewById(R.id.xp_value);
         TextView dateTextView = rootView.findViewById(R.id.date);
+        TextView dateCaptionTextView = rootView.findViewById(R.id.date_caption);
         LinearLayout xpLayout = rootView.findViewById(R.id.xp_layout);
         LinearLayout dateLayout = rootView.findViewById(R.id.date_layout);
         dateTextView.setText(new SimpleDateFormat("d MMMM y", Locale.ENGLISH)
@@ -74,8 +76,21 @@ public class AchievementDetailsFragment extends Fragment {
         switch (achievement.getState()) {
             case Achievement.STATE_UNLOCKED:
                 ImageManager.create(activity).loadImage(achievementIcon, achievement.getUnlockedImageUri());
+                dateCaptionTextView.setText(activity.getText(R.string.date_caption_for_unlocked_achievements));
                 break;
             case Achievement.STATE_REVEALED:
+                if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {
+                    rootView.findViewById(R.id.progressbar_layout).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.progress_info_layout).setVisibility(View.VISIBLE);
+                    achievementIcon.setVisibility(View.GONE);
+                    int progress = getPercentCountOfProgress(achievement);
+                    ((ProgressBar) rootView.findViewById(R.id.progress_bar)).setProgress(progress);
+                    ((TextView) rootView.findViewById(R.id.progress_text)).setText(String.format("%d%s", progress, "%"));
+                    String stepsCompleted = activity.getString(R.string.steps_completed);
+                    ((TextView) rootView.findViewById(R.id.steps))
+                            .setText(String.format("%s %d/%d", stepsCompleted, achievement.getCurrentSteps(), achievement.getTotalSteps()));
+                    break;
+                }
                 achievementIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));
                 dateLayout.setVisibility(View.GONE);
                 break;
@@ -88,6 +103,10 @@ public class AchievementDetailsFragment extends Fragment {
                 break;
         }
         return rootView;
+    }
+
+    private int getPercentCountOfProgress(Achievement achievement) {
+        return achievement.getCurrentSteps() * 100 / achievement.getTotalSteps();
     }
 }
 
