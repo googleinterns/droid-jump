@@ -18,7 +18,6 @@ package com.google.droidjump.models;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import com.google.droidjump.GameConstants;
 import com.google.droidjump.R;
 
@@ -32,10 +31,10 @@ public class Droid extends GameItem implements TwoStepAnimative {
     private int initialY;
     private int jumpHeight;
     // So that droid can easily jump over all obstacles we need to add two measures: the highest obstacle + additional height.
-    private static final int additionalHeight = 50;
+    private static final int additionalHeight = 100;
 
     public Droid(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.mipmap.droid, resources);
+        super(x, yWithBitmapOffset, R.drawable.droid, resources);
         Bitmap fullDroidPicture = picture;
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];
@@ -91,7 +90,7 @@ public class Droid extends GameItem implements TwoStepAnimative {
     private void setJumpHeight(Resources resources) {
         /* Returning the sum of highest obstacle height and additional distance for jumping so that droid
         can easily jump through all obstacles. */
-        Bitmap palm = BitmapFactory.decodeResource(resources, R.mipmap.palm);
+        Bitmap palm = GameItem.drawableToBitmap(resources.getDrawable(R.drawable.palm));
         jumpHeight = palm.getHeight() + additionalHeight;
     }
 }
