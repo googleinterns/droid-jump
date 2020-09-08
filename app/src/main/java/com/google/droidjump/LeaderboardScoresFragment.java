@@ -77,7 +77,7 @@ public class LeaderboardScoresFragment extends Fragment {
             fetchScores(timeSpan, collection);
         } else if (requestCode == GameConstants.RC_SHOW_PROFILE) {
             LoadingHelper.onLoading(activity, getView(), recyclerViewId);
-            activity.getFriendsIds().addOnSuccessListener(ignored -> {
+            activity.loadFriendIds().addOnSuccessListener(ignored -> {
                 fetchScores(timeSpan, collection);
             });
         }
@@ -88,7 +88,7 @@ public class LeaderboardScoresFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.leaderboard_scores_screen, container, /* attachToRoot= */ false);
         ImageManager.create(activity).loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
-        adapter = new LeaderboardsScoresAdapter(scores, activity, activity.getFriendNames(), activity.hasFriendListAccess());
+        adapter = new LeaderboardsScoresAdapter(scores, activity, activity.getFriendIds(), activity.hasFriendListAccess());
         RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
         scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         scoresView.setAdapter(adapter);
@@ -110,7 +110,7 @@ public class LeaderboardScoresFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (activity.getLoadFriendNames()) {
-            activity.getFriendsIds().addOnSuccessListener(data -> {
+            activity.loadFriendIds().addOnSuccessListener(data -> {
                 adapter.setFriendListAccess(activity.hasFriendListAccess());
                 adapter.notifyDataSetChanged();
                 fetchScores(timeSpan, collection);

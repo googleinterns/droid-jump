@@ -72,7 +72,7 @@ public class MainActivity extends FragmentActivity {
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
     private PlayersClient playersClient;
-    private Set<String> friendNames;
+    private Set<String> friendIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class MainActivity extends FragmentActivity {
         leaderboardsClient = null;
         achievementsClient = null;
         friendListAccess = false;
-        friendNames = new HashSet<>();
+        friendIds = new HashSet<>();
         isLoadFriendNames = true;
         savedSignedInAccount = null;
         playersClient = null;
@@ -97,8 +97,8 @@ public class MainActivity extends FragmentActivity {
         return friendListAccess;
     }
 
-    public Set<String> getFriendNames() {
-        return friendNames;
+    public Set<String> getFriendIds() {
+        return friendIds;
     }
 
     public void openUserMenu() {
@@ -174,7 +174,7 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public Task<AnnotatedData<PlayerBuffer>> getFriendsIds() {
+    public Task<AnnotatedData<PlayerBuffer>> loadFriendIds() {
         return getPlayersClient().loadFriends(GameConstants.FRIENDS_PER_PAGE, /* forceReload = */ false)
                 .addOnSuccessListener(buffer -> {
                     AtomicReference<PlayerBuffer> playerBufferAtomicReference = new AtomicReference<>();
@@ -184,10 +184,10 @@ public class MainActivity extends FragmentActivity {
                             playerBufferAtomicReference.set(data.get());
                         });
                     }
-                    friendNames.clear();
+                    friendIds.clear();
                     for (Player player : playerBufferAtomicReference.get()) {
-                        String friendName = player.freeze().getPlayerId();
-                        friendNames.add(friendName);
+                        String friendId = player.freeze().getPlayerId();
+                        friendIds.add(friendId);
                     }
                     friendListAccess = true;
                     isLoadFriendNames = false;
@@ -267,7 +267,7 @@ public class MainActivity extends FragmentActivity {
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
             playersClient = Games.getPlayersClient(this, savedSignedInAccount);
-            getFriendsIds();
+            loadFriendIds();
             ScoreManager.setClient(leaderboardsClient);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
