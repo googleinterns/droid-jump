@@ -191,7 +191,7 @@ public class GameView extends SurfaceView implements Runnable {
             obstacle.setX(obstacle.getX() - levelSpeed);
             // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
-                if (level instanceof InfiniteLevelData){
+                if (level instanceof InfiniteLevelData) {
                     updateCounters(obstacle);
                 }
                 it.remove();
@@ -200,27 +200,24 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void updateCounters(Obstacle obstacle){
+    private void updateCounters(Obstacle obstacle) {
         obstaclesCount++;
-        if (obstacle instanceof Cactus){
+        if (obstacle instanceof Cactus) {
             cactusCount++;
             palmCount = 0;
-        }
-        else if (obstacle instanceof Palm){
-            palmCount ++;
+        } else if (obstacle instanceof Palm) {
+            palmCount++;
             cactusCount = 0;
-        }
-        else{
+        } else {
             cactusCount = 0;
             palmCount = 0;
         }
 
-        if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]){
+        if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]) {
             hardcoreComboIndex++;
-        }
-        else {
+        } else {
             hardcoreComboIndex = 0;
-            if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]){
+            if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]) {
                 hardcoreComboIndex++;
             }
         }
@@ -342,7 +339,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void checkForAchievements() {
-        switch (obstaclesCount){
+        switch (obstaclesCount) {
             case NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
                 achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
                 break;
@@ -354,13 +351,13 @@ public class GameView extends SurfaceView implements Runnable {
             case MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
                 achievementsManager.unlockAchievement(Achievement.MASTER_INFINITE_LEVEL_PLAYER);
         }
-        if (cactusCount == CACTUS_COMBO_COUNT){
+        if (cactusCount == CACTUS_COMBO_COUNT) {
             achievementsManager.unlockAchievement(Achievement.CACTUS_COMBO);
         }
-        if (palmCount == PALM_COMBO_COUNT){
+        if (palmCount == PALM_COMBO_COUNT) {
             achievementsManager.unlockAchievement(Achievement.PALM_COMBO);
         }
-        if (hardcoreComboIndex == HARDCORE_COMBO.length){
+        if (hardcoreComboIndex == HARDCORE_COMBO.length) {
             achievementsManager.unlockAchievement(Achievement.HARDCORE_COMBO);
         }
     }
