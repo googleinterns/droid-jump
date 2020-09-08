@@ -23,7 +23,7 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:padding="@dimen/fab_margin">
+    android:paddingVertical="@dimen/fab_margin">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imageView"

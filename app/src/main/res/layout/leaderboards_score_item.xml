@@ -22,7 +22,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:padding="@dimen/fab_margin">
+    android:paddingHorizontal="@dimen/very_small_margin"
+    android:paddingVertical="@dimen/fab_margin">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/player_avatar_card_view"
@@ -49,11 +50,13 @@
 
         <TextView
             android:id="@+id/player_username"
-            style="@style/RegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
             android:text="@string/username"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
 
         <LinearLayout
             style="@style/WrapContent">
@@ -73,8 +76,9 @@
 
     <LinearLayout
         style="@style/WrapContent"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/very_small_margin"
+        android:layout_marginRight="@dimen/very_small_margin"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -87,5 +91,23 @@
         <TextView
             android:id="@+id/player_rank"
             style="@style/WrapContent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/friend_section"
+            android:layout_width="@dimen/friend_icon_size"
+            android:layout_height="@dimen/friend_icon_size"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/player_avatar_size">
+
+            <ImageView
+                android:id="@+id/friend_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/friends"
+                android:src="@drawable/ic_not_yet_friends" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

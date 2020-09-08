@@ -55,7 +55,6 @@ public class LeaderboardScoresFragment extends Fragment {
     private int collection;
     private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
-    private static final int SCORES_PER_PAGE = 25;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -75,8 +74,12 @@ public class LeaderboardScoresFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SHOW_SHARING_FRIENDS_CONSENT) {
-            collection = LeaderboardVariant.COLLECTION_FRIENDS;
             fetchScores(timeSpan, collection);
+        } else if (requestCode == GameConstants.RC_SHOW_PROFILE) {
+            LoadingHelper.onLoading(activity, getView(), recyclerViewId);
+            activity.loadFriendIds().addOnSuccessListener(ignored -> {
+                fetchScores(timeSpan, collection);
+            });
         }
     }
 
@@ -85,7 +88,7 @@ public class LeaderboardScoresFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.leaderboard_scores_screen, container, /* attachToRoot= */ false);
         ImageManager.create(activity).loadImage((ImageView) rootView.findViewById(R.id.leaderboard_avatar), leaderboard.getIconImageUri());
         ((TextView) rootView.findViewById(R.id.leaderboards_title)).setText(leaderboard.getDisplayName());
-        adapter = new LeaderboardsScoresAdapter(scores, activity);
+        adapter = new LeaderboardsScoresAdapter(scores, activity, activity.getFriendIds(), activity.hasFriendListAccess());
         RecyclerView scoresView = rootView.findViewById(R.id.scores_recycler_view);
         scoresView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         scoresView.setAdapter(adapter);
@@ -106,7 +109,15 @@ public class LeaderboardScoresFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchScores(timeSpan, collection);
+        if (activity.getLoadFriendNames()) {
+            activity.loadFriendIds().addOnSuccessListener(data -> {
+                adapter.setFriendListAccess(activity.hasFriendListAccess());
+                adapter.notifyDataSetChanged();
+                fetchScores(timeSpan, collection);
+            });
+        } else {
+            fetchScores(timeSpan, collection);
+        }
     }
 
     private void fetchScores(int timeSpan, int collection) {
@@ -116,7 +127,7 @@ public class LeaderboardScoresFragment extends Fragment {
         LoadingHelper.onLoading(activity, rootView, recyclerViewId);
         activity.getLeaderboardsClient().loadPlayerCenteredScores(
                 leaderboard.getLeaderboardId(), timeSpan,
-                collection, SCORES_PER_PAGE, /* forceReload= */ false)
+                collection, GameConstants.SCORES_PER_PAGE, /* forceReload= */ false)
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();

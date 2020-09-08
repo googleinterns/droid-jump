@@ -33,22 +33,28 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.AchievementsClient;
+import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayerBuffer;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.ScoreManager;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents main activity.
@@ -58,12 +64,15 @@ public class MainActivity extends FragmentActivity {
     private static final int RC_SIGN_IN = 9001;
     private static final long TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
     private static final String TAG = MainActivity.class.getName();
-    private Player player;
     private boolean isActiveConnection;
+    private boolean friendListAccess;
+    private boolean isLoadFriendNames;
+    private Player player;
     private GoogleSignInAccount savedSignedInAccount;
     private AchievementsClient achievementsClient;
     private LeaderboardsClient leaderboardsClient;
     private PlayersClient playersClient;
+    private Set<String> friendIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +85,20 @@ public class MainActivity extends FragmentActivity {
                 .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         leaderboardsClient = null;
         achievementsClient = null;
+        friendListAccess = false;
+        friendIds = new HashSet<>();
+        isLoadFriendNames = true;
         savedSignedInAccount = null;
         playersClient = null;
         isActiveConnection = false;
+    }
+
+    public boolean hasFriendListAccess() {
+        return friendListAccess;
+    }
+
+    public Set<String> getFriendIds() {
+        return friendIds;
     }
 
     public void openUserMenu() {
@@ -103,6 +123,10 @@ public class MainActivity extends FragmentActivity {
 
     public PlayersClient getPlayersClient() {
         return playersClient;
+    }
+
+    public boolean getLoadFriendNames() {
+        return isLoadFriendNames;
     }
 
     public void countTimeOfPlaying() {
@@ -148,6 +172,27 @@ public class MainActivity extends FragmentActivity {
         if (!isActiveConnection) {
             signInSilently();
         }
+    }
+
+    public Task<AnnotatedData<PlayerBuffer>> loadFriendIds() {
+        return getPlayersClient().loadFriends(GameConstants.FRIENDS_PER_PAGE, /* forceReload = */ false)
+                .addOnSuccessListener(buffer -> {
+                    AtomicReference<PlayerBuffer> playerBufferAtomicReference = new AtomicReference<>();
+                    playerBufferAtomicReference.set(buffer.get());
+                    while (DataBufferUtils.hasNextPage(playerBufferAtomicReference.get())) {
+                        getPlayersClient().loadMoreFriends(GameConstants.FRIENDS_PER_PAGE).addOnSuccessListener(data -> {
+                            playerBufferAtomicReference.set(data.get());
+                        });
+                    }
+                    friendIds.clear();
+                    for (Player player : playerBufferAtomicReference.get()) {
+                        String friendId = player.freeze().getPlayerId();
+                        friendIds.add(friendId);
+                    }
+                    friendListAccess = true;
+                    isLoadFriendNames = false;
+                    playerBufferAtomicReference.get().close();
+                }).addOnFailureListener(ignored -> friendListAccess = false);
     }
 
     private void runTimeTask(String leaderboardId) {
@@ -210,6 +255,8 @@ public class MainActivity extends FragmentActivity {
         leaderboardsClient = null;
         achievementsClient = null;
         playersClient = null;
+        isLoadFriendNames = true;
+        friendListAccess = false;
         ScoreManager.setClient(null);
         disableNavigationMenu();
     }
@@ -220,6 +267,7 @@ public class MainActivity extends FragmentActivity {
             achievementsClient = Games.getAchievementsClient(this, savedSignedInAccount);
             leaderboardsClient = Games.getLeaderboardsClient(this, savedSignedInAccount);
             playersClient = Games.getPlayersClient(this, savedSignedInAccount);
+            loadFriendIds();
             ScoreManager.setClient(leaderboardsClient);
             playersClient.getCurrentPlayer()
                     .addOnSuccessListener(player -> {
