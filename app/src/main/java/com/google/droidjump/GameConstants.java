@@ -17,6 +17,8 @@
 package com.google.droidjump;
 
 import androidx.core.view.GravityCompat;
+import com.google.droidjump.models.Bat;
+import com.google.droidjump.models.Palm;
 
 /**
  * Stores all global constants of the game.
@@ -44,6 +46,18 @@ public interface GameConstants {
     String GAME_VIEW_CURRENT_LEVEL_STRING = "java.com.google.droidjump.GameView.CurrentLevel";
     // Used for identifying the last level from SharedPreferences.
     String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
+    // Used for identifying the max last level from SharedPreferences.
+    String GAME_VIEW_MAX_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
     // Used to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
+
+    int NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 5;
+    int AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 20;
+    int PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 50;
+    int MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 100;
+    int CACTUS_COMBO_COUNT = 5;
+    int PALM_COMBO_COUNT = 5;
+//    ObstacleType[] HARDCORE_COMBO = new ObstacleType[]{ObstacleType.PALM, ObstacleType.BAT,
+//            ObstacleType.PALM, ObstacleType.BAT, ObstacleType.PALM, ObstacleType.BAT};
+    Class[] HARDCORE_COMBO = new Class[]{Palm.class, Bat.class, Palm.class, Bat.class, Palm.class, Bat.class};
 }

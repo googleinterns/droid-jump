@@ -20,10 +20,11 @@ import static com.google.droidjump.GameConstants.FIRST_LEVEL_ID;
 import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
+import static com.google.droidjump.GameConstants.GAME_VIEW_MAX_LAST_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.google.droidjump.Achievement;
+import com.google.droidjump.achievements_data.Achievement;
 import com.google.droidjump.AchievementsManager;
 import com.google.droidjump.MainActivity;
 import com.google.droidjump.R;
@@ -44,8 +45,10 @@ public class LevelManager {
     private static ArrayList<LevelConfig> gameLevels;
     private static int currentLevelScore;
     private static AchievementsManager achievementsManager;
+    private static MainActivity activity;
 
     public static void init(Context context) {
+        activity = (MainActivity) context;
         gameData = context.getSharedPreferences(GAME_VIEW_DATA, Context.MODE_PRIVATE);
         gameDataEditor = gameData.edit();
         gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, context);
@@ -67,9 +70,11 @@ public class LevelManager {
         int lastLevel = getLastLevelIndex();
         if (currentLevelIndex < levelsLastIndex) {
             setCurrentLevelIndex(++currentLevelIndex);
+            if (currentLevelIndex > getMaxLastLevelIndex()){
+                updateAchievements();
+            }
             if (currentLevelIndex > lastLevel) {
                 setLastLevelIndex(currentLevelIndex);
-                updateAchievements();
             }
             gameDataEditor.apply();
         }
@@ -104,9 +109,17 @@ public class LevelManager {
         return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
-    public static void setLastLevelIndex(int lastLevelIndexLevel) {
-        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndexLevel);
+    public static void setLastLevelIndex(int lastLevelIndex) {
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndex);
+        int maxLastLevellIndex = gameData.getInt(GAME_VIEW_MAX_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
+        if(lastLevelIndex > maxLastLevellIndex){
+            gameDataEditor.putInt(GAME_VIEW_MAX_LAST_LEVEL_STRING, lastLevelIndex);
+        }
         gameDataEditor.apply();
+    }
+
+    public static int getMaxLastLevelIndex(){
+        return gameData.getInt(GAME_VIEW_MAX_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
     public static LevelStrategy getCurrentLevelStrategy() {

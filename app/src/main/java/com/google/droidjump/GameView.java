@@ -16,8 +16,15 @@
 
 package com.google.droidjump;
 
+import static com.google.droidjump.GameConstants.AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+import static com.google.droidjump.GameConstants.CACTUS_COMBO_COUNT;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
+import static com.google.droidjump.GameConstants.HARDCORE_COMBO;
+import static com.google.droidjump.GameConstants.MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+import static com.google.droidjump.GameConstants.NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+import static com.google.droidjump.GameConstants.PALM_COMBO_COUNT;
+import static com.google.droidjump.GameConstants.PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -28,6 +35,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.google.droidjump.achievements_data.Achievement;
 import com.google.droidjump.leveldata.InfiniteLevelData;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.ObstacleType;
@@ -67,6 +75,9 @@ public class GameView extends SurfaceView implements Runnable {
     private LevelStrategy level;
     private int score;
     private int obstaclesCount;
+    private int cactusCount;
+    private int palmCount;
+    private int hardcoreComboIndex;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
@@ -83,6 +94,9 @@ public class GameView extends SurfaceView implements Runnable {
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         score = 0;
         obstaclesCount = 0;
+        cactusCount = 0;
+        palmCount = 0;
+        hardcoreComboIndex = 0;
         receiveLevelDetails();
 
         // Droid should be on a ground height, but platform includes grass.
@@ -177,9 +191,37 @@ public class GameView extends SurfaceView implements Runnable {
             obstacle.setX(obstacle.getX() - levelSpeed);
             // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
+                if (level instanceof InfiniteLevelData){
+                    updateCounters(obstacle);
+                }
                 it.remove();
                 score += 10;
-                obstaclesCount++;
+            }
+        }
+    }
+
+    private void updateCounters(Obstacle obstacle){
+        obstaclesCount++;
+        if (obstacle instanceof Cactus){
+            cactusCount++;
+            palmCount = 0;
+        }
+        else if (obstacle instanceof Palm){
+            palmCount ++;
+            cactusCount = 0;
+        }
+        else{
+            cactusCount = 0;
+            palmCount = 0;
+        }
+
+        if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]){
+            hardcoreComboIndex++;
+        }
+        else {
+            hardcoreComboIndex = 0;
+            if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]){
+                hardcoreComboIndex++;
             }
         }
     }
@@ -300,19 +342,26 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void checkForAchievements() {
-        if(level.getClass() == InfiniteLevelData.class){
-            switch (obstaclesCount){
-                case 5:
-                    achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
-                    break;
-                case 20:
-                    achievementsManager.unlockAchievement(Achievement.AMATEUR_INFINITE_LEVEL_PLAYER);
-                    break;
-                case 50:
-                    achievementsManager.unlockAchievement(Achievement.PRO_INFINITE_LEVEL_PLAYER);
-                case 100:
-                    achievementsManager.unlockAchievement(Achievement.MASTER_INFINITE_LEVEL_PLAYER);
-            }
+        switch (obstaclesCount){
+            case NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(Achievement.NOVICE_INFINITE_LEVEL_PLAYER);
+                break;
+            case AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(Achievement.AMATEUR_INFINITE_LEVEL_PLAYER);
+                break;
+            case PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(Achievement.PRO_INFINITE_LEVEL_PLAYER);
+            case MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(Achievement.MASTER_INFINITE_LEVEL_PLAYER);
+        }
+        if (cactusCount == CACTUS_COMBO_COUNT){
+            achievementsManager.unlockAchievement(Achievement.CACTUS_COMBO);
+        }
+        if (palmCount == PALM_COMBO_COUNT){
+            achievementsManager.unlockAchievement(Achievement.PALM_COMBO);
+        }
+        if (hardcoreComboIndex == HARDCORE_COMBO.length){
+            achievementsManager.unlockAchievement(Achievement.HARDCORE_COMBO);
         }
     }
 }

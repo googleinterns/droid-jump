@@ -16,6 +16,8 @@
 
 package com.google.droidjump;
 
+import com.google.droidjump.achievements_data.Achievement;
+
 public class AchievementsManager {
     MainActivity activity;
 

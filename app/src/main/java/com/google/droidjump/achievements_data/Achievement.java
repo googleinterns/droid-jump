@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.droidjump;
+package com.google.droidjump.achievements_data;
+
+import com.google.droidjump.R;
 
 public enum Achievement {
     NOVICE_INFINITE_LEVEL_PLAYER(R.string.achievement_novice_infinite_level_player),
