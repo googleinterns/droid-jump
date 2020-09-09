@@ -16,11 +16,39 @@
 
 package com.google.droidjump;
 
+import android.util.Log;
+import android.widget.Toast;
+import com.google.android.gms.games.achievement.Achievement;
+import com.google.android.gms.games.achievement.AchievementBuffer;
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class AchievementsManager {
     MainActivity activity;
 
     public AchievementsManager(MainActivity activity) {
         this.activity = activity;
+    }
+
+    public ArrayList<Achievement> getAchievementsList() {
+        ArrayList<Achievement> achievementsList = new ArrayList<>();
+        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
+            if (task.isSuccessful()) {
+                AchievementBuffer achievementBuffer = task.getResult().get();
+                Log.d("AchievementsManager ", "buffer size : " + achievementBuffer.getCount());
+                for (Achievement achievement: achievementBuffer){
+                    achievementsList.add(achievement.freeze());
+                }
+                Log.d("AchievementsManager ", "list size : " + achievementBuffer.getCount());
+                achievementBuffer.close();
+            } else {
+                //TODO(dnikolskaia): Improve exception handling behavior.
+                String message = Objects.requireNonNull(task.getException()).getMessage();
+                Log.e("AchievementsManager", "Failed to load achievements from client: " + message);
+                Toast.makeText(activity, "Oops, something went wrong with getting achievements", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return achievementsList;
     }
 
     public void unlockAchievement(int achievementId) {
