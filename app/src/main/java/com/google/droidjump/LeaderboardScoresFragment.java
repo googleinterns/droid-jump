@@ -115,7 +115,7 @@ public class LeaderboardScoresFragment extends Fragment {
         timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                final String selectedItemText = timeSpinner.getSelectedItem().toString();
+                String selectedItemText = timeSpinner.getSelectedItem().toString();
                 if (selectedItemText.equals(ALL_TIME_SCORES)) {
                     timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
                 } else if (selectedItemText.equals(WEEKLY_SCORES)) {
