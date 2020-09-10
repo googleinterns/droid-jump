@@ -24,10 +24,10 @@ import com.google.droidjump.models.Palm;
  * Stores all global constants of the game.
  */
 public interface GameConstants {
-    int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/mipmap/droid.png image.
-    int DROID_JUMPING_CHARACTER_INDEX = 4; // Index of droid at res/mipmap/droid.png image.
-    int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/mipmap/droid.png image.
-    int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/mipmap/droid.png image.
+    int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/drawable/droid.png image.
+    int DROID_JUMPING_CHARACTER_INDEX = 4; // Index of droid at res/drawable/droid.png image.
+    int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/drawable/droid.png image.
+    int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/drawable/droid.png image.
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
     // The variable is responsible for how much time ticks full animation of the object goes.
     int FULL_ANIMATION_TICKS = 4;
@@ -38,6 +38,8 @@ public interface GameConstants {
     int INTERVAL_START_TIME = 0; // Beginning of the new time interval between obstacles
     int NAVIGATION_START_POSITION = GravityCompat.START; // Position of navigation menu.
     int RC_SHOW_PROFILE = 3838; // Request code to show profile.
+    int SCORES_PER_PAGE = 25; // Count of scores on one page.
+    int FRIENDS_PER_PAGE = 100; // Count of friends on one page.
     int[] LEADERBOARD_LIST = {
             R.string.leaderboard_cactus_jumper,
             R.string.leaderboard_bat_avoider,

@@ -25,11 +25,11 @@ import static com.google.droidjump.GameConstants.MASTER_INFINITE_LEVEL_PLAYER_OB
 import static com.google.droidjump.GameConstants.NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
 import static com.google.droidjump.GameConstants.PALM_COMBO_COUNT;
 import static com.google.droidjump.GameConstants.PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -45,6 +45,7 @@ import com.google.droidjump.leveldata.ObstacleType;
 import com.google.droidjump.models.Bat;
 import com.google.droidjump.models.Cactus;
 import com.google.droidjump.models.Droid;
+import com.google.droidjump.models.GameItem;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 import com.google.droidjump.models.Obstacle;
@@ -59,7 +60,8 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-    private final Bitmap platform = BitmapFactory.decodeResource(getResources(), R.mipmap.platform);
+    private final Bitmap platform = GameItem.drawableToBitmap(getResources().getDrawable(R.drawable.platform));
+    private final int obstacleAdditionalMargin = 10;
     private MainActivity activity;
     private AchievementsManager achievementsManager;
     private SurfaceHolder surfaceHolder;
@@ -81,6 +83,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int cactusScore;
     private int palmScore;
     private int batScore;
+    private int batY;
     private int obstaclesCount;
     private int cactusCount;
     private int palmCount;
@@ -97,6 +100,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
         this.isPlaying = isPlaying;
+        batY = screenY - 400;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
         score = 0;
@@ -166,18 +170,17 @@ public class GameView extends SurfaceView implements Runnable {
         }
         if (intervalTimePoint == level.getCurrentTimeInterval()) {
             ObstacleType newObstacleType = level.getNewObstacleType();
+            int obstacleY = screenY - groundHeight + obstacleAdditionalMargin;
             // Adding new obstacle to game.
             switch (newObstacleType) {
                 case CACTUS:
-                    obstacleList.add(new Cactus(screenX, screenY - groundHeight, getResources()));
+                    obstacleList.add(new Cactus(screenX, obstacleY, getResources()));
                     break;
                 case PALM:
-                    obstacleList.add(new Palm(screenX, screenY - groundHeight, getResources()));
+                    obstacleList.add(new Palm(screenX, obstacleY, getResources()));
                     break;
                 case BAT:
-                    // 700 - random value.
-                    // TODO(Max): calculate y coordinate for bat.
-                    obstacleList.add(new Bat(screenX, screenY - 700, getResources()));
+                    obstacleList.add(new Bat(screenX, batY, getResources()));
                     break;
             }
             intervalTimePoint = GameConstants.INTERVAL_START_TIME;

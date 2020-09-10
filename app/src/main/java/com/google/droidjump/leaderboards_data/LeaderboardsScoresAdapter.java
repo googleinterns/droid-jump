@@ -22,23 +22,39 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
+import com.google.droidjump.GameConstants;
+import com.google.droidjump.MainActivity;
 import com.google.droidjump.R;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Extracts a scores data and styles it for showing in RecyclerView.
  */
 public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
     private List<LeaderboardScore> items;
-    private FragmentActivity activity;
+    private MainActivity activity;
+    private Set<String> friends;
+    private boolean friendListAccess;
 
-    public LeaderboardsScoresAdapter(List<LeaderboardScore> items, FragmentActivity activity) {
+    public LeaderboardsScoresAdapter(List<LeaderboardScore> items,
+                                     FragmentActivity activity,
+                                     Set<String> friends,
+                                     boolean friendListAccess) {
         this.items = items;
-        this.activity = activity;
+        this.activity = (MainActivity) activity;
+        this.friends = friends;
+        this.friendListAccess = friendListAccess;
+    }
+
+    public void setFriendListAccess(boolean friendListAccess) {
+        this.friendListAccess = friendListAccess;
     }
 
     @NonNull
@@ -57,11 +73,27 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
         ImageManager.create(activity).loadImage(holder.getAvatar(), score.getScoreHolderIconImageUri());
         holder.getRank().setText(score.getDisplayRank());
         holder.getScore().setText(String.valueOf(score.getDisplayScore()));
+        if (friendListAccess) {
+            holder.getComparingButton().setVisibility(View.VISIBLE);
+            ImageView playGameServicesIcon = holder.getComparingButton().findViewById(R.id.friend_icon);
+            playGameServicesIcon.setOnClickListener(ignored -> showComparingScreen(score.getScoreHolder()));
+            if (friends.contains(score.getScoreHolder().getPlayerId())) {
+                playGameServicesIcon.setImageResource(R.mipmap.ic_friends);
+            } else {
+                playGameServicesIcon.setImageResource(R.drawable.ic_not_yet_friends);
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    private void showComparingScreen(Player player) {
+        activity.getPlayersClient().getCompareProfileIntent(player).addOnSuccessListener(intent -> {
+            activity.startActivityForResult(intent, GameConstants.RC_SHOW_PROFILE);
+        });
     }
 
     /**
@@ -72,6 +104,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
         private TextView rank;
         private TextView score;
         private ImageView avatar;
+        private CardView comparingButton;
 
         public ScoresHolder(View view) {
             super(view);
@@ -79,6 +112,7 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
             avatar = view.findViewById(R.id.player_avatar);
             rank = view.findViewById(R.id.player_rank);
             score = view.findViewById(R.id.player_score);
+            comparingButton = view.findViewById(R.id.friend_section);
         }
 
         public ImageView getAvatar() {
@@ -95,6 +129,10 @@ public class LeaderboardsScoresAdapter extends RecyclerView.Adapter {
 
         public TextView getScore() {
             return score;
+        }
+
+        public CardView getComparingButton() {
+            return comparingButton;
         }
     }
 }

@@ -21,8 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
@@ -88,7 +90,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new AchievementViewHolder(view);
     }
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi"})
+    @SuppressLint({"UseCompatLoadingForDrawables", "NewApi", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int listPosition = items.get(position).getListPosition();
@@ -107,6 +109,14 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ImageManager.create(activity).loadImage(icon, achievement.getUnlockedImageUri());
                 break;
             case Achievement.STATE_REVEALED:
+                if (achievement.getType() == Achievement.TYPE_INCREMENTAL) {
+                    achievementHolder.getProgressbarLayout().setVisibility(View.VISIBLE);
+                    icon.setVisibility(View.GONE);
+                    int progress = getPercentCountOfProgress(achievement);
+                    achievementHolder.getProgressBar().setProgress(progress);
+                    achievementHolder.getProgressText().setText(String.format("%d%s", progress, "%"));
+                    break;
+                }
                 icon.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_lock_24));
                 break;
             case Achievement.STATE_HIDDEN:
@@ -118,6 +128,10 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         achievementHolder.itemView.setOnClickListener(view -> {
             NavigationHelper.navigateToFragment(activity, new AchievementDetailsFragment(achievement));
         });
+    }
+
+    private int getPercentCountOfProgress(Achievement achievement) {
+        return achievement.getCurrentSteps() * 100 / achievement.getTotalSteps();
     }
 
     @Override
@@ -174,12 +188,18 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private TextView name;
         private TextView description;
         private ImageView icon;
+        private ConstraintLayout progressbarLayout;
+        private ProgressBar progressBar;
+        private TextView progressText;
 
         public AchievementViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.achievement_name);
             icon = view.findViewById(R.id.icon);
             description = view.findViewById(R.id.description);
+            progressbarLayout = view.findViewById(R.id.progressbar_layout);
+            progressBar = view.findViewById(R.id.progress_bar);
+            progressText = view.findViewById(R.id.progress_text);
         }
 
         public TextView getName() {
@@ -192,6 +212,18 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public ImageView getIcon() {
             return icon;
+        }
+
+        public ConstraintLayout getProgressbarLayout() {
+            return progressbarLayout;
+        }
+
+        public ProgressBar getProgressBar() {
+            return progressBar;
+        }
+
+        public TextView getProgressText() {
+            return progressText;
         }
     }
 }
