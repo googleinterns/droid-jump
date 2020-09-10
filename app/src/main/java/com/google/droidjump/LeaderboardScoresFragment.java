@@ -22,7 +22,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -55,6 +57,9 @@ public class LeaderboardScoresFragment extends Fragment {
     private int collection;
     private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
+    private String ALL_TIME_SCORES;
+    private String WEEKLY_SCORES;
+    private String DAILY_SCORES;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -68,6 +73,10 @@ public class LeaderboardScoresFragment extends Fragment {
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
         recyclerViewId = R.id.scores_recycler_view;
+        String[] timeSpans = getResources().getStringArray(R.array.leaderboard_time);
+        ALL_TIME_SCORES = timeSpans[0];
+        WEEKLY_SCORES = timeSpans[1];
+        DAILY_SCORES = timeSpans[2];
     }
 
     @Override
@@ -102,6 +111,24 @@ public class LeaderboardScoresFragment extends Fragment {
             fetchScores(timeSpan, collection);
         });
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
+        Spinner timeSpinner = rootView.findViewById(R.id.time_spinner);
+        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final String selectedItemText = timeSpinner.getSelectedItem().toString();
+                if (selectedItemText.equals(ALL_TIME_SCORES)) {
+                    timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
+                } else if (selectedItemText.equals(WEEKLY_SCORES)) {
+                    timeSpan = LeaderboardVariant.TIME_SPAN_WEEKLY;
+                } else if (selectedItemText.equals(DAILY_SCORES)) {
+                    timeSpan = LeaderboardVariant.TIME_SPAN_DAILY;
+                }
+                fetchScores(timeSpan, collection);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
@@ -131,8 +158,8 @@ public class LeaderboardScoresFragment extends Fragment {
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
+                        scores.clear();
                         if (scoreBuffer.getCount() > 0) {
-                            scores.clear();
                             for (LeaderboardScore score : scoreBuffer) {
                                 scores.add(score.freeze());
                             }
