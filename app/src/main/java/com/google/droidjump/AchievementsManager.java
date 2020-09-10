@@ -16,39 +16,49 @@
 
 package com.google.droidjump;
 
+import static com.google.droidjump.R.string.achievement_great_start;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
+import com.google.droidjump.models.LevelManager;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class AchievementsManager {
     MainActivity activity;
+    boolean incrementalAchievementsDataChanged;
+    ArrayList<Achievement> achievementsList;
 
     public AchievementsManager(MainActivity activity) {
         this.activity = activity;
+        incrementalAchievementsDataChanged = true;
+        achievementsList = new ArrayList<>();
     }
 
-    public ArrayList<Achievement> getAchievementsList() {
-        ArrayList<Achievement> achievementsList = new ArrayList<>();
-        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
-            if (task.isSuccessful()) {
-                AchievementBuffer achievementBuffer = task.getResult().get();
-                Log.d("AchievementsManager ", "buffer size : " + achievementBuffer.getCount());
-                for (Achievement achievement: achievementBuffer){
-                    achievementsList.add(achievement.freeze());
+    public void checkIncrementalAchievementsChanges() {
+        if (incrementalAchievementsDataChanged) {
+            activity.getAchievementsClient().load(false).addOnCompleteListener(activity, task -> {
+                if (task.isSuccessful()) {
+                    AchievementBuffer achievementBuffer = task.getResult().get();
+                    Log.d("AchievementsManager ", "buffer size : " + achievementBuffer.getCount());
+                    for (Achievement achievement : achievementBuffer) {
+                        achievementsList.add(achievement.freeze());
+                    }
+                    Log.d("AchievementsManager ", "list size : " + achievementBuffer.getCount());
+                    achievementBuffer.close();
+                    incrementalAchievementsDataChanged = false;
+                    updateIncrementalAchievements();
+                } else {
+                    //TODO(dnikolskaia): Improve exception handling behavior.
+                    String message = Objects.requireNonNull(task.getException()).getMessage();
+                    Log.e("AchievementsManager", "Failed to load achievements from client: " + message);
+                    Toast.makeText(activity, "Oops, something went wrong with getting achievements", Toast.LENGTH_SHORT).show();
                 }
-                Log.d("AchievementsManager ", "list size : " + achievementBuffer.getCount());
-                achievementBuffer.close();
-            } else {
-                //TODO(dnikolskaia): Improve exception handling behavior.
-                String message = Objects.requireNonNull(task.getException()).getMessage();
-                Log.e("AchievementsManager", "Failed to load achievements from client: " + message);
-                Toast.makeText(activity, "Oops, something went wrong with getting achievements", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return achievementsList;
+            });
+        } else {
+            updateIncrementalAchievements();
+        }
     }
 
     public void unlockAchievement(int achievementId) {
@@ -57,5 +67,21 @@ public class AchievementsManager {
 
     public void incrementAchievement(int achievementId, int steps) {
         activity.getAchievementsClient().increment(activity.getString(achievementId), steps);
+    }
+
+    private void updateIncrementalAchievements() {
+        int lastLevelIndex = LevelManager.getLastLevelIndex();
+        String greatStartAchievementId = activity.getString(achievement_great_start);
+        for (Achievement achievement : achievementsList) {
+            if (achievement.getAchievementId().equals(greatStartAchievementId)) {
+                if (lastLevelIndex > achievement.getCurrentSteps()) {
+                    incrementAchievement(achievement_great_start, 1);
+                    incrementAchievement(R.string.achievement_new_star, 1);
+                    incrementAchievement(R.string.achievement_profi_player, 1);
+                    incrementalAchievementsDataChanged = true;
+                }
+                break;
+            }
+        }
     }
 }

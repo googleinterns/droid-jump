@@ -53,8 +53,8 @@ public interface GameConstants {
     String GAME_VIEW_CURRENT_LEVEL_STRING = "java.com.google.droidjump.GameView.CurrentLevel";
     // Used for identifying the last level from SharedPreferences.
     String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
-    // Used for identifying the max last level from SharedPreferences.
-    String GAME_VIEW_MAX_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
+    // Used for identifying the max opened level from SharedPreferences.
+    String GAME_VIEW_MAX_OPENED_LEVEL_STRING = "java.com.google.droidjump.GameView.MaxOpenedLevel";
     // Used to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
 

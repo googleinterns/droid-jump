@@ -53,7 +53,7 @@ public class AchievementsFragment extends Fragment {
                 NavigationHelper.navigateToFragment(activity, new StartFragment()));
         RecyclerView achievementsView = rootView.findViewById(R.id.achievements_recycler_view);
         achievementsView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
-        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
+        activity.getAchievementsClient().load(false).addOnCompleteListener(activity, task -> {
             if (task.isSuccessful()) {
                 AchievementBuffer achievementBuffer = task.getResult().get();
                 if (achievementBuffer != null) {

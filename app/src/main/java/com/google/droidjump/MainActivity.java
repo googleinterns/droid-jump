@@ -268,7 +268,7 @@ public class MainActivity extends FragmentActivity {
                         NavigationHelper.navigateToFragment(MainActivity.this, new FriendsFragment());
                         break;
                     case R.id.nav_achievements:
-                        NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
+                        //NavigationHelper.navigateToFragment(MainActivity.this, new AchievementsFragment());
                         showAchievements();
                         break;
                     case R.id.nav_auth:

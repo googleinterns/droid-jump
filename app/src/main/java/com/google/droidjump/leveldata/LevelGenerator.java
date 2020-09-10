@@ -17,8 +17,6 @@
 package com.google.droidjump.leveldata;
 
 import static com.google.droidjump.leveldata.ObstacleType.BAT;
-import static com.google.droidjump.leveldata.ObstacleType.CACTUS;
-import static com.google.droidjump.leveldata.ObstacleType.PALM;
 import java.util.Map;
 import java.util.Random;
 
@@ -34,6 +32,7 @@ public class LevelGenerator {
     static private final Random random = new Random();
     private int[] frequencies = new int[OBSTACLE_OPTIONS.length];
     private int frequencySum = 0;
+    private int count = 0;
 
     LevelGenerator(Map<ObstacleType, Integer> frequencyShares) {
         // Fill frequencies array and calculate sum.
@@ -44,7 +43,11 @@ public class LevelGenerator {
     }
 
     public ObstacleData generateNextObstacle() {
-        return new ObstacleData(generateInterval(), generateObstacleType());
+//        count++;
+//        if (count % 2 == 0)
+//            return new ObstacleData(60, PALM);
+        return new ObstacleData(60, BAT);
+//        return new ObstacleData(generateInterval(), generateObstacleType());
     }
 
     private ObstacleType generateObstacleType() {
