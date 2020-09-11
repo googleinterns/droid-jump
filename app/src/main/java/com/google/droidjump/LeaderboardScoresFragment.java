@@ -22,7 +22,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -37,7 +40,6 @@ import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
-import com.google.droidjump.leaderboards_data.LeaderboardsScoresAdapter;
 import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
@@ -47,6 +49,11 @@ import java.util.List;
  * Displays Leaderboards Screen.
  */
 public class LeaderboardScoresFragment extends Fragment {
+    private static final String ALL_TIME_SCORES = "All time";
+    private static final String WEEKLY_SCORES = "Weekly";
+    private static final String DAILY_SCORES = "Daily";
+    private static final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
+
     private Leaderboard leaderboard;
     private MainActivity activity;
     private List<LeaderboardScore> scores;
@@ -54,7 +61,6 @@ public class LeaderboardScoresFragment extends Fragment {
     private int timeSpan;
     private int collection;
     private int recyclerViewId;
-    private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -102,6 +108,30 @@ public class LeaderboardScoresFragment extends Fragment {
             fetchScores(timeSpan, collection);
         });
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
+        Spinner timeSpinner = rootView.findViewById(R.id.time_spinner);
+
+        // Adding items to spinner.
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
+                new String[]{ALL_TIME_SCORES, WEEKLY_SCORES, DAILY_SCORES});
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSpinner.setAdapter(spinnerAdapter);
+        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemText = timeSpinner.getSelectedItem().toString();
+                if (selectedItemText.equals(ALL_TIME_SCORES)) {
+                    timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
+                } else if (selectedItemText.equals(WEEKLY_SCORES)) {
+                    timeSpan = LeaderboardVariant.TIME_SPAN_WEEKLY;
+                } else if (selectedItemText.equals(DAILY_SCORES)) {
+                    timeSpan = LeaderboardVariant.TIME_SPAN_DAILY;
+                }
+                fetchScores(timeSpan, collection);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
         NavigationHelper.addOnBackPressedEventListener(activity);
         return rootView;
     }
@@ -131,8 +161,8 @@ public class LeaderboardScoresFragment extends Fragment {
                 .continueWithTask(task -> {
                     if (task.isSuccessful()) {
                         LeaderboardScoreBuffer scoreBuffer = task.getResult().get().getScores();
+                        scores.clear();
                         if (scoreBuffer.getCount() > 0) {
-                            scores.clear();
                             for (LeaderboardScore score : scoreBuffer) {
                                 scores.add(score.freeze());
                             }
