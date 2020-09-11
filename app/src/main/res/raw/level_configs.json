@@ -11,21 +11,6 @@
       "levelType": "FINITE_GENERATED"
     },
     {
-      "levelName": "3",
-      "resourceName": "finite_generated_level",
-      "levelType": "FINITE_GENERATED"
-    },
-    {
-      "levelName": "4",
-      "resourceName": "finite_generated_level",
-      "levelType": "FINITE_GENERATED"
-    },
-    {
-      "levelName": "5",
-      "resourceName": "finite_generated_level",
-      "levelType": "FINITE_GENERATED"
-    },
-    {
       "levelName": "inf",
       "resourceName": "infinite_level",
       "levelType": "INFINITE"

@@ -55,18 +55,15 @@ public interface GameConstants {
     String GAME_VIEW_CURRENT_LEVEL_STRING = "java.com.google.droidjump.GameView.CurrentLevel";
     // Used for identifying the last level from SharedPreferences.
     String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
-    // Used for identifying the max opened level from SharedPreferences.
-    String GAME_VIEW_MAX_OPENED_LEVEL_STRING = "java.com.google.droidjump.GameView.MaxOpenedLevel";
     // Used to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
 
-    int NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 5;
-    int AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 20;
-    int PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 50;
-    int MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 100;
-    int CACTUS_COMBO_COUNT = 5;
-    int PALM_COMBO_COUNT = 5;
-//    ObstacleType[] HARDCORE_COMBO = new ObstacleType[]{ObstacleType.PALM, ObstacleType.BAT,
-//            ObstacleType.PALM, ObstacleType.BAT, ObstacleType.PALM, ObstacleType.BAT};
-    Class[] HARDCORE_COMBO = new Class[]{Palm.class, Bat.class, Palm.class, Bat.class, Palm.class, Bat.class};
+    // Achievements processing constants.
+    int NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 5; // To unlock Novice Infinite Level Player achievement.
+    int AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 20; // To unlock Amateur Infinite Level Player achievement.
+    int PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 50; // To unlock Pro Infinite Level Player achievement.
+    int MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 100; // To unlock Master Infinite Level Player achievement.
+    int CACTUS_COMBO_COUNT = 5; // To unlock Cactus Combo achievement.
+    int PALM_COMBO_COUNT = 5; // To unlock Palm Combo achievement.
+    Class[] HARDCORE_COMBO = new Class[]{Palm.class, Bat.class, Palm.class, Bat.class, Palm.class, Bat.class}; // To unlock Hardcore Combo Achievement.
 }

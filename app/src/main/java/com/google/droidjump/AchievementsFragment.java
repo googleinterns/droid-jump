@@ -78,7 +78,6 @@ public class AchievementsFragment extends Fragment {
                     for (Achievement achievement : achievementBuffer) {
                         achievements.add(achievement.freeze());
                     }
-                    Log.d("AchievementsFragment", "list size " + achievements.size());
                     adapter = new AchievementsAdapter(achievements, activity);
                     achievementsView.setAdapter(adapter);
                     achievementBuffer.close();

@@ -41,11 +41,9 @@ public class AchievementsManager {
             activity.getAchievementsClient().load(false).addOnCompleteListener(activity, task -> {
                 if (task.isSuccessful()) {
                     AchievementBuffer achievementBuffer = task.getResult().get();
-                    Log.d("AchievementsManager ", "buffer size : " + achievementBuffer.getCount());
                     for (Achievement achievement : achievementBuffer) {
                         achievementsList.add(achievement.freeze());
                     }
-                    Log.d("AchievementsManager ", "list size : " + achievementBuffer.getCount());
                     achievementBuffer.close();
                     incrementalAchievementsDataChanged = false;
                     updateIncrementalAchievements();
