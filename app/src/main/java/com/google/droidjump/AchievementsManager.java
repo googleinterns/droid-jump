@@ -25,6 +25,9 @@ import com.google.droidjump.models.LevelManager;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Manages achievements unlocking.
+ */
 public class AchievementsManager {
     MainActivity activity;
     boolean incrementalAchievementsDataChanged;
