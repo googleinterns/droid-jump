@@ -62,9 +62,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainActivity extends FragmentActivity {
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
-    private static final long TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
-    private static final String TAG = MainActivity.class.getName();
     private static final int RC_VIDEO_OVERLAY = 9011;
+    private static final int TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
+    private static final String TAG = MainActivity.class.getName();
     private boolean isActiveConnection;
     private boolean friendListAccess;
     private boolean isLoadFriendNames;
