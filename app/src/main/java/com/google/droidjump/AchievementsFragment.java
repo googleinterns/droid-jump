@@ -41,7 +41,6 @@ import java.util.Objects;
  */
 public class AchievementsFragment extends Fragment {
     private static final String TAG = "AchievementsFragment";
-
     private MainActivity activity;
     private int achievementsViewId;
     private ArrayList<Achievement> achievements;

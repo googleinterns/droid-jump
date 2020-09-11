@@ -30,7 +30,6 @@ import java.util.Objects;
  */
 public class AchievementsManager {
     private static final String TAG = "AchievementsManager";
-
     MainActivity activity;
     boolean incrementalAchievementsDataChanged;
     ArrayList<Achievement> achievementsList;
