@@ -24,6 +24,7 @@ import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.google.droidjump.AchievementsManager;
 import com.google.droidjump.MainActivity;
 import com.google.droidjump.R;
 import com.google.droidjump.leveldata.LevelConfig;
@@ -42,6 +43,7 @@ public class LevelManager {
     private static SharedPreferences.Editor gameDataEditor;
     private static ArrayList<LevelConfig> gameLevels;
     private static long currentLevelScore;
+    private static AchievementsManager achievementsManager;
     private static MainActivity activity;
 
     public static void init(Context context) {
@@ -51,6 +53,7 @@ public class LevelManager {
         gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, context);
         levelsLastIndex = gameLevels.size() - 1;
         currentLevelScore = 0;
+        achievementsManager = new AchievementsManager(activity);
     }
 
     public static int getLevelsLastIndex() {
@@ -71,6 +74,7 @@ public class LevelManager {
             }
             gameDataEditor.apply();
         }
+        achievementsManager.checkIncrementalAchievementsChanges();
     }
 
     public static void resetGameData() {
@@ -93,8 +97,8 @@ public class LevelManager {
         return gameData.getInt(GAME_VIEW_LAST_LEVEL_STRING, FIRST_LEVEL_ID);
     }
 
-    public static void setLastLevelIndex(int lastLevelIndexLevel) {
-        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndexLevel);
+    public static void setLastLevelIndex(int lastLevelIndex) {
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndex);
         gameDataEditor.apply();
     }
 

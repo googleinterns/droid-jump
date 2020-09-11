@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.droidjump.leaderboards_data;
+package com.google.droidjump;
 
 import android.view.LayoutInflater;
 import android.view.View;

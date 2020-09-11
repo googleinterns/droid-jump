@@ -16,8 +16,15 @@
 
 package com.google.droidjump;
 
+import static com.google.droidjump.GameConstants.AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+import static com.google.droidjump.GameConstants.CACTUS_COMBO_COUNT;
 import static com.google.droidjump.GameConstants.GAME_LEVEL_HEADER;
 import static com.google.droidjump.GameConstants.GROUND_PROPORTION;
+import static com.google.droidjump.GameConstants.HARDCORE_COMBO;
+import static com.google.droidjump.GameConstants.MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+import static com.google.droidjump.GameConstants.NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
+import static com.google.droidjump.GameConstants.PALM_COMBO_COUNT;
+import static com.google.droidjump.GameConstants.PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,6 +38,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.google.droidjump.leveldata.LevelConfig;
+import com.google.droidjump.leveldata.InfiniteLevelData;
 import com.google.droidjump.leveldata.LevelStrategy;
 import com.google.droidjump.leveldata.LevelType;
 import com.google.droidjump.leveldata.ObstacleType;
@@ -55,6 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
     private final Bitmap platform = GameItem.drawableToBitmap(getResources().getDrawable(R.drawable.platform));
     private final int obstacleAdditionalMargin = 10;
     private MainActivity activity;
+    private AchievementsManager achievementsManager;
     private SurfaceHolder surfaceHolder;
     private Droid droid;
     private Paint levelPaint;
@@ -75,12 +84,17 @@ public class GameView extends SurfaceView implements Runnable {
     private int palmScore;
     private int batScore;
     private int batY;
+    private int obstaclesCount;
+    private int cactusCount;
+    private int palmCount;
+    private int hardcoreComboIndex;
 
     public GameView(Context context, int screenX, int screenY, boolean isPlaying) {
         super(context);
         intervalTimePoint = GameConstants.INTERVAL_START_TIME;
         timePoint = GameConstants.INTERVAL_START_TIME;
         activity = (MainActivity) context;
+        achievementsManager = new AchievementsManager(activity);
         surfaceHolder = getHolder();
         level = LevelManager.getCurrentLevelStrategy();
         this.screenX = screenX;
@@ -89,6 +103,11 @@ public class GameView extends SurfaceView implements Runnable {
         batY = screenY - 400;
         levelPaint = createLevelPaint();
         screenMargin = (int) getResources().getDimension(R.dimen.fab_margin);
+        score = 0;
+        obstaclesCount = 0;
+        cactusCount = 0;
+        palmCount = 0;
+        hardcoreComboIndex = 0;
         receiveLevelDetails();
 
         // Droid should be on a ground height, but platform includes grass.
@@ -103,6 +122,7 @@ public class GameView extends SurfaceView implements Runnable {
             updateGameState();
             drawScene();
             handleCollision();
+            checkForAchievements();
             sleep();
             timePoint++;
             intervalTimePoint++;
@@ -180,6 +200,9 @@ public class GameView extends SurfaceView implements Runnable {
             obstacle.setX(obstacle.getX() - levelSpeed);
             // Removal of passed obstacles.
             if (obstacle.getX() + obstacle.getWidth() < 0) {
+                if (level instanceof InfiniteLevelData) {
+                    updateCounters(obstacle);
+                }
                 it.remove();
                 score += 10;
                 if (activity.getSavedSignedInAccount() != null) {
@@ -221,6 +244,29 @@ public class GameView extends SurfaceView implements Runnable {
                     return;
             }
             ScoreManager.submitScore(leaderboardId, score);
+        }
+    }
+
+    private void updateCounters(Obstacle obstacle) {
+        obstaclesCount++;
+        if (obstacle instanceof Cactus) {
+            cactusCount++;
+            palmCount = 0;
+        } else if (obstacle instanceof Palm) {
+            palmCount++;
+            cactusCount = 0;
+        } else {
+            cactusCount = 0;
+            palmCount = 0;
+        }
+
+        if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]) {
+            hardcoreComboIndex++;
+        } else {
+            hardcoreComboIndex = 0;
+            if (obstacle.getClass() == HARDCORE_COMBO[hardcoreComboIndex]) {
+                hardcoreComboIndex++;
+            }
         }
     }
 
@@ -351,5 +397,30 @@ public class GameView extends SurfaceView implements Runnable {
                 || droid.getY() + droid.getHeight() < obstacle.getY()
                 || droid.getX() > obstacle.getX() + obstacle.getWidth()
                 || droid.getX() + droid.getWidth() < obstacle.getX());
+    }
+
+    private void checkForAchievements() {
+        switch (obstaclesCount) {
+            case NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(R.string.achievement_novice_infinite_level_player);
+                break;
+            case AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(R.string.achievement_amateur_infinite_level_player);
+                break;
+            case PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(R.string.achievement_pro_infinite_level_player);
+                break;
+            case MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
+                achievementsManager.unlockAchievement(R.string.achievement_master_infinite_level_player);
+        }
+        if (cactusCount == CACTUS_COMBO_COUNT) {
+            achievementsManager.unlockAchievement(R.string.achievement_cactus_combo);
+        }
+        if (palmCount == PALM_COMBO_COUNT) {
+            achievementsManager.unlockAchievement(R.string.achievement_palm_combo);
+        }
+        if (hardcoreComboIndex == HARDCORE_COMBO.length) {
+            achievementsManager.unlockAchievement(R.string.achievement_hardcore_combo);
+        }
     }
 }
