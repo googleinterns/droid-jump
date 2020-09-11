@@ -28,10 +28,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.achievements_data.AchievementsAdapter;
 import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -40,12 +42,15 @@ import java.util.Objects;
 public class AchievementsFragment extends Fragment {
     private MainActivity activity;
     private int achievementsViewId;
+    private ArrayList<Achievement> achievements;
+    private AchievementsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         achievementsViewId = R.id.achievements_recycler_view;
+        achievements = new ArrayList<>();
     }
 
     @Nullable
@@ -65,12 +70,18 @@ public class AchievementsFragment extends Fragment {
         View rootView = getView();
         RecyclerView achievementsView = rootView.findViewById(achievementsViewId);
         LoadingHelper.onLoading(activity, rootView, achievementsViewId);
-        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
+        activity.getAchievementsClient().load(false).addOnCompleteListener(activity, task -> {
             if (task.isSuccessful()) {
                 AchievementBuffer achievementBuffer = task.getResult().get();
                 if (achievementBuffer != null) {
-                    AchievementsAdapter adapter = new AchievementsAdapter(achievementBuffer, activity);
+                    achievements.clear();
+                    for (Achievement achievement : achievementBuffer) {
+                        achievements.add(achievement.freeze());
+                    }
+                    Log.d("AchievementsFragment", "list size " + achievements.size());
+                    adapter = new AchievementsAdapter(achievements, activity);
                     achievementsView.setAdapter(adapter);
+                    achievementBuffer.close();
                 }
             } else {
                 //TODO(dnikolskaia): Improve exception handling behavior.

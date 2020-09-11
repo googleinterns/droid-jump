@@ -29,7 +29,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.achievement.Achievement;
-import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.AchievementDetailsFragment;
 import com.google.droidjump.R;
 import com.google.droidjump.models.NavigationHelper;
@@ -43,13 +42,13 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final static int SECTION_NAME_TYPE = 0;
     private final static int ACHIEVEMENT_TYPE = 1;
 
-    private AchievementBuffer achievementBuffer;
+    ArrayList<Achievement> achievements;
     private FragmentActivity activity;
     private List<RecyclerViewItem> items;
     private List<String> sectionNames;
 
-    public AchievementsAdapter(AchievementBuffer achievementBuffer, FragmentActivity activity) {
-        this.achievementBuffer = achievementBuffer;
+    public AchievementsAdapter(ArrayList<Achievement> achievements, FragmentActivity activity) {
+        this.achievements = achievements;
         this.activity = activity;
         fillViewItems();
     }
@@ -57,8 +56,8 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void fillViewItems() {
         items = new ArrayList<>();
         sectionNames = new ArrayList<>();
-        for (int i = 0; i < achievementBuffer.getCount(); i++) {
-            int currentAchievementState = achievementBuffer.get(i).getState();
+        for (int i = 0; i < achievements.size(); i++) {
+            int currentAchievementState = achievements.get(i).getState();
             boolean currentAchievementIsUnlocked = currentAchievementState == Achievement.STATE_UNLOCKED;
             if (i == 0) {
                 if (currentAchievementIsUnlocked) {
@@ -69,7 +68,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     sectionNames.add(activity.getString(R.string.locked_section_name));
                 }
             } else if (!currentAchievementIsUnlocked) {
-                int previousAchievementState = achievementBuffer.get(i - 1).getState();
+                int previousAchievementState = achievements.get(i - 1).getState();
                 if (previousAchievementState == Achievement.STATE_UNLOCKED) {
                     items.add(new RecyclerViewItem(ItemType.SECTION_NAME, sectionNames.size()));
                     sectionNames.add(activity.getString(R.string.locked_section_name));
@@ -98,7 +97,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((SectionViewHolder) holder).getSectionText().setText(sectionNames.get(listPosition));
             return;
         }
-        Achievement achievement = achievementBuffer.get(listPosition);
+        Achievement achievement = achievements.get(listPosition);
         AchievementViewHolder achievementHolder = (AchievementViewHolder) holder;
         achievementHolder.getDescription().setText(achievement.getDescription());
         achievementHolder.getName().setText(achievement.getName());
