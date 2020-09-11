@@ -39,7 +39,6 @@ import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
 import com.google.android.gms.games.leaderboard.LeaderboardVariant;
-import com.google.droidjump.leaderboards_data.LeaderboardsScoresAdapter;
 import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
@@ -57,9 +56,9 @@ public class LeaderboardScoresFragment extends Fragment {
     private int collection;
     private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
-    private String ALL_TIME_SCORES;
-    private String WEEKLY_SCORES;
-    private String DAILY_SCORES;
+    private final String ALL_TIME_SCORES = getResources().getStringArray(R.array.leaderboard_time)[0];
+    private final String WEEKLY_SCORES = getResources().getStringArray(R.array.leaderboard_time)[1];
+    private final String DAILY_SCORES = getResources().getStringArray(R.array.leaderboard_time)[2];
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -73,10 +72,6 @@ public class LeaderboardScoresFragment extends Fragment {
         timeSpan = LeaderboardVariant.TIME_SPAN_ALL_TIME;
         collection = LeaderboardVariant.COLLECTION_PUBLIC;
         recyclerViewId = R.id.scores_recycler_view;
-        String[] timeSpans = getResources().getStringArray(R.array.leaderboard_time);
-        ALL_TIME_SCORES = timeSpans[0];
-        WEEKLY_SCORES = timeSpans[1];
-        DAILY_SCORES = timeSpans[2];
     }
 
     @Override
