@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -56,9 +57,9 @@ public class LeaderboardScoresFragment extends Fragment {
     private int collection;
     private int recyclerViewId;
     private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
-    private final String ALL_TIME_SCORES = getResources().getStringArray(R.array.leaderboard_time)[0];
-    private final String WEEKLY_SCORES = getResources().getStringArray(R.array.leaderboard_time)[1];
-    private final String DAILY_SCORES = getResources().getStringArray(R.array.leaderboard_time)[2];
+    private final String ALL_TIME_SCORES = "All time";
+    private final String WEEKLY_SCORES = "Weekly";
+    private final String DAILY_SCORES = "Daily";
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
@@ -107,6 +108,12 @@ public class LeaderboardScoresFragment extends Fragment {
         });
         rootView.findViewById(R.id.back_button).setOnClickListener(ignored -> activity.onBackPressed());
         Spinner timeSpinner = rootView.findViewById(R.id.time_spinner);
+
+        // Adding items to spinner.
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
+                new String[]{ALL_TIME_SCORES, WEEKLY_SCORES, DAILY_SCORES});
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSpinner.setAdapter(spinnerAdapter);
         timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
