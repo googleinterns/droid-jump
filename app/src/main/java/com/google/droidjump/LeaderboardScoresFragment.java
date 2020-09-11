@@ -49,6 +49,11 @@ import java.util.List;
  * Displays Leaderboards Screen.
  */
 public class LeaderboardScoresFragment extends Fragment {
+    private static final String ALL_TIME_SCORES = "All time";
+    private static final String WEEKLY_SCORES = "Weekly";
+    private static final String DAILY_SCORES = "Daily";
+    private static final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
+
     private Leaderboard leaderboard;
     private MainActivity activity;
     private List<LeaderboardScore> scores;
@@ -56,10 +61,6 @@ public class LeaderboardScoresFragment extends Fragment {
     private int timeSpan;
     private int collection;
     private int recyclerViewId;
-    private final int SHOW_SHARING_FRIENDS_CONSENT = 3001;
-    private final String ALL_TIME_SCORES = "All time";
-    private final String WEEKLY_SCORES = "Weekly";
-    private final String DAILY_SCORES = "Daily";
 
     public LeaderboardScoresFragment(Leaderboard leaderboard) {
         this.leaderboard = leaderboard;
