@@ -60,4 +60,5 @@
     <string name="date_caption_for_locked_achievements">Last updated</string>
     <string name="date_caption_for_unlocked_achievements">Earned</string>
     <string name="steps_completed">Steps completed</string>
+    <string name="failed_to_load_achievemets_toast_text">Oops, something went wrong with getting achievements</string>
 </resources>
