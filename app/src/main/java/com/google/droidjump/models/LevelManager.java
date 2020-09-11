@@ -21,6 +21,7 @@ import static com.google.droidjump.GameConstants.GAME_VIEW_CURRENT_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.GAME_VIEW_DATA;
 import static com.google.droidjump.GameConstants.GAME_VIEW_LAST_LEVEL_STRING;
 import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.droidjump.AchievementsManager;

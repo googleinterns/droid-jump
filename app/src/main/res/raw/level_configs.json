@@ -11,7 +11,7 @@
       "levelType": "FINITE_GENERATED"
     },
     {
-      "levelName": "inf",
+      "levelName": "3",
       "resourceName": "infinite_level",
       "levelType": "INFINITE"
     }
