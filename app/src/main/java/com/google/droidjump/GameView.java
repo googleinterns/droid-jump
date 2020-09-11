@@ -409,6 +409,7 @@ public class GameView extends SurfaceView implements Runnable {
                 break;
             case PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
                 achievementsManager.unlockAchievement(R.string.achievement_pro_infinite_level_player);
+                break;
             case MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
                 achievementsManager.unlockAchievement(R.string.achievement_master_infinite_level_player);
         }

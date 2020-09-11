@@ -29,6 +29,8 @@ import java.util.Objects;
  * Manages achievements unlocking.
  */
 public class AchievementsManager {
+    private static final String TAG = "AchievementsManager";
+
     MainActivity activity;
     boolean incrementalAchievementsDataChanged;
     ArrayList<Achievement> achievementsList;
@@ -40,26 +42,26 @@ public class AchievementsManager {
     }
 
     public void checkIncrementalAchievementsChanges() {
-        if (incrementalAchievementsDataChanged) {
-            activity.getAchievementsClient().load(false).addOnCompleteListener(activity, task -> {
-                if (task.isSuccessful()) {
-                    AchievementBuffer achievementBuffer = task.getResult().get();
-                    for (Achievement achievement : achievementBuffer) {
-                        achievementsList.add(achievement.freeze());
-                    }
-                    achievementBuffer.close();
-                    incrementalAchievementsDataChanged = false;
-                    updateIncrementalAchievements();
-                } else {
-                    //TODO(dnikolskaia): Improve exception handling behavior.
-                    String message = Objects.requireNonNull(task.getException()).getMessage();
-                    Log.e("AchievementsManager", "Failed to load achievements from client: " + message);
-                    Toast.makeText(activity, "Oops, something went wrong with getting achievements", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
+        if (!incrementalAchievementsDataChanged){
             updateIncrementalAchievements();
+            return;
         }
+        activity.getAchievementsClient().load(/* forceReload= */false).addOnCompleteListener(activity, task -> {
+            if (task.isSuccessful()) {
+                AchievementBuffer achievementBuffer = task.getResult().get();
+                for (Achievement achievement : achievementBuffer) {
+                    achievementsList.add(achievement.freeze());
+                }
+                achievementBuffer.close();
+                incrementalAchievementsDataChanged = false;
+                updateIncrementalAchievements();
+            } else {
+                //TODO(dnikolskaia): Improve exception handling behavior.
+                String message = Objects.requireNonNull(task.getException()).getMessage();
+                Log.e(TAG, activity.getString(R.string.loading_achievements_exception) + message);
+                Toast.makeText(activity, activity.getString(R.string.failed_to_load_achievemets_toast_text), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void unlockAchievement(int achievementId) {

@@ -53,7 +53,7 @@ public class LevelManager {
         gameLevels = LevelConfigParser.getLevelConfigsFromResource(R.raw.level_configs, context);
         levelsLastIndex = gameLevels.size() - 1;
         currentLevelScore = 0;
-        achievementsManager = new AchievementsManager((MainActivity) context);
+        achievementsManager = new AchievementsManager(activity);
     }
 
     public static int getLevelsLastIndex() {
