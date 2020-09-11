@@ -30,6 +30,7 @@ import java.util.Objects;
  */
 public class AchievementsManager {
     private static final String TAG = "AchievementsManager";
+
     MainActivity activity;
     boolean incrementalAchievementsDataChanged;
     ArrayList<Achievement> achievementsList;
@@ -45,7 +46,7 @@ public class AchievementsManager {
             updateIncrementalAchievements();
             return;
         }
-        activity.getAchievementsClient().load(/* forceReload= */false).addOnCompleteListener(activity, task -> {
+        activity.getAchievementsClient().load(/* forceReload= */ false).addOnCompleteListener(activity, task -> {
             if (task.isSuccessful()) {
                 AchievementBuffer achievementBuffer = task.getResult().get();
                 for (Achievement achievement : achievementBuffer) {
@@ -57,7 +58,7 @@ public class AchievementsManager {
             } else {
                 //TODO(dnikolskaia): Improve exception handling behavior.
                 String message = Objects.requireNonNull(task.getException()).getMessage();
-                Log.e(TAG, activity.getString(R.string.loading_achievements_exception) + message);
+                Log.e(TAG, "Failed to load achievements from client: " + message);
                 Toast.makeText(activity, activity.getString(R.string.failed_to_load_achievemets_toast_text), Toast.LENGTH_SHORT).show();
             }
         });

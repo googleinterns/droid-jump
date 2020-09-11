@@ -41,6 +41,7 @@ import java.util.Objects;
  */
 public class AchievementsFragment extends Fragment {
     private static final String TAG = "AchievementsFragment";
+
     private MainActivity activity;
     private int achievementsViewId;
     private ArrayList<Achievement> achievements;
@@ -71,7 +72,7 @@ public class AchievementsFragment extends Fragment {
         View rootView = getView();
         RecyclerView achievementsView = rootView.findViewById(achievementsViewId);
         LoadingHelper.onLoading(activity, rootView, achievementsViewId);
-        activity.getAchievementsClient().load(/* forceReload= */false).addOnCompleteListener(activity, task -> {
+        activity.getAchievementsClient().load(/* forceReload= */ false).addOnCompleteListener(activity, task -> {
             if (task.isSuccessful()) {
                 AchievementBuffer achievementBuffer = task.getResult().get();
                 if (achievementBuffer != null) {
@@ -86,7 +87,7 @@ public class AchievementsFragment extends Fragment {
             } else {
                 //TODO(dnikolskaia): Improve exception handling behavior.
                 String message = Objects.requireNonNull(task.getException()).getMessage();
-                Log.e(TAG, activity.getString(R.string.loading_achievements_exception) + message);
+                Log.e(TAG, "Failed to load achievements from client: " + message);
                 Toast.makeText(activity, activity.getString(R.string.failed_to_load_achievemets_toast_text), Toast.LENGTH_SHORT).show();
             }
             LoadingHelper.onLoaded(rootView, achievementsViewId);
