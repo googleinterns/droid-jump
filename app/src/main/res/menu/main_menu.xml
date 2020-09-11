@@ -21,16 +21,21 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_friends"
-            android:title="@string/friends"
-            android:icon="@drawable/pgs_icon"/>
+            android:icon="@drawable/pgs_icon"
+            android:title="@string/friends" />
         <item
             android:id="@+id/nav_achievements"
-            android:title="@string/achievements"
-            android:icon="@drawable/achievements_icon"/>
+            android:icon="@drawable/achievements_icon"
+            android:title="@string/achievements" />
         <item
             android:id="@+id/nav_leaderboards"
-            android:title="@string/leaderboards"
-            android:icon="@drawable/leaderboards_icon"/>
+            android:icon="@drawable/leaderboards_icon"
+            android:title="@string/leaderboards" />
+    </group>
+    <group android:id="@+id/nav_recording_items">
+        <item
+            android:id="@+id/nav_video_recording"
+            android:title="@string/video_recording" />
     </group>
     <group android:id="@+id/nav_footer">
         <item

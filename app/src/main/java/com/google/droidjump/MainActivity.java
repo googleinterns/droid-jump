@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity {
     private static final int RC_SIGN_IN = 9001;
     private static final long TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
     private static final String TAG = MainActivity.class.getName();
+    private static final int RC_VIDEO_OVERLAY = 9011;
     private boolean isActiveConnection;
     private boolean friendListAccess;
     private boolean isLoadFriendNames;
@@ -308,6 +309,8 @@ public class MainActivity extends FragmentActivity {
         navigationView.setItemIconTintList(null);
         navigationView.getMenu().setGroupEnabled(R.id.nav_items, isEnabled);
         navigationView.getMenu().setGroupCheckable(R.id.nav_items, isEnabled, isEnabled);
+        navigationView.getMenu().setGroupEnabled(R.id.nav_recording_items, isEnabled);
+        navigationView.getMenu().setGroupCheckable(R.id.nav_recording_items, isEnabled, isEnabled);
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (isEnabled) {
@@ -323,6 +326,9 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.nav_leaderboards:
                         NavigationHelper.navigateToFragment(MainActivity.this, new LeaderboardsFragment());
+                        break;
+                    case R.id.nav_video_recording:
+                        showVideoOverlay(findViewById(R.id.activity_wrapper));
                         break;
                 }
                 ((DrawerLayout) findViewById(R.id.drawer_layout))
@@ -389,5 +395,11 @@ public class MainActivity extends FragmentActivity {
                         }
                     });
         }
+    }
+
+    private void showVideoOverlay(View myview) {
+        Games.getVideosClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .getCaptureOverlayIntent()
+                .addOnSuccessListener(intent -> startActivityForResult(intent, RC_VIDEO_OVERLAY));
     }
 }
