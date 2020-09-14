@@ -24,6 +24,6 @@ import com.google.droidjump.R;
  */
 public class Palm extends Obstacle {
     public Palm(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.drawable.ic_palm, resources);
+        super(x, yWithBitmapOffset, R.drawable.new_palm, resources);
     }
 }

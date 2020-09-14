@@ -22,10 +22,10 @@ import androidx.core.view.GravityCompat;
  * Stores all global constants of the game.
  */
 public interface GameConstants {
-    int DROID_COUNT_ON_FULL_DROID_PICTURE = 9; // Count of droids at res/drawable/droid.png image.
-    int DROID_JUMPING_CHARACTER_INDEX = 4; // Index of droid at res/drawable/droid.png image.
-    int DROID_FIRST_STEP_INDEX = 5; // Index of droid at res/drawable/droid.png image.
-    int DROID_SECOND_STEP_INDEX = 6; // Index of droid at res/drawable/droid.png image.
+    int DROID_COUNT_ON_FULL_DROID_PICTURE = 3; // Count of droids at res/drawable/droid.png image.
+    int DROID_JUMPING_CHARACTER_INDEX = 0; // Index of droid at res/drawable/droid.png image.
+    int DROID_FIRST_STEP_INDEX = 1; // Index of droid at res/drawable/droid.png image.
+    int DROID_SECOND_STEP_INDEX = 2; // Index of droid at res/drawable/droid.png image.
     int SLEEP_TIME = 15; // Sleep time in gameView (ms).
     // The variable is responsible for how much time ticks full animation of the object goes.
     int FULL_ANIMATION_TICKS = 4;

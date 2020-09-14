@@ -24,6 +24,6 @@ import com.google.droidjump.R;
  */
 public class Cactus extends Obstacle {
     public Cactus(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.drawable.ic_cactus, resources);
+        super(x, yWithBitmapOffset, R.drawable.new_cactus, resources);
     }
 }
