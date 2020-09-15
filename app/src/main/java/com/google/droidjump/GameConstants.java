@@ -17,6 +17,8 @@
 package com.google.droidjump;
 
 import androidx.core.view.GravityCompat;
+import com.google.droidjump.models.Bat;
+import com.google.droidjump.models.Palm;
 
 /**
  * Stores all global constants of the game.
@@ -55,4 +57,13 @@ public interface GameConstants {
     String GAME_VIEW_LAST_LEVEL_STRING = "java.com.google.droidjump.GameView.LastLevel";
     // Used to identifying game data from SharePreferences.
     String GAME_VIEW_DATA = "java.com.google.droidjump.GameView.Data";
+
+    // Achievements processing constants.
+    int NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 5; // To unlock Novice Infinite Level Player achievement.
+    int AMATEUR_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 20; // To unlock Amateur Infinite Level Player achievement.
+    int PRO_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 50; // To unlock Pro Infinite Level Player achievement.
+    int MASTER_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT = 100; // To unlock Master Infinite Level Player achievement.
+    int CACTUS_COMBO_COUNT = 5; // To unlock Cactus Combo achievement.
+    int PALM_COMBO_COUNT = 5; // To unlock Palm Combo achievement.
+    Class[] HARDCORE_COMBO = new Class[]{Palm.class, Bat.class, Palm.class, Bat.class, Palm.class, Bat.class}; // To unlock Hardcore Combo Achievement.
 }

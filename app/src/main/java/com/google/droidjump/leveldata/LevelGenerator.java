@@ -16,9 +16,6 @@
 
 package com.google.droidjump.leveldata;
 
-import static com.google.droidjump.leveldata.ObstacleType.BAT;
-import static com.google.droidjump.leveldata.ObstacleType.CACTUS;
-import static com.google.droidjump.leveldata.ObstacleType.PALM;
 import java.util.Map;
 import java.util.Random;
 

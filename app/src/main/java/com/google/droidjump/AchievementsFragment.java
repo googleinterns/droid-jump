@@ -28,24 +28,31 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.droidjump.achievements_data.AchievementsAdapter;
 import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  * Displays Achievements Screen.
  */
 public class AchievementsFragment extends Fragment {
+    private static final String TAG = "AchievementsFragment";
+
     private MainActivity activity;
     private int achievementsViewId;
+    private ArrayList<Achievement> achievements;
+    private AchievementsAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
         achievementsViewId = R.id.achievements_recycler_view;
+        achievements = new ArrayList<>();
     }
 
     @Nullable
@@ -65,18 +72,23 @@ public class AchievementsFragment extends Fragment {
         View rootView = getView();
         RecyclerView achievementsView = rootView.findViewById(achievementsViewId);
         LoadingHelper.onLoading(activity, rootView, achievementsViewId);
-        activity.getAchievementsClient().load(true).addOnCompleteListener(activity, task -> {
+        activity.getAchievementsClient().load(/* forceReload= */ false).addOnCompleteListener(activity, task -> {
             if (task.isSuccessful()) {
                 AchievementBuffer achievementBuffer = task.getResult().get();
                 if (achievementBuffer != null) {
-                    AchievementsAdapter adapter = new AchievementsAdapter(achievementBuffer, activity);
+                    achievements.clear();
+                    for (Achievement achievement : achievementBuffer) {
+                        achievements.add(achievement.freeze());
+                    }
+                    achievementBuffer.close();
+                    adapter = new AchievementsAdapter(achievements, activity);
                     achievementsView.setAdapter(adapter);
                 }
             } else {
                 //TODO(dnikolskaia): Improve exception handling behavior.
                 String message = Objects.requireNonNull(task.getException()).getMessage();
-                Log.e("AchievementsFragment", "Failed to load achievements from client: " + message);
-                Toast.makeText(activity, "Oops, something went wrong", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Failed to load achievements from client: " + message);
+                Toast.makeText(activity, activity.getString(R.string.failed_to_load_achievemets_toast_text), Toast.LENGTH_SHORT).show();
             }
             LoadingHelper.onLoaded(rootView, achievementsViewId);
         });

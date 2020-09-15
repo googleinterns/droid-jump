@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.games.leaderboard.Leaderboard;
 import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
-import com.google.droidjump.leaderboards_data.LeaderboardsAdapter;
 import com.google.droidjump.models.LoadingHelper;
 import com.google.droidjump.models.NavigationHelper;
 import java.util.ArrayList;
