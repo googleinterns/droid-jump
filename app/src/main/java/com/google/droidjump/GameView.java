@@ -400,6 +400,9 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void checkForAchievements() {
+        if (activity.getSavedSignedInAccount() == null) {
+            return;
+        }
         switch (obstaclesCount) {
             case NOVICE_INFINITE_LEVEL_PLAYER_OBSTACLE_COUNT:
                 achievementsManager.unlockAchievement(R.string.achievement_novice_infinite_level_player);
