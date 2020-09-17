@@ -15,7 +15,7 @@
   -->
 
 <vector android:height="80dp" android:viewportHeight="85"
-    android:viewportWidth="200" android:width="180dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:viewportWidth="200" android:width="185dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#b2cb39"
         android:pathData="M3.83,33.373L6.011,33.373A2.393,2.346 90,0 1,8.358 35.766L8.358,54.654A2.393,2.346 90,0 1,6.011 57.047L3.83,57.047A2.393,2.346 90,0 1,1.483 54.654L1.483,35.766A2.393,2.346 90,0 1,3.83 33.373z"
         android:strokeColor="#000000" android:strokeLineJoin="round" android:strokeWidth="0.314308"/>
