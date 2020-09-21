@@ -1,0 +1,8 @@
+{
+  "baseSpeed": 45,
+  "generationFrequencies": {
+    "CACTUS": 0,
+    "PALM": 4,
+    "BAT": 1
+  }
+}

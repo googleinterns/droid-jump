@@ -12,7 +12,17 @@
     },
     {
       "levelName": "3",
+      "resourceName": "level3",
+      "levelType": "FINITE"
+    },
+    {
+      "levelName": "desert",
       "resourceName": "infinite_level",
+      "levelType": "INFINITE"
+    },
+    {
+      "levelName": "jungle",
+      "resourceName": "infinite_jungle_level",
       "levelType": "INFINITE"
     }
   ]

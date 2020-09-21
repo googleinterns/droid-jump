@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.google.droidjump.leveldata.LevelConfig;
+import com.google.droidjump.leveldata.LevelType;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class LevelsAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.row_level_item, /* root= */ null);
         TextView textView = view.findViewById(R.id.row_level_item_text);
         textView.setText(levels.get(index).getLevelName());
-        if (lastLevelIndex > index) {
+        if (lastLevelIndex > index || levels.get(index).getLevelType() == LevelType.INFINITE) {
             textView.setTextColor(Color.BLACK);
         } else if (lastLevelIndex == index) {
             textView.setTextColor(Color.WHITE);
