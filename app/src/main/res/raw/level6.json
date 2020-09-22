@@ -1,0 +1,9 @@
+{
+  "baseSpeed": 55,
+  "obstaclesLimit": 20,
+  "generationFrequencies": {
+    "CACTUS": 3,
+    "PALM": 3,
+    "BAT": 1
+  }
+}
