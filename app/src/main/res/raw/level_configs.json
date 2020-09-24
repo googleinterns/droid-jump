@@ -12,7 +12,52 @@
     },
     {
       "levelName": "3",
+      "resourceName": "level3",
+      "levelType": "FINITE"
+    },
+    {
+      "levelName": "4",
+      "resourceName": "level4",
+      "levelType": "FINITE"
+    },
+    {
+      "levelName": "5",
+      "resourceName": "level5",
+      "levelType": "FINITE_GENERATED"
+    },
+    {
+      "levelName": "6",
+      "resourceName": "level6",
+      "levelType": "FINITE_GENERATED"
+    },
+    {
+      "levelName": "7",
+      "resourceName": "level7",
+      "levelType": "FINITE"
+    },
+    {
+      "levelName": "8",
+      "resourceName": "level8",
+      "levelType": "FINITE"
+    },
+    {
+      "levelName": "9",
+      "resourceName": "level6",
+      "levelType": "FINITE_GENERATED"
+    },
+    {
+      "levelName": "desert",
       "resourceName": "infinite_level",
+      "levelType": "INFINITE"
+    },
+    {
+      "levelName": "jungle",
+      "resourceName": "infinite_jungle_level",
+      "levelType": "INFINITE"
+    },
+    {
+      "levelName": "quick run",
+      "resourceName": "infinite_quick_run_level",
       "levelType": "INFINITE"
     }
   ]

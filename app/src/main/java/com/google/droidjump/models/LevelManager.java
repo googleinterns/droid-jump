@@ -74,7 +74,9 @@ public class LevelManager {
             }
             gameDataEditor.apply();
         }
-        achievementsManager.checkIncrementalAchievementsChanges();
+        if (activity.getSavedSignedInAccount() != null) {
+            achievementsManager.checkIncrementalAchievementsChanges();
+        }
     }
 
     public static void resetGameData() {

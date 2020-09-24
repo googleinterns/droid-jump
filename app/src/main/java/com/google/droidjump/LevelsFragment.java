@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.droidjump.leveldata.LevelType;
 import com.google.droidjump.models.LevelManager;
 import com.google.droidjump.models.NavigationHelper;
 
@@ -51,7 +52,7 @@ public class LevelsFragment extends Fragment {
         GridView gridView = rootView.findViewById(R.id.levels_grid_view);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener((adapterView, view, levelIndex, ignored) -> {
-            if (LevelManager.getLastLevelIndex() >= levelIndex) {
+            if (LevelManager.getLastLevelIndex() >= levelIndex || LevelManager.getGameLevels().get(levelIndex).getLevelType() == LevelType.INFINITE) {
                 LevelManager.setCurrentLevelIndex(levelIndex);
                 NavigationHelper.navigateToFragment(activity, new GameFragment());
             }
