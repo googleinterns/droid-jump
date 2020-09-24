@@ -34,7 +34,7 @@ public class Droid extends GameItem implements TwoStepAnimative {
     private static final int additionalHeight = 100;
 
     public Droid(int x, int yWithBitmapOffset, Resources resources) {
-        super(x, yWithBitmapOffset, R.drawable.new_droid, resources);
+        super(x, yWithBitmapOffset, R.drawable.droid, resources);
         Bitmap fullDroidPicture = picture;
         int droidCount = GameConstants.DROID_COUNT_ON_FULL_DROID_PICTURE;
         droidTypes = new Bitmap[droidCount];

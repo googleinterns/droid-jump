@@ -31,7 +31,7 @@ public class Bat extends Obstacle implements TwoStepAnimative {
     public Bat(int x, int yWithBitmapOffset, Resources resources) {
         super(x, yWithBitmapOffset, R.drawable.bat, resources);
         // Extracting bat types from full bat picture.
-        Bitmap fullBatPicture = GameItem.drawableToBitmap(resources.getDrawable(R.drawable.new_bat));
+        Bitmap fullBatPicture = GameItem.drawableToBitmap(resources.getDrawable(R.drawable.bat));
         int halfWidth = fullBatPicture.getWidth() / 2;
         Bitmap leftBatWingPicture = Bitmap.createBitmap(fullBatPicture, 0, 0, halfWidth, fullBatPicture.getHeight());
         Bitmap rightBatWingPicture = Bitmap.createBitmap(fullBatPicture, halfWidth, 0, halfWidth, fullBatPicture.getHeight());

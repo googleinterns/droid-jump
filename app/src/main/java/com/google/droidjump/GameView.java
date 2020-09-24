@@ -60,7 +60,7 @@ import java.util.List;
  * Shows main game process.
  */
 public class GameView extends SurfaceView implements Runnable {
-    private final Bitmap platform = GameItem.drawableToBitmap(getResources().getDrawable(R.drawable.new_platform));
+    private final Bitmap platform = GameItem.drawableToBitmap(getResources().getDrawable(R.drawable.platform));
     private final int obstacleAdditionalMargin = 10;
     private MainActivity activity;
     private AchievementsManager achievementsManager;
