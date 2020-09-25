@@ -62,4 +62,5 @@
     <string name="steps_completed">Steps completed</string>
     <string name="video_recording">Video recording</string>
     <string name="failed_to_load_achievemets_toast_text">Oops, something went wrong with getting achievements</string>
+    <string name="saveg_games">Saved Games</string>
 </resources>

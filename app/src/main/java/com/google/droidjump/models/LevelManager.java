@@ -24,6 +24,7 @@ import static com.google.droidjump.GameConstants.SCORE_DEF_VALUE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 import com.google.droidjump.AchievementsManager;
 import com.google.droidjump.MainActivity;
 import com.google.droidjump.R;
@@ -86,6 +87,16 @@ public class LevelManager {
         ScoreManager.clearScores();
     }
 
+    public static void setGameData(int lastLevelIndex, ArrayList<Long> maxScores){
+        gameDataEditor.putInt(GAME_VIEW_CURRENT_LEVEL_STRING, lastLevelIndex);
+        gameDataEditor.putInt(GAME_VIEW_LAST_LEVEL_STRING, lastLevelIndex);
+        for(int i = 0; i < maxScores.size(); i++){
+            gameDataEditor.putLong(String.valueOf(i), maxScores.get(i));
+        }
+        gameDataEditor.apply();
+        Toast.makeText(activity, "Game State successfully updated", Toast.LENGTH_SHORT).show();
+    }
+
     public static int getCurrentLevelIndex() {
         return gameData.getInt(GAME_VIEW_CURRENT_LEVEL_STRING, FIRST_LEVEL_ID);
     }
@@ -133,5 +144,12 @@ public class LevelManager {
             gameDataEditor.putLong(String.valueOf(getCurrentLevelIndex()), currentLevelScore);
             gameDataEditor.apply();
         }
+    }
+    public static ArrayList<Long> getAllMaxScores(){
+        ArrayList<Long> maxScores = new ArrayList<>();
+        for (int i = 0; i <= levelsLastIndex; i++){
+            maxScores.add(gameData.getLong(String.valueOf(i), SCORE_DEF_VALUE));
+        }
+        return maxScores;
     }
 }

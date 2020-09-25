@@ -31,6 +31,10 @@
             android:id="@+id/nav_leaderboards"
             android:icon="@drawable/leaderboards_icon"
             android:title="@string/leaderboards" />
+        <item
+            android:id="@+id/nav_saved_games"
+            android:icon="@drawable/leaderboards_icon"
+            android:title="@string/saveg_games" />
     </group>
     <group android:id="@+id/nav_recording_items">
         <item
