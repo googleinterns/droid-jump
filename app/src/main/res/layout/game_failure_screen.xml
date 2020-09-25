@@ -36,6 +36,8 @@
         <LinearLayout
             android:id="@+id/droid_draw_view"
             style="@style/DroidDrawFrame"
+            android:layout_width="71dp"
+            android:layout_height="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
